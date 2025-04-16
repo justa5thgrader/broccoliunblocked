@@ -1383,3 +1383,734 @@
                             methodName = mobileProxySelect.options[mobileProxySelect.selectedIndex].text;
                             break;
                         case 'search-proxy-select':
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Link Proxier</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
+        .input-group {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        input[type="text"], input[type="number"] {
+            flex: 1;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            outline: none;
+        }
+        button {
+            padding: 12px 20px;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #3367d6;
+        }
+        .proxy-options {
+            margin-bottom: 20px;
+        }
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .history {
+            margin-top: 30px;
+        }
+        .history h2 {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .history-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .history-item:hover {
+            background-color: #f9f9f9;
+        }
+        .history-item a {
+            color: #4285f4;
+            text-decoration: none;
+            max-width: 80%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .history-item a:hover {
+            text-decoration: underline;
+        }
+        .timestamp {
+            color: #999;
+            font-size: 12px;
+        }
+        .info-box {
+            background-color: #e8f4fc;
+            border-left: 4px solid #4285f4;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .warning-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            border-radius: 4px 4px 0 0;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        .tab.active {
+            background-color: white;
+            border-bottom: 1px solid white;
+            margin-bottom: -1px;
+        }
+        #iframe-container {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        #embedded-iframe {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #ddd;
+        }
+        .storage-warning {
+            background-color: #ffefef;
+            border-left: 4px solid #ff4444;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            display: none;
+        }
+        .options-container {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .option-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .checkbox-group input {
+            margin-right: 5px;
+        }
+        .advanced-toggle {
+            color: #4285f4;
+            text-decoration: underline;
+            cursor: pointer;
+            margin: 10px 0;
+            display: inline-block;
+        }
+        .method-description {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+        .proxy-category {
+            margin-bottom: 20px;
+        }
+        .proxy-category h3 {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+        .url-encoder {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        .encoder-output {
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: white;
+            border-radius: 4px;
+            word-break: break-all;
+            margin-top: 10px;
+        }
+        .copy-btn {
+            padding: 5px 10px;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .copy-btn:hover {
+            background-color: #3367d6;
+        }
+        .country-select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .delete-btn {
+            background-color: #ff4444;
+            padding: 3px 8px;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .delete-btn:hover {
+            background-color: #cc0000;
+        }
+        .batch-controls {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f0f8ff;
+            border-radius: 4px;
+            border: 1px solid #cce5ff;
+        }
+        .batch-input {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .theme-switch {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .theme-switch label {
+            margin-right: 10px;
+            margin-bottom: 0;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        .dark-theme {
+            background-color: #222;
+            color: #eee;
+        }
+        .dark-theme .container {
+            background-color: #333;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        .dark-theme h1, .dark-theme h2, .dark-theme h3, .dark-theme h4 {
+            color: #fff;
+        }
+        .dark-theme .tab {
+            background-color: #444;
+            border-color: #555;
+            color: #eee;
+        }
+        .dark-theme .tab.active {
+            background-color: #333;
+            border-bottom-color: #333;
+        }
+        .dark-theme input[type="text"], .dark-theme input[type="number"], .dark-theme select, .dark-theme textarea {
+            background-color: #444;
+            border-color: #555;
+            color: #eee;
+        }
+        .dark-theme .history-item {
+            border-color: #555;
+        }
+        .dark-theme .history-item:hover {
+            background-color: #444;
+        }
+        .dark-theme .options-container, .dark-theme .url-encoder, .dark-theme .encoder-output {
+            background-color: #444;
+            border-color: #555;
+        }
+        .qr-container {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+        #qr-code {
+            margin: 0 auto;
+            padding: 10px;
+            background-color: white;
+            border-radius: 4px;
+        }
+        .proxy-stats {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .stat-card {
+            padding: 10px;
+            background-color: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4285f4;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+        }
+        .save-preset-container {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .save-preset-container input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .presets-container {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .preset-tag {
+            padding: 5px 10px;
+            background-color: #e8f0fe;
+            border: 1px solid #4285f4;
+            border-radius: 15px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .preset-tag:hover {
+            background-color: #d2e3fc;
+        }
+        .preset-delete {
+            margin-left: 5px;
+            color: #666;
+            cursor: pointer;
+        }
+        .preset-delete:hover {
+            color: #ff4444;
+        }
+        .anonymity-meter {
+            margin-top: 10px;
+            width: 100%;
+            height: 10px;
+            background-color: #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .anonymity-level {
+            height: 100%;
+            background: linear-gradient(to right, #ff4444, #ffbb33, #00C851);
+            transition: width 0.3s ease;
+        }
+        .anonymity-label {
+            margin-top: 5px;
+            font-size: 12px;
+            text-align: right;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-switch">
+        <label for="theme-toggle">Dark Mode</label>
+        <label class="switch">
+            <input type="checkbox" id="theme-toggle">
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <div class="container">
+        <h1>Advanced Link Proxier</h1>
+        <div class="subtitle">Access websites through various proxy services and cloaking methods</div>
+        
+        <div class="info-box">
+            This tool allows you to visit websites through multiple proxy services, cloaking methods, and interstitial services. Enter a URL below and choose your preferred method.
+        </div>
+        
+        <div class="warning-box">
+            <strong>Note:</strong> Some proxy services may have usage limitations or require accounts. This tool is for educational purposes only.
+        </div>
+        
+        <div class="storage-warning" id="storage-warning">
+            LocalStorage is not available in this environment. History will not be saved between sessions.
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="web-proxies">Web Proxies</div>
+            <div class="tab" data-tab="archive-proxies">Archive Services</div>
+            <div class="tab" data-tab="translate-proxies">Translation Proxies</div>
+            <div class="tab" data-tab="cloaking">Cloaking Methods</div>
+            <div class="tab" data-tab="specialized">Specialized Proxies</div>
+            <div class="tab" data-tab="url-tools">URL Tools</div>
+            <div class="tab" data-tab="batch-proxies">Batch Mode</div>
+            <div class="tab" data-tab="presets">Presets</div>
+        </div>
+        
+        <div id="web-proxies-tab" class="tab-content">
+            <div class="proxy-category">
+                <h3>General Web Proxies</h3>
+                <div class="proxy-options">
+                    <label for="web-proxy-select">Select Web Proxy Service:</label>
+                    <select id="web-proxy-select">
+                        <option value="https://www.proxysite.com/process.php?d=">ProxySite</option>
+                        <option value="https://www.croxyproxy.com/process.php?d=">CroxyProxy</option>
+                        <option value="https://www.hidester.com/proxy/proxy.php?u=">Hidester</option>
+                        <option value="https://www.hidemyass-freeproxy.com/proxy/en-us/">HideMyAss</option>
+                        <option value="https://www.filterbypass.me/?url=">FilterBypass</option>
+                        <option value="https://proxy-us.hideproxy.me/includes/process.php?action=update&q=">HideProxy</option>
+                        <option value="https://www.blockaway.net/index.php?q=">BlockAway</option>
+                        <option value="https://www.proxysite.app/">ProxySite App</option>
+                        <option value="https://proxybrowser.org/browse.php?u=">ProxyBrowser</option>
+                        <option value="https://proxy-us.hideproxy.me/index.php?q=">US Proxy</option>
+                        <option value="https://www.vpnbook.com/webproxy?url=">VPNBook Proxy</option>
+                        <option value="https://www.megaproxy.com/freesurf/">MegaProxy</option>
+                        <option value="https://kproxy.com/">KProxy</option>
+                        <option value="https://www.4everproxy.com/proxy?u=">4Ever Proxy</option>
+                        <option value="https://whoer.net/webproxy?url=">Whoer.net Proxy</option>
+                        <option value="https://www.anonymouse.org/cgi-bin/anon-www.cgi/">AnonyMouse</option>
+                        <option value="https://webproxy.to/">WebProxy.to</option>
+                        <option value="https://www.surf-proxy.com/">Surf Proxy</option>
+                        <option value="https://ninjaweb.xyz/">Ninja Web</option>
+                        <option value="https://www.zalmos.com/">Zalmos Web Proxy</option>
+                        <option value="custom">Custom Proxy (Enter Below)</option>
+                    </select>
+                    
+                    <div id="custom-proxy-container" style="display: none;">
+                        <input type="text" id="custom-proxy" placeholder="Enter custom proxy URL" value="">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="proxy-category">
+                <h3>Country-Specific Proxies</h3>
+                <div class="proxy-options">
+                    <label for="country-proxy-select">Select Country:</label>
+                    <select id="country-proxy-select" class="country-select">
+                        <option value="us">United States</option>
+                        <option value="uk">United Kingdom</option>
+                        <option value="ca">Canada</option>
+                        <option value="de">Germany</option>
+                        <option value="fr">France</option>
+                        <option value="jp">Japan</option>
+                        <option value="kr">South Korea</option>
+                        <option value="nl">Netherlands</option>
+                        <option value="sg">Singapore</option>
+                        <option value="au">Australia</option>
+                        <option value="it">Italy</option>
+                        <option value="es">Spain</option>
+                        <option value="ru">Russia</option>
+                        <option value="br">Brazil</option>
+                        <option value="in">India</option>
+                    </select>
+                    
+                    <div class="method-description">
+                        This will route your connection through servers in the selected country using Hide.me's country-specific proxies.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="options-container" id="web-proxy-options">
+                <h4>Advanced Options</h4>
+                <div class="option-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="remove-cookies" checked>
+                        <label for="remove-cookies">Remove Cookies</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="remove-scripts" checked>
+                        <label for="remove-scripts">Remove Scripts</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="encrypt-url" checked>
+                        <label for="encrypt-url">Encrypt URL</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="allow-redirects">
+                        <label for="allow-redirects">Allow Redirects</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="use-https" checked>
+                        <label for="use-https">Force HTTPS</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="hide-referer" checked>
+                        <label for="hide-referer">Hide Referer</label>
+                    </div>
+                </div>
+                
+                <div class="anonymity-meter-container">
+                    <label>Estimated Anonymity Level:</label>
+                    <div class="anonymity-meter">
+                        <div class="anonymity-level" style="width: 70%;"></div>
+                    </div>
+                    <div class="anonymity-label">Medium</div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="archive-proxies-tab" class="tab-content" style="display: none;">
+            <div class="proxy-options">
+                <label for="archive-proxy-select">Select Archive Service:</label>
+                <select id="archive-proxy-select">
+                    <option value="https://web.archive.org/web/">Wayback Machine</option>
+                    <option value="https://archive.ph/">Archive.today</option>
+                    <option value="https://archive.is/">Archive.is</option>
+                    <option value="https://webcache.googleusercontent.com/search?q=cache:">Google Cache</option>
+                    <option value="https://cc.bingj.com/cache.aspx?q=">Bing Cache</option>
+                    <option value="https://cachedview.nl/?q=">CachedView</option>
+                    <option value="https://archive.wikiwix.com/cache/index2.php?url=">Wikiwix Cache</option>
+                    <option value="https://timetravel.mementoweb.org/memento/">Memento Time Travel</option>
+                    <option value="https://archive.md/">Archive.md</option>
+                    <option value="https://en.wikipedia.org/w/index.php?search=">Wikipedia Search Cache</option>
+                    <option value="https://perma.cc/create/?url=">Perma.cc</option>
+                    <option value="https://ghostarchive.org/search?term=">GhostArchive</option>
+                    <option value="https://web.archive.org/cdx/search/cdx?url=">Wayback CDX Server</option>
+                    <option value="https://conifer.rhizome.org/">Conifer Web Archive</option>
+                    <option value="https://arquivo.pt/wayback/">Arquivo.pt (Portuguese Web Archive)</option>
+                </select>
+                
+                <div class="options-container">
+                    <h4>Archive Options</h4>
+                    <div class="option-group">
+                        <label for="archive-timestamp">Wayback Machine Timestamp (YYYYMMDD):</label>
+                        <input type="text" id="archive-timestamp" placeholder="e.g., 20210101 or leave empty for latest" value="">
+                    </div>
+                    
+                    <div class="option-group">
+                        <label for="archive-range">Date Range:</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="date" id="archive-start-date">
+                            <span>to</span>
+                            <input type="date" id="archive-end-date">
+                        </div>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="archive-screenshot">
+                        <label for="archive-screenshot">Use Screenshot (if available)</label>
+                    </div>
+                </div>
+                
+                <div class="method-description">
+                    Archive services provide cached versions of websites, allowing you to view content that may have been changed or removed.
+                </div>
+            </div>
+        </div>
+        
+        <div id="translate-proxies-tab" class="tab-content" style="display: none;">
+            <div class="proxy-options">
+                <label for="translate-proxy-select">Select Translation Service:</label>
+                <select id="translate-proxy-select">
+                    <option value="https://translate.google.com/translate?sl=auto&tl=en&u=">Google Translate (to English)</option>
+                    <option value="https://translate.google.com/translate?sl=auto&tl=es&u=">Google Translate (to Spanish)</option>
+                    <option value="https://translate.google.com/translate?sl=auto&tl=fr&u=">Google Translate (to French)</option>
+                    <option value="https://translate.google.com/translate?sl=auto&tl=de&u=">Google Translate (to German)</option>
+                    <option value="https://translate.google.com/translate?sl=auto&tl=ja&u=">Google Translate (to Japanese)</option>
+                    <option value="https://translate.google.com/translate?sl=auto&tl=zh-CN&u=">Google Translate (to Chinese)</option>
+                    <option value="https://translate.google.com/translate?sl=auto&tl=ru&u=">Google Translate (to Russian)</option>
+                    <option value="https://translate.google.com/translate?sl=auto&tl=ar&u=">Google Translate (to Arabic)</option>
+                    <option value="https://translate.google.com/translate?sl=auto&tl=hi&u=">Google Translate (to Hindi)</option>
+                    <option value="https://www.microsofttranslator.com/bv.aspx?from=auto&to=en&a=">Bing Translator (to English)</option>
+                    <option value="https://www.deepl.com/translator#auto/en/">DeepL Translator</option>
+                    <option value="https://translate.yandex.com/translate?lang=en-auto&url=">Yandex Translator</option>
+                    <option value="https://www.translatetheweb.com/?from=&to=en&a=">Microsoft Translator</option>
+                    <option value="https://translate.systran.net/translationTools/text?source=auto&target=en&url=">SYSTRAN Translator</option>
+                    <option value="custom-translate">Custom Translation (Select Languages Below)</option>
+                </select>
+                
+                <div id="custom-translate-container" style="display: none;">
+                    <div class="option-group">
+                        <label for="source-lang">Source Language:</label>
+                        <select id="source-lang">
+                            <option value="auto">Auto-detect</option>
+                            <option value="en">English</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                            <option value="de">German</option>
+                            <option value="it">Italian</option>
+                            <option value="pt">Portuguese</option>
+                            <option value="ru">Russian</option>
+                            <option value="ja">Japanese</option>
+                            <option value="ko">Korean</option>
+                            <option value="zh-CN">Chinese (Simplified)</option>
+                            <option value="ar">Arabic</option>
+                            <option value="hi">Hindi</option>
+                            <option value="tr">Turkish</option>
+                            <option value="nl">Dutch</option>
+                            <option value="vi">Vietnamese</option>
+                            <option value="pl">Polish</option>
+                            <option value="sv">Swedish</option>
+                            <option value="fi">Finnish</option>
+                            <option value="no">Norwegian</option>
+                            <option value="da">Danish</option>
+                            <option value="cs">Czech</option>
+                            <option value="el">Greek</option>
+                            <option value="he">Hebrew</option>
+                            <option value="id">Indonesian</option>
+                            <option value="th">Thai</option>
+                        </select>
+                    </div>
+                    <div class="option-group">
+                        <label for="target-lang">Target Language:</label>
+                        <select id="target-lang">
+                            <option value="en">English</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                            <option value="de">German</option>
+                            <option value="it">Italian</option>
+                            <option value="pt">Portuguese</option>
+                            <option value="ru">Russian</option>
+                            <option value="ja">Japanese</option>
+                            <option value="ko">Korean</option>
+                            <option value="zh-CN">Chinese (Simplified)</option>
+                            <option value="ar">Arabic</option>
+                            <option value="hi">Hindi</option>
+                            <option value="tr">Turkish</option>
+                            <option value="nl">Dutch</option>
+                            <option value="vi">Vietnamese</option>
+                            <option value="pl">Polish</option>
+                            <option value="sv">Swedish</option>
+                            <option value="fi">Finnish</option>
+                            <option value="no">Norwegian</option>
+                            <option value="da">Danish</option>
+                            <option value="cs">Czech</option>
+                            <option value="el">Greek</option>
+                            <option value="he">Hebrew</option>
+                            <option value="id">Indonesian</option>
+                            <option value="th">Thai</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="method-description">
+                    Translation proxies can bypass some content restrictions by loading the page through a translation service.
+                </div>
+            </div>
+        </div>
+        
+        <div id="cloaking-tab" class="tab-content" style="display: none;">
+            <div class="proxy-options">
+                <label for="cloaking-select">Select Cloaking Method:</label>
+                <select id="cloaking-select">
+                    <option value="about:blank">about:blank Direct Navigation</option>
+                    <option value="document-write">Document.write Method</option>
+                    <option value="location-replace">Location.replace Method</option>
+                    <option value="iframe-embed">Simple iFrame Embed</option>
+                    <option value="data-url">Data URL Method</option>
+                    <option value="blob-url">Blob URL Method</option>
+                    <option value="window-open">Window.open with Parameters</option>
+                    <option value="double-about">Double about:blank
