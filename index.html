@@ -226,1391 +226,6 @@
             padding: 10px;
             margin-bottom: 10px;
         }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Advanced Link Proxier</h1>
-        <div class="subtitle">Access websites through various proxy services and cloaking methods</div>
-        
-        <div class="info-box">
-            This tool allows you to visit websites through multiple proxy services, cloaking methods, and interstitial services. Enter a URL below and choose your preferred method.
-        </div>
-        
-        <div class="warning-box">
-            <strong>Note:</strong> Some proxy services may have usage limitations or require accounts. This tool is for educational purposes only.
-        </div>
-        
-        <div class="storage-warning" id="storage-warning">
-            LocalStorage is not available in this environment. History will not be saved between sessions.
-        </div>
-        
-        <div class="tabs">
-            <div class="tab active" data-tab="web-proxies">Web Proxies</div>
-            <div class="tab" data-tab="archive-proxies">Archive Services</div>
-            <div class="tab" data-tab="translate-proxies">Translation Proxies</div>
-            <div class="tab" data-tab="cloaking">Cloaking Methods</div>
-            <div class="tab" data-tab="specialized">Specialized Proxies</div>
-            <div class="tab" data-tab="url-tools">URL Tools</div>
-        </div>
-        
-        <div id="web-proxies-tab" class="tab-content">
-            <div class="proxy-category">
-                <h3>General Web Proxies</h3>
-                <div class="proxy-options">
-                    <label for="web-proxy-select">Select Web Proxy Service:</label>
-                    <select id="web-proxy-select">
-                        <option value="https://www.proxysite.com/process.php?d=">ProxySite</option>
-                        <option value="https://www.croxyproxy.com/process.php?d=">CroxyProxy</option>
-                        <option value="https://www.hidester.com/proxy/proxy.php?u=">Hidester</option>
-                        <option value="https://www.hidemyass-freeproxy.com/proxy/en-us/">HideMyAss</option>
-                        <option value="https://www.filterbypass.me/?url=">FilterBypass</option>
-                        <option value="https://proxy-us.hideproxy.me/includes/process.php?action=update&q=">HideProxy</option>
-                        <option value="https://www.blockaway.net/index.php?q=">BlockAway</option>
-                        <option value="https://www.proxysite.app/">ProxySite App</option>
-                        <option value="https://proxybrowser.org/browse.php?u=">ProxyBrowser</option>
-                        <option value="https://proxy-us.hideproxy.me/index.php?q=">US Proxy</option>
-                        <option value="https://www.vpnbook.com/webproxy?url=">VPNBook Proxy</option>
-                        <option value="https://www.megaproxy.com/freesurf/">MegaProxy</option>
-                        <option value="https://kproxy.com/">KProxy</option>
-                        <option value="https://www.4everproxy.com/proxy?u=">4Ever Proxy</option>
-                        <option value="https://whoer.net/webproxy?url=">Whoer.net Proxy</option>
-                        <option value="custom">Custom Proxy (Enter Below)</option>
-                    </select>
-                    
-                    <div id="custom-proxy-container" style="display: none;">
-                        <input type="text" id="custom-proxy" placeholder="Enter custom proxy URL" value="">
-                    </div>
-                </div>
-            </div>
-            
-            <div class="proxy-category">
-                <h3>Country-Specific Proxies</h3>
-                <div class="proxy-options">
-                    <label for="country-proxy-select">Select Country:</label>
-                    <select id="country-proxy-select" class="country-select">
-                        <option value="us">United States</option>
-                        <option value="uk">United Kingdom</option>
-                        <option value="ca">Canada</option>
-                        <option value="de">Germany</option>
-                        <option value="fr">France</option>
-                        <option value="jp">Japan</option>
-                        <option value="kr">South Korea</option>
-                        <option value="nl">Netherlands</option>
-                        <option value="sg">Singapore</option>
-                        <option value="au">Australia</option>
-                    </select>
-                    
-                    <div class="method-description">
-                        This will route your connection through servers in the selected country using Hide.me's country-specific proxies.
-                    </div>
-                </div>
-            </div>
-            
-            <div class="options-container" id="web-proxy-options">
-                <h4>Advanced Options</h4>
-                <div class="option-group">
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="remove-cookies" checked>
-                        <label for="remove-cookies">Remove Cookies</label>
-                    </div>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="remove-scripts" checked>
-                        <label for="remove-scripts">Remove Scripts</label>
-                    </div>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="encrypt-url" checked>
-                        <label for="encrypt-url">Encrypt URL</label>
-                    </div>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="allow-redirects">
-                        <label for="allow-redirects">Allow Redirects</label>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div id="archive-proxies-tab" class="tab-content" style="display: none;">
-            <div class="proxy-options">
-                <label for="archive-proxy-select">Select Archive Service:</label>
-                <select id="archive-proxy-select">
-                    <option value="https://web.archive.org/web/">Wayback Machine</option>
-                    <option value="https://archive.ph/">Archive.today</option>
-                    <option value="https://archive.is/">Archive.is</option>
-                    <option value="https://webcache.googleusercontent.com/search?q=cache:">Google Cache</option>
-                    <option value="https://cc.bingj.com/cache.aspx?q=">Bing Cache</option>
-                    <option value="https://cachedview.nl/?q=">CachedView</option>
-                    <option value="https://archive.wikiwix.com/cache/index2.php?url=">Wikiwix Cache</option>
-                    <option value="https://timetravel.mementoweb.org/memento/">Memento Time Travel</option>
-                    <option value="https://archive.md/">Archive.md</option>
-                    <option value="https://en.wikipedia.org/w/index.php?search=">Wikipedia Search Cache</option>
-                    <option value="https://perma.cc/create/?url=">Perma.cc</option>
-                </select>
-                
-                <div class="options-container">
-                    <h4>Archive Options</h4>
-                    <div class="option-group">
-                        <label for="archive-timestamp">Wayback Machine Timestamp (YYYYMMDD):</label>
-                        <input type="text" id="archive-timestamp" placeholder="e.g., 20210101 or leave empty for latest" value="">
-                    </div>
-                </div>
-                
-                <div class="method-description">
-                    Archive services provide cached versions of websites, allowing you to view content that may have been changed or removed.
-                </div>
-            </div>
-        </div>
-        
-        <div id="translate-proxies-tab" class="tab-content" style="display: none;">
-            <div class="proxy-options">
-                <label for="translate-proxy-select">Select Translation Service:</label>
-                <select id="translate-proxy-select">
-                    <option value="https://translate.google.com/translate?sl=auto&tl=en&u=">Google Translate (to English)</option>
-                    <option value="https://translate.google.com/translate?sl=auto&tl=es&u=">Google Translate (to Spanish)</option>
-                    <option value="https://translate.google.com/translate?sl=auto&tl=fr&u=">Google Translate (to French)</option>
-                    <option value="https://translate.google.com/translate?sl=auto&tl=de&u=">Google Translate (to German)</option>
-                    <option value="https://translate.google.com/translate?sl=auto&tl=ja&u=">Google Translate (to Japanese)</option>
-                    <option value="https://translate.google.com/translate?sl=auto&tl=zh-CN&u=">Google Translate (to Chinese)</option>
-                    <option value="https://translate.google.com/translate?sl=auto&tl=ru&u=">Google Translate (to Russian)</option>
-                    <option value="https://translate.google.com/translate?sl=auto&tl=ar&u=">Google Translate (to Arabic)</option>
-                    <option value="https://translate.google.com/translate?sl=auto&tl=hi&u=">Google Translate (to Hindi)</option>
-                    <option value="https://www.microsofttranslator.com/bv.aspx?from=auto&to=en&a=">Bing Translator (to English)</option>
-                    <option value="https://www.deepl.com/translator#auto/en/">DeepL Translator</option>
-                    <option value="custom-translate">Custom Translation (Select Languages Below)</option>
-                </select>
-                
-                <div id="custom-translate-container" style="display: none;">
-                    <div class="option-group">
-                        <label for="source-lang">Source Language:</label>
-                        <select id="source-lang">
-                            <option value="auto">Auto-detect</option>
-                            <option value="en">English</option>
-                            <option value="es">Spanish</option>
-                            <option value="fr">French</option>
-                            <option value="de">German</option>
-                            <option value="it">Italian</option>
-                            <option value="pt">Portuguese</option>
-                            <option value="ru">Russian</option>
-                            <option value="ja">Japanese</option>
-                            <option value="ko">Korean</option>
-                            <option value="zh-CN">Chinese (Simplified)</option>
-                            <option value="ar">Arabic</option>
-                            <option value="hi">Hindi</option>
-                        </select>
-                    </div>
-                    <div class="option-group">
-                        <label for="target-lang">Target Language:</label>
-                        <select id="target-lang">
-                            <option value="en">English</option>
-                            <option value="es">Spanish</option>
-                            <option value="fr">French</option>
-                            <option value="de">German</option>
-                            <option value="it">Italian</option>
-                            <option value="pt">Portuguese</option>
-                            <option value="ru">Russian</option>
-                            <option value="ja">Japanese</option>
-                            <option value="ko">Korean</option>
-                            <option value="zh-CN">Chinese (Simplified)</option>
-                            <option value="ar">Arabic</option>
-                            <option value="hi">Hindi</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="method-description">
-                    Translation proxies can bypass some content restrictions by loading the page through a translation service.
-                </div>
-            </div>
-        </div>
-        
-        <div id="cloaking-tab" class="tab-content" style="display: none;">
-            <div class="proxy-options">
-                <label for="cloaking-select">Select Cloaking Method:</label>
-                <select id="cloaking-select">
-                    <option value="about:blank">about:blank Direct Navigation</option>
-                    <option value="document-write">Document.write Method</option>
-                    <option value="location-replace">Location.replace Method</option>
-                    <option value="iframe-embed">Simple iFrame Embed</option>
-                    <option value="data-url">Data URL Method</option>
-                    <option value="blob-url">Blob URL Method</option>
-                    <option value="window-open">Window.open with Parameters</option>
-                    <option value="double-about">Double about:blank Method</option>
-                    <option value="history-push">History API Method</option>
-                    <option value="pdf-embed">PDF Viewer Embed</option>
-                    <option value="newtab-focus">New Tab with Focus Redirect</option>
-                    <option value="popup-position">Positioned Popup Window</option>
-                    <option value="srcdoc-iframe">Srcdoc iFrame Method</option>
-                </select>
-                
-                <div class="info-box" style="margin-top: 10px;">
-                    <strong>about:blank Direct:</strong> Opens a new about:blank window and navigates to the site using JavaScript location.<br>
-                    <strong>Document.write:</strong> Opens about:blank window and writes an HTML page that redirects to the target.<br>
-                    <strong>Location.replace:</strong> Uses location.replace to navigate while keeping about:blank in browser history.<br>
-                    <strong>iFrame Embed:</strong> Embeds the website in an iframe on this page.<br>
-                    <strong>Data URL:</strong> Uses data:text/html URI scheme to create a new document that redirects.<br>
-                    <strong>Blob URL:</strong> Creates a blob object with HTML content and opens it in a new window.<br>
-                    <strong>Window.open:</strong> Opens a new window with specific parameters to mask the origin.<br>
-                    <strong>Double about:blank:</strong> Creates two nested about:blank pages for additional obfuscation.<br>
-                    <strong>History API:</strong> Manipulates browser history to mask the original URL.<br>
-                    <strong>PDF Viewer:</strong> Uses browser's PDF viewer to embed and mask content.<br>
-                    <strong>New Tab with Focus:</strong> Opens new tab and redirects once focus is gained.<br>
-                    <strong>Positioned Popup:</strong> Creates a popup positioned offscreen initially.<br>
-                    <strong>Srcdoc iFrame:</strong> Uses the srcdoc attribute to create an iframe with custom HTML.
-                </div>
-                
-                <div class="options-container" id="cloaking-options">
-                    <h4>Cloaking Options</h4>
-                    <div class="option-group">
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="mask-referrer" checked>
-                            <label for="mask-referrer">Mask Referrer</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="add-noopener" checked>
-                            <label for="add-noopener">Add noopener</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="use-sandboxing">
-                            <label for="use-sandboxing">Use iframe sandboxing</label>
-                        </div>
-                    </div>
-                    
-                    <div class="option-group" id="popup-options" style="display: none;">
-                        <label for="popup-width">Popup Width:</label>
-                        <input type="number" id="popup-width" value="800" min="100" max="2000">
-                        
-                        <label for="popup-height">Popup Height:</label>
-                        <input type="number" id="popup-height" value="600" min="100" max="2000">
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div id="specialized-tab" class="tab-content" style="display: none;">
-            <div class="proxy-category">
-                <h3>Educational and Research Proxies</h3>
-                <div class="proxy-options">
-                    <label for="edu-proxy-select">Select Educational Proxy:</label>
-                    <select id="edu-proxy-select">
-                        <option value="http://scholar.archive.org/proxy?url=">Internet Archive Scholar</option>
-                        <option value="https://sci-hub.se/">Sci-Hub</option>
-                        <option value="https://via.hypothes.is/">Hypothesis</option>
-                        <option value="https://outline.com/">Outline</option>
-                        <option value="https://12ft.io/">12ft Ladder</option>
-                        <option value="https://1ft.io/">1ft Ladder</option>
-                        <option value="https://readermode.io/?url=">Reader Mode</option>
-                        <option value="https://archive.cleanshot.cloud/proxy?url=">CleanShot Reading Mode</option>
-                    </select>
-                    
-                    <div class="method-description">
-                        Educational proxies focus on retrieving content from academic and paywalled sources or providing clean reading experiences.
-                    </div>
-                </div>
-            </div>
-            
-            <div class="proxy-category">
-                <h3>Mobile and Device Emulation</h3>
-                <div class="proxy-options">
-                    <label for="mobile-proxy-select">Select Mobile Proxy:</label>
-                    <select id="mobile-proxy-select">
-                        <option value="https://www.google.com/webmasters/tools/mobile-friendly/?url=">Google Mobile-Friendly Test</option>
-                        <option value="https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=">PageSpeed Mobile</option>
-                        <option value="https://mobilemoxie.com/tools/mobile-serp-test/?url=">MobileMoxie</option>
-                    </select>
-                    
-                    <div class="method-description">
-                        These proxies show websites as they would appear on mobile devices or test mobile compatibility.
-                    </div>
-                </div>
-            </div>
-            
-            <div class="proxy-category">
-                <h3>Search Engine Proxies</h3>
-                <div class="proxy-options">
-                    <label for="search-proxy-select">Select Search Engine Proxy:</label>
-                    <select id="search-proxy-select">
-                        <option value="https://duckduckgo.com/?q=!ducky+">DuckDuckGo Direct</option>
-                        <option value="https://search.brave.com/search?q=site:">Brave Search</option>
-                        <option value="https://www.google.com/search?q=site:">Google Site Search</option>
-                        <option value="https://www.bing.com/search?q=site:">Bing Site Search</option>
-                        <option value="https://search.yahoo.com/search?p=site:">Yahoo Site Search</option>
-                        <option value="https://yandex.com/search/?text=site:">Yandex Site Search</option>
-                        <option value="https://www.baidu.com/s?wd=site:">Baidu Site Search</option>
-                        <option value="https://www.startpage.com/sp/search?q=site:">StartPage Site Search</option>
-                        <option value="https://www.ecosia.org/search?q=site:">Ecosia Site Search</option>
-                    </select>
-                    
-                    <div class="method-description">
-                        Search engine proxies use search engines to access cached versions of sites or specific pages.
-                    </div>
-                </div>
-            </div>
-            
-            <div class="proxy-category">
-                <h3>Social Media Proxies</h3>
-                <div class="proxy-options">
-                    <label for="social-proxy-select">Select Social Media Proxy:</label>
-                    <select id="social-proxy-select">
-                        <option value="https://nitter.net/">Nitter (Twitter/X)</option>
-                        <option value="https://libreddit.net/">LibReddit (Reddit)</option>
-                        <option value="https://invidious.xyz/">Invidious (YouTube)</option>
-                        <option value="https://bibliogram.art/">Bibliogram (Instagram)</option>
-                        <option value="https://proxitok.herokuapp.com/">ProxiTok (TikTok)</option>
-                        <option value="https://teddit.net/">Teddit (Reddit)</option>
-                        <option value="https://farside.link/">Farside (Multi-service)</option>
-                    </select>
-                    
-                    <div class="method-description">
-                        These services provide privacy-focused frontends for popular social media platforms.
-                    </div>
-                </div>
-            </div>
-            
-            <div class="proxy-category">
-                <h3>Specialized Services</h3>
-                <div class="proxy-options">
-                    <label for="special-proxy-select">Select Specialized Service:</label>
-                    <select id="special-proxy-select">
-                        <option value="https://archivedweb.com/?url=">Archived Web</option>
-                        <option value="https://onionsearch.org/search?q=">OnionSearch (Surface Web Only)</option>
-                        <option value="https://ghostarchive.org/">GhostArchive</option>
-                        <option value="https://archive.fo/">Archive.fo</option>
-                        <option value="https://searx.thegpm.org/">SearX Meta Search</option>
-                    </select>
-                    
-                    <div class="method-description">
-                        Specialized proxies for specific use cases or search requirements.
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div id="url-tools-tab" class="tab-content" style="display: none;">
-            <div class="proxy-category">
-                <h3>URL Encoding Tools</h3>
-                <div class="proxy-options">
-                    <label for="encoding-select">Select Encoding Method:</label>
-                    <select id="encoding-select">
-                        <option value="url-encode">URL Encode</option>
-                        <option value="url-decode">URL Decode</option>
-                        <option value="base64-encode">Base64 Encode</option>
-                        <option value="base64-decode">Base64 Decode</option>
-                        <option value="hex-encode">Hex Encode</option>
-                        <option value="hex-decode">Hex Decode</option>
-                        <option value="binary-encode">Binary Encode</option>
-                        <option value="binary-decode">Binary Decode</option>
-                        <option value="rot13">ROT13 Cipher</option>
-                        <option value="reverse">Reverse Text</option>
-                    </select>
-                    
-                    <div class="url-encoder">
-                        <div class="option-group">
-                            <label for="encode-input">Input:</label>
-                            <input type="text" id="encode-input" placeholder="Enter text to encode/decode" value="">
-                            <button id="encode-button" class="copy-btn">Process</button>
-                        </div>
-                        
-                        <div class="option-group">
-                            <label for="encode-output">Output:</label>
-                            <div id="encode-output" class="encoder-output"></div>
-                            <button id="copy-output" class="copy-btn">Copy to Clipboard</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="proxy-category">
-                <h3>URL Shorteners & Redirectors</h3>
-                <div class="proxy-options">
-                    <label for="shortener-select">Select Shortener/Redirector:</label>
-                    <select id="shortener-select">
-                        <option value="https://tinyurl.com/create.php?url=">TinyURL</option>
-                        <option value="https://is.gd/create.php?url=">is.gd</option>
-                        <option value="https://
-                          <option value="https://v.gd/create.php?url=">v.gd</option>
-                        <option value="https://bit.ly/api/v4/shorten?url=">Bitly</option>
-                        <option value="https://cutt.ly/api/api.php?key=YOUR_API_KEY&short=">Cutt.ly</option>
-                        <option value="https://t.ly/api/v1/link/shorten">T.ly</option>
-                        <option value="https://rebrandly.com/api/v1/links/new?destination=">Rebrandly</option>
-                        <option value="https://www.shorturl.at/shortener.php?url=">ShortURL.at</option>
-                        <option value="https://href.li/?">href.li</option>
-                        <option value="https://nullrefer.com/?">NullRefer</option>
-                        <option value="https://anubitux.org/anonymize?url=">AnubiTux</option>
-                    </select>
-                    
-                    <div class="method-description">
-                        URL shorteners create compact links while redirectors can help mask the original destination.
-                    </div>
-                </div>
-            </div>
-            
-            <div class="proxy-category">
-                <h3>URL Analysis Tools</h3>
-                <div class="proxy-options">
-                    <label for="analysis-select">Select Analysis Tool:</label>
-                    <select id="analysis-select">
-                        <option value="https://urlscan.io/result/">URLScan.io</option>
-                        <option value="https://www.virustotal.com/gui/url/">VirusTotal</option>
-                        <option value="https://securitytrails.com/domain/">SecurityTrails</option>
-                        <option value="https://url.fyi/">URL.FYI</option>
-                        <option value="https://unshorten.me/?url=">Unshorten.me</option>
-                        <option value="https://who.is/whois/">WHOIS Lookup</option>
-                        <option value="https://mxtoolbox.com/SuperTool.aspx?action=mx:">MX Toolbox</option>
-                    </select>
-                    
-                    <div class="method-description">
-                        These tools analyze websites for safety, expand shortened URLs, or provide domain information.
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="input-group">
-            <input type="text" id="url-input" placeholder="Enter URL (e.g., https://example.com)" value="">
-            <button id="proxy-button">Go</button>
-        </div>
-        
-        <div id="iframe-container" style="display: none;">
-            <h3>Embedded Website:</h3>
-            <iframe id="embedded-iframe" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
-        </div>
-        
-        <div class="history">
-            <h2>Recent Links</h2>
-            <div id="history-list">
-                <!-- History items will be added here -->
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Wait for DOM to be fully loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // Reference all elements
-            const urlInput = document.getElementById('url-input');
-            const webProxySelect = document.getElementById('web-proxy-select');
-            const archiveProxySelect = document.getElementById('archive-proxy-select');
-            const translateProxySelect = document.getElementById('translate-proxy-select');
-            const cloakingSelect = document.getElementById('cloaking-select');
-            const eduProxySelect = document.getElementById('edu-proxy-select');
-            const mobileProxySelect = document.getElementById('mobile-proxy-select');
-            const searchProxySelect = document.getElementById('search-proxy-select');
-            const socialProxySelect = document.getElementById('social-proxy-select');
-            const specialProxySelect = document.getElementById('special-proxy-select');
-            const shortenerSelect = document.getElementById('shortener-select');
-            const analysisSelect = document.getElementById('analysis-select');
-            const encodingSelect = document.getElementById('encoding-select');
-            const countryProxySelect = document.getElementById('country-proxy-select');
-            const customProxyContainer = document.getElementById('custom-proxy-container');
-            const customProxyInput = document.getElementById('custom-proxy');
-            const customTranslateContainer = document.getElementById('custom-translate-container');
-            const sourceLangSelect = document.getElementById('source-lang');
-            const targetLangSelect = document.getElementById('target-lang');
-            const proxyButton = document.getElementById('proxy-button');
-            const historyList = document.getElementById('history-list');
-            const iframeContainer = document.getElementById('iframe-container');
-            const embeddedIframe = document.getElementById('embedded-iframe');
-            const tabs = document.querySelectorAll('.tab');
-            const storageWarning = document.getElementById('storage-warning');
-            const archiveTimestamp = document.getElementById('archive-timestamp');
-            const popupOptions = document.getElementById('popup-options');
-            const popupWidth = document.getElementById('popup-width');
-            const popupHeight = document.getElementById('popup-height');
-            const encodeInput = document.getElementById('encode-input');
-            const encodeButton = document.getElementById('encode-button');
-            const encodeOutput = document.getElementById('encode-output');
-            const copyOutput = document.getElementById('copy-output');
-            
-            // Advanced options checkboxes
-            const removeCookies = document.getElementById('remove-cookies');
-            const removeScripts = document.getElementById('remove-scripts');
-            const encryptUrl = document.getElementById('encrypt-url');
-            const allowRedirects = document.getElementById('allow-redirects');
-            const maskReferrer = document.getElementById('mask-referrer');
-            const addNoopener = document.getElementById('add-noopener');
-            const useSandboxing = document.getElementById('use-sandboxing');
-            
-            // Current active tab
-            let activeTab = 'web-proxies';
-            
-            // Check if localStorage is available
-            let localStorageAvailable = false;
-            let history = [];
-            
-            try {
-                localStorage.setItem('test', 'test');
-                localStorage.removeItem('test');
-                localStorageAvailable = true;
-                
-                // Load history from localStorage
-                history = JSON.parse(localStorage.getItem('proxyHistory')) || [];
-            } catch (e) {
-                // localStorage is not available (e.g. sandboxed iframe)
-                storageWarning.style.display = 'block';
-                history = [];
-            }
-            
-            renderHistory();
-            
-            // Tab switching
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    // Remove active class from all tabs
-                    tabs.forEach(t => t.classList.remove('active'));
-                    
-                    // Add active class to clicked tab
-                    this.classList.add('active');
-                    
-                    // Hide all tab content
-                    document.querySelectorAll('.tab-content').forEach(content => {
-                        content.style.display = 'none';
-                    });
-                    
-                    // Show the selected tab content
-                    activeTab = this.getAttribute('data-tab');
-                    document.getElementById(activeTab + '-tab').style.display = 'block';
-                    
-                    // Hide iframe if switching to a tab other than cloaking
-                    if (activeTab !== 'cloaking') {
-                        iframeContainer.style.display = 'none';
-                    }
-                    
-                    // Show popup options only if window.open with parameters is selected
-                    if (activeTab === 'cloaking' && cloakingSelect.value === 'window-open') {
-                        popupOptions.style.display = 'block';
-                    } else {
-                        popupOptions.style.display = 'none';
-                    }
-                });
-            });
-            
-            // Show/hide custom proxy input based on selection
-            webProxySelect.addEventListener('change', function() {
-                if (webProxySelect.value === 'custom') {
-                    customProxyContainer.style.display = 'block';
-                } else {
-                    customProxyContainer.style.display = 'none';
-                }
-            });
-            
-            // Show/hide custom translate options
-            translateProxySelect.addEventListener('change', function() {
-                if (translateProxySelect.value === 'custom-translate') {
-                    customTranslateContainer.style.display = 'block';
-                } else {
-                    customTranslateContainer.style.display = 'none';
-                }
-            });
-            
-            // Show popup options only if window.open with parameters is selected
-            cloakingSelect.addEventListener('change', function() {
-                if (cloakingSelect.value === 'window-open' || cloakingSelect.value === 'popup-position') {
-                    popupOptions.style.display = 'block';
-                } else {
-                    popupOptions.style.display = 'none';
-                }
-            });
-            
-            // Handle proxy button click
-            proxyButton.addEventListener('click', function() {
-                processUrl();
-            });
-            
-            // URL encoding tools
-            encodeButton.addEventListener('click', function() {
-                processEncoding();
-            });
-            
-            // Copy encoded/decoded text to clipboard
-            copyOutput.addEventListener('click', function() {
-                const text = encodeOutput.textContent;
-                navigator.clipboard.writeText(text).then(function() {
-                    copyOutput.textContent = "Copied!";
-                    setTimeout(function() {
-                        copyOutput.textContent = "Copy to Clipboard";
-                    }, 2000);
-                }, function(err) {
-                    console.error('Could not copy text: ', err);
-                });
-            });
-            
-            // Allow pressing Enter to submit
-            urlInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    processUrl();
-                }
-            });
-            
-            // Process encoding for URL tools
-            function processEncoding() {
-                const input = encodeInput.value;
-                const method = encodingSelect.value;
-                let output = "";
-                
-                try {
-                    switch(method) {
-                        case 'url-encode':
-                            output = encodeURIComponent(input);
-                            break;
-                        case 'url-decode':
-                            output = decodeURIComponent(input);
-                            break;
-                        case 'base64-encode':
-                            output = btoa(input);
-                            break;
-                        case 'base64-decode':
-                            output = atob(input);
-                            break;
-                        case 'hex-encode':
-                            output = Array.from(input).map(c => 
-                                c.charCodeAt(0).toString(16).padStart(2, '0')
-                            ).join('');
-                            break;
-                        case 'hex-decode':
-                            output = input.match(/.{1,2}/g)
-                                ? input.match(/.{1,2}/g).map(byte => 
-                                    String.fromCharCode(parseInt(byte, 16))
-                                ).join('')
-                                : '';
-                            break;
-                        case 'binary-encode':
-                            output = Array.from(input).map(c => 
-                                c.charCodeAt(0).toString(2).padStart(8, '0')
-                            ).join(' ');
-                            break;
-                        case 'binary-decode':
-                            output = input.split(' ').map(bin => 
-                                String.fromCharCode(parseInt(bin, 2))
-                            ).join('');
-                            break;
-                        case 'rot13':
-                            output = input.replace(/[a-zA-Z]/g, function(c) {
-                                return String.fromCharCode((c <= 'Z' ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
-                            });
-                            break;
-                        case 'reverse':
-                            output = input.split('').reverse().join('');
-                            break;
-                    }
-                    encodeOutput.textContent = output;
-                } catch (e) {
-                    encodeOutput.textContent = "Error: " + e.message;
-                }
-            }
-            
-            // Main process function that handles all proxy types
-            function processUrl() {
-                let url = urlInput.value.trim();
-                
-                // Add http:// if protocol is missing
-                if (url && !/^https?:\/\//i.test(url)) {
-                    url = 'http://' + url;
-                    urlInput.value = url;
-                }
-                
-                if (!url) {
-                    alert('Please enter a valid URL');
-                    return;
-                }
-                
-                switch(activeTab) {
-                    case 'web-proxies':
-                        processWebProxy(url);
-                        break;
-                    case 'archive-proxies':
-                        processArchiveProxy(url);
-                        break;
-                    case 'translate-proxies':
-                        processTranslateProxy(url);
-                        break;
-                    case 'cloaking':
-                        processCloaking(url);
-                        break;
-                    case 'specialized':
-                        processSpecializedProxy(url);
-                        break;
-                    case 'url-tools':
-                        processUrlTool(url);
-                        break;
-                }
-            }
-            
-            // Process web proxy services
-            function processWebProxy(url) {
-                let proxyUrl;
-                let methodName;
-                
-                if (webProxySelect.value === 'custom') {
-                    proxyUrl = customProxyInput.value.trim();
-                    methodName = 'Custom Web Proxy';
-                    if (!proxyUrl) {
-                        alert('Please enter a custom proxy URL');
-                        return;
-                    }
-                } else {
-                    proxyUrl = webProxySelect.value;
-                    methodName = webProxySelect.options[webProxySelect.selectedIndex].text;
-                }
-                
-                // Add query parameters for options if supported
-                if (removeCookies.checked && proxyUrl.includes('?')) {
-                    proxyUrl += '&remove_cookies=1';
-                }
-                
-                if (removeScripts.checked && proxyUrl.includes('?')) {
-                    proxyUrl += '&remove_scripts=1';
-                }
-                
-                if (encryptUrl.checked && proxyUrl.includes('?')) {
-                    proxyUrl += '&encrypt_url=1';
-                }
-                
-                if (allowRedirects.checked && proxyUrl.includes('?')) {
-                    proxyUrl += '&allow_redirects=1';
-                }
-                
-                let finalUrl = proxyUrl + encodeURIComponent(url);
-                
-                // Add to history
-                addToHistory(url, finalUrl, 'Web Proxy: ' + methodName);
-                
-                // Open the proxied URL
-                window.open(finalUrl, '_blank');
-            }
-            
-            // Process archive proxy services
-            function processArchiveProxy(url) {
-                let proxyUrl = archiveProxySelect.value;
-                const methodName = archiveProxySelect.options[archiveProxySelect.selectedIndex].text;
-                
-                // Handle special cases for archive proxies
-                let finalUrl;
-                
-                if (proxyUrl === 'https://web.archive.org/web/') {
-                    // Handle Wayback Machine timestamp if provided
-                    const timestamp = archiveTimestamp.value.trim();
-                    if (timestamp && /^\d{8}$/.test(timestamp)) {
-                        finalUrl = proxyUrl + timestamp + '/' + url;
-                    } else {
-                        finalUrl = proxyUrl + '*/' + url;
-                    }
-                } else if (proxyUrl === 'https://archive.ph/' || proxyUrl === 'https://archive.is/' || proxyUrl === 'https://archive.md/') {
-                    finalUrl = proxyUrl + url;
-                } else {
-                    finalUrl = proxyUrl + encodeURIComponent(url);
-                }
-                
-                // Add to history
-                addToHistory(url, finalUrl, 'Archive: ' + methodName);
-                
-                // Open the archived URL
-                window.open(finalUrl, '_blank');
-            }
-            
-            // Process translation proxy services
-            function processTranslateProxy(url) {
-                let proxyUrl;
-                let methodName;
-                
-                if (translateProxySelect.value === 'custom-translate') {
-                    const sourceLang = sourceLangSelect.value;
-                    const targetLang = targetLangSelect.value;
-                    proxyUrl = `https://translate.google.com/translate?sl=${sourceLang}&tl=${targetLang}&u=`;
-                    methodName = `Google Translate (${sourceLang} to ${targetLang})`;
-                } else {
-                    proxyUrl = translateProxySelect.value;
-                    methodName = translateProxySelect.options[translateProxySelect.selectedIndex].text;
-                }
-                
-                const finalUrl = proxyUrl + encodeURIComponent(url);
-                
-                // Add to history
-                addToHistory(url, finalUrl, 'Translate: ' + methodName);
-                
-                // Open the translated URL
-                window.open(finalUrl, '_blank');
-            }
-            
-            // Process cloaking methods
-            function processCloaking(url) {
-                const method = cloakingSelect.value;
-                const methodName = cloakingSelect.options[cloakingSelect.selectedIndex].text;
-                
-                // Add referrer policy if masked
-                let targetUrl = url;
-                if (maskReferrer.checked) {
-                    if (targetUrl.includes('?')) {
-                        targetUrl += '&ref=proxier';
-                    } else {
-                        targetUrl += '?ref=proxier';
-                    }
-                }
-                
-                // Process based on the selected cloaking method
-                switch(method) {
-                    case 'about:blank':
-                        // about:blank direct navigation method
-                        const newWindow = window.open('about:blank', '_blank');
-                        if (newWindow) {
-                            try {
-                                // Direct navigation approach - no iframes
-                                setTimeout(() => {
-                                    newWindow.location.href = targetUrl;
-                                }, 100);
-                                addToHistory(url, 'about:blank', 'Cloak: about:blank Direct');
-                            } catch(e) {
-                                alert('Failed to navigate: ' + e.message);
-                            }
-                        } else {
-                            alert('Pop-up blocker may have prevented opening the window. Please allow pop-ups for this site.');
-                        }
-                        break;
-                        
-                    case 'document-write':
-                        // Document.write method
-                        const docWriteWindow = window.open('about:blank', '_blank');
-                        if (docWriteWindow) {
-                            try {
-                                var redirectScript = '<html>' +
-                                    '<head>' +
-                                    '<title>Loading...</title>' +
-                                    '<script>' +
-                                    'window.onload = function() {' +
-                                    'window.location.href = "' + targetUrl + '";' +
-                                    '}' +
-                                    '<\/script>' +
-                                    '</head>' +
-                                    '<body>' +
-                                    '<p>Redirecting to requested site...</p>' +
-                                    '</body>' +
-                                    '</html>';
-                                
-                                docWriteWindow.document.write(redirectScript);
-                                docWriteWindow.document.close();
-                                addToHistory(url, 'about:blank', 'Cloak: Document.write');
-                            } catch(e) {
-                                alert('Failed to write document: ' + e.message);
-                            }
-                        } else {
-                            alert('Pop-up blocker may have prevented opening the window. Please allow pop-ups for this site.');
-                        }
-                        break;
-                        
-                    case 'location-replace':
-                        // location.replace method
-                        const replaceWindow = window.open('about:blank', '_blank');
-                        if (replaceWindow) {
-                            try {
-                                setTimeout(() => {
-                                    // Using replace keeps about:blank in the history
-                                    replaceWindow.location.replace(targetUrl);
-                                }, 100);
-                                addToHistory(url, 'about:blank', 'Cloak: Location.replace');
-                            } catch(e) {
-                                alert('Failed to replace location: ' + e.message);
-                            }
-                        } else {
-                            alert('Pop-up blocker may have prevented opening the window. Please allow pop-ups for this site.');
-                        }
-                        break;
-                        
-                    case 'iframe-embed':
-                        // Simple iframe embed
-                        iframeContainer.style.display = 'block';
-                        if (useSandboxing.checked) {
-                            embeddedIframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
-                        } else {
-                            embeddedIframe.removeAttribute('sandbox');
-                        }
-                        embeddedIframe.src = targetUrl;
-                        addToHistory(url, targetUrl, 'Cloak: iFrame Embed');
-                        break;
-                        
-                    case 'data-url':
-                        // Data URL method
-                        try {
-                            const dataUrl = 'data:text/html;charset=utf-8,' + encodeURIComponent(
-                                '<html><head><title>Redirecting...</title>' +
-                                '<meta http-equiv="refresh" content="0;url=' + targetUrl + '">' +
-                                '</head><body>Redirecting to ' + url + '...</body></html>'
-                            );
-                            
-                            const dataWindow = window.open('about:blank', '_blank');
-                            if (dataWindow) {
-                                dataWindow.location.href = dataUrl;
-                                addToHistory(url, 'data:text/html', 'Cloak: Data URL');
-                            }
-                        } catch(e) {
-                            alert('Failed to create data URL: ' + e.message);
-                        }
-                        break;
-                        
-                    case 'blob-url':
-                        // Blob URL method
-                        try {
-                            const blobContent = '<html><head><title>Redirecting...</title>' +
-                                '<script>window.onload = function() { window.location.href = "' + 
-                                targetUrl + '"; }</script></head>' +
-                                '<body>Redirecting to requested site...</body></html>';
-                            
-                            const blob = new Blob([blobContent], {type: 'text/html'});
-                            const blobUrl = URL.createObjectURL(blob);
-                            
-                            const blobWindow = window.open(blobUrl, '_blank');
-                            if (!blobWindow) {
-                                alert('Pop-up blocker may have prevented opening the window.');
-                            }
-                            
-                            // Add to history
-                            addToHistory(url, 'blob:url', 'Cloak: Blob URL');
-                            
-                            // Clean up the blob URL after use
-                            setTimeout(() => {
-                                URL.revokeObjectURL(blobUrl);
-                            }, 1000);
-                        } catch(e) {
-                            alert('Failed to create blob URL: ' + e.message);
-                        }
-                        break;
-                        
-                    case 'window-open':
-                        // Window.open with Parameters
-                        try {
-                            const width = parseInt(popupWidth.value) || 800;
-                            const height = parseInt(popupHeight.value) || 600;
-                            
-                            const windowFeatures = 
-                                `width=${width},height=${height},` +
-                                'menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=yes';
-                            
-                            const rel = addNoopener.checked ? 'noopener,' : '';
-                            const windowOptions = {
-                                target: '_blank',
-                                rel: rel + 'noreferrer',
-                                windowFeatures: windowFeatures
-                            };
-                            
-                            const paramWindow = window.open(targetUrl, '_blank', windowFeatures);
-                            if (!paramWindow) {
-                                alert('Pop-up blocker may have prevented opening the window.');
-                            }
-                            
-                            // Add to history
-                            addToHistory(url, targetUrl, 'Cloak: Window.open Parameters');
-                        } catch(e) {
-                            alert('Failed to open parametrized window: ' + e.message);
-                        }
-                        break;
-                        
-                    case 'double-about':
-                        // Double about:blank Method
-                        try {
-                            const firstWindow = window.open('about:blank', '_blank');
-                            if (firstWindow) {
-                                setTimeout(() => {
-                                    try {
-                                        const secondWindow = firstWindow.open('about:blank', '_blank');
-                                        if (secondWindow) {
-                                            setTimeout(() => {
-                                                secondWindow.location.href = targetUrl;
-                                            }, 100);
-                                        }
-                                    } catch(e) {
-                                        firstWindow.location.href = targetUrl;
-                                    }
-                                }, 100);
-                                
-                                // Add to history
-                                addToHistory(url, 'about:blank', 'Cloak: Double about:blank');
-                            } else {
-                                alert('Pop-up blocker may have prevented opening the window.');
-                            }
-                        } catch(e) {
-                            alert('Failed with double about:blank: ' + e.message);
-                        }
-                        break;
-                        
-                    case 'history-push':
-                        // History API Method
-                        try {
-                            const historyWindow = window.open('about:blank', '_blank');
-                            if (historyWindow) {
-                                setTimeout(() => {
-                                    try {
-                                        // Try to manipulate history API
-                                        historyWindow.history.pushState({}, 'Proxy', '/proxy');
-                                        historyWindow.location.href = targetUrl;
-                                    } catch(e) {
-                                        historyWindow.location.href = targetUrl;
-                                    }
-                                }, 100);
-                                
-                                // Add to history
-                                addToHistory(url, 'history-api', 'Cloak: History API');
-                            } else {
-                                alert('Pop-up blocker may have prevented opening the window.');
-                            }
-                        } catch(e) {
-                            alert('Failed with history API: ' + e.message);
-                        }
-                        break;
-                        
-                    case 'pdf-embed':
-                        // PDF Viewer Embed
-                        try {
-                            // Using PDF viewer as a proxy
-                            const pdfUrl = 'https://mozilla.github.io/pdf.js/web/viewer.html?file=' + 
-                                          encodeURIComponent(targetUrl);
-                            
-                            window.open(pdfUrl, '_blank');
-                            
-                            // Add to history
-                            addToHistory(url, pdfUrl, 'Cloak: PDF Viewer');
-                        } catch(e) {
-                            alert('Failed with PDF viewer: ' + e.message);
-                        }
-                        break;
-                        
-                    case 'newtab-focus':
-                        // New Tab with Focus Redirect
-                        try {
-                            const focusWindow = window.open('about:blank', '_blank');
-                            if (focusWindow) {
-                                // Set up event listener
-                                focusWindow.onblur = function() {
-                                    setTimeout(() => {
-                                        if (document.hasFocus()) {
-                                            focusWindow.location.href = targetUrl;
-                                        }
-                                    }, 300);
-                                };
-                                
-                                // Trigger blur
-                                window.focus();
-                                
-                                // Fallback in case onblur doesn't trigger
-                                setTimeout(() => {
-                                    if (focusWindow.location.href === 'about:blank') {
-                                        focusWindow.location.href = targetUrl;
-                                    }
-                                }, 1000);
-                                
-                                // Add to history
-                                addToHistory(url, 'focus-redirect', 'Cloak: Focus Redirect');
-                            } else {
-                                alert('Pop-up blocker may have prevented opening the window.');
-                            }
-                        } catch(e) {
-                            alert('Failed with focus redirect: ' + e.message);
-                        }
-                        break;
-                        
-                    case 'popup-position':
-                        // Positioned Popup Window
-                        try {
-                            const width = parseInt(popupWidth.value) || 800;
-                            const height = parseInt(popupHeight.value) || 600;
-                            
-                            // Position offscreen initially
-                            const windowFeatures = 
-                                `width=${width},height=${height},` +
-                                `left=${screen.width + 100},top=${screen.height + 100},` +
-                                'menubar=no,toolbar=no,location=no,status=no,resizable=yes';
-                            
-                            const posWindow = window.open('about:blank', '_blank', windowFeatures);
-                            if (posWindow) {
-                                setTimeout(() => {
-                                    // Move window back on screen
-                                    posWindow.moveTo(
-                                        Math.max(0, (screen.width - width) / 2),
-                                        Math.max(0, (screen.height - height) / 2)
-                                    );
-                                    
-                                    // Navigate to target
-                                    posWindow.location.href = targetUrl;
-                                }, 100);
-                                
-                                // Add to history
-                                addToHistory(url, 'positioned-popup', 'Cloak: Positioned Popup');
-                            } else {
-                                alert('Pop-up blocker may have prevented opening the window.');
-                            }
-                        } catch(e) {
-                            alert('Failed with positioned popup: ' + e.message);
-                        }
-                        break;
-                        
-                    case 'srcdoc-iframe':
-                        // Srcdoc iFrame Method
-                        try {
-                            // Create a new iframe with srcdoc
-                            iframeContainer.style.display = 'block';
-                            
-                            const srcDoc = 
-                                `<html><head><title>Loading...</title>` +
-                                `<script>window.onload = function() { window.location.href = "${targetUrl}"; }</script>` +
-                                `</head><body><p>Loading content from ${url}...</p></body></html>`;
-                            
-                            embeddedIframe.setAttribute('srcdoc', srcDoc);
-                            
-                            // Add to history
-                            addToHistory(url, 'srcdoc-iframe', 'Cloak: Srcdoc iFrame');
-                        } catch(e) {
-                            alert('Failed with srcdoc iframe: ' + e.message);
-                        }
-                        break;
-                }
-            }
-            
-            // Process specialized proxy services
-            function processSpecializedProxy(url) {
-                let proxyUrl;
-                let methodName;
-                let finalUrl;
-                
-                // Determine which specialized category is being used
-                if (document.querySelector('[data-tab="specialized"]').classList.contains('active')) {
-                    const activeCategorySelect = document.querySelector('.proxy-category select');
-                    const selectedCategory = activeCategorySelect.id;
-                    
-                    switch(selectedCategory) {
-                        case 'edu-proxy-select':
-                            proxyUrl = eduProxySelect.value;
-                            methodName = eduProxySelect.options[eduProxySelect.selectedIndex].text;
-                            break;
-                        case 'mobile-proxy-select':
-                            proxyUrl = mobileProxySelect.value;
-                            methodName = mobileProxySelect.options[mobileProxySelect.selectedIndex].text;
-                            break;
-                        case 'search-proxy-select':
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Link Proxier</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .subtitle {
-            color: #666;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 1rem;
-        }
-        .input-group {
-            display: flex;
-            margin-bottom: 20px;
-        }
-        input[type="text"], input[type="number"] {
-            flex: 1;
-            padding: 12px;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            border-radius: 4px 0 0 4px;
-            outline: none;
-        }
-        button {
-            padding: 12px 20px;
-            background-color: #4285f4;
-            color: white;
-            border: none;
-            border-radius: 0 4px 4px 0;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #3367d6;
-        }
-        .proxy-options {
-            margin-bottom: 20px;
-        }
-        select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
-        .history {
-            margin-top: 30px;
-        }
-        .history h2 {
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-        }
-        .history-item {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .history-item:hover {
-            background-color: #f9f9f9;
-        }
-        .history-item a {
-            color: #4285f4;
-            text-decoration: none;
-            max-width: 80%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        .history-item a:hover {
-            text-decoration: underline;
-        }
-        .timestamp {
-            color: #999;
-            font-size: 12px;
-        }
-        .info-box {
-            background-color: #e8f4fc;
-            border-left: 4px solid #4285f4;
-            padding: 12px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-        }
-        .warning-box {
-            background-color: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 12px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-        }
-        .tabs {
-            display: flex;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #ddd;
-            flex-wrap: wrap;
-        }
-        .tab {
-            padding: 10px 20px;
-            cursor: pointer;
-            background-color: #f5f5f5;
-            border: 1px solid #ddd;
-            border-bottom: none;
-            border-radius: 4px 4px 0 0;
-            margin-right: 5px;
-            margin-bottom: 5px;
-        }
-        .tab.active {
-            background-color: white;
-            border-bottom: 1px solid white;
-            margin-bottom: -1px;
-        }
-        #iframe-container {
-            margin-top: 20px;
-            border: 1px solid #ddd;
-            padding: 10px;
-            border-radius: 4px;
-        }
-        #embedded-iframe {
-            width: 100%;
-            height: 500px;
-            border: 1px solid #ddd;
-        }
-        .storage-warning {
-            background-color: #ffefef;
-            border-left: 4px solid #ff4444;
-            padding: 12px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-            display: none;
-        }
-        .options-container {
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
-        .option-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            margin-bottom: 5px;
-        }
-        .checkbox-group input {
-            margin-right: 5px;
-        }
-        .advanced-toggle {
-            color: #4285f4;
-            text-decoration: underline;
-            cursor: pointer;
-            margin: 10px 0;
-            display: inline-block;
-        }
-        .method-description {
-            font-size: 0.9rem;
-            color: #666;
-            margin-top: 5px;
-            margin-bottom: 10px;
-        }
-        .proxy-category {
-            margin-bottom: 20px;
-        }
-        .proxy-category h3 {
-            border-bottom: 1px solid #eee;
-            padding-bottom: 5px;
-        }
-        .url-encoder {
-            margin-top: 15px;
-            padding: 10px;
-            background-color: #f9f9f9;
-            border-radius: 4px;
-        }
-        .encoder-output {
-            padding: 10px;
-            border: 1px solid #ddd;
-            background-color: white;
-            border-radius: 4px;
-            word-break: break-all;
-            margin-top: 10px;
-        }
-        .copy-btn {
-            padding: 5px 10px;
-            background-color: #4285f4;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-        .copy-btn:hover {
-            background-color: #3367d6;
-        }
-        .country-select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
         .action-buttons {
             display: flex;
             gap: 10px;
@@ -2113,4 +728,708 @@
                     <option value="data-url">Data URL Method</option>
                     <option value="blob-url">Blob URL Method</option>
                     <option value="window-open">Window.open with Parameters</option>
-                    <option value="double-about">Double about:blank
+                    <option value="double-about">Double about:blank<option value="double-about">Double about:blank</option>
+                    <option value="parent-spoof">Parent Window Spoofing</option>
+                    <option value="history-api">History API Cloaking</option>
+                    <option value="worker-proxy">Web Worker Proxy</option>
+                    <option value="service-worker">Service Worker Method</option>
+                    <option value="sandboxed-iframe">Sandboxed iFrame</option>
+                    <option value="custom-cloaking">Custom Cloaking (Advanced)</option>
+                </select>
+                
+                <div id="custom-cloaking-container" style="display: none;">
+                    <textarea id="custom-cloaking-code" placeholder="Enter custom JavaScript cloaking code here..." rows="5" style="width: 100%; margin-top: 10px;"></textarea>
+                </div>
+                
+                <div class="options-container">
+                    <h4>Cloaking Options</h4>
+                    <div class="option-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="mask-title">
+                            <label for="mask-title">Mask Page Title</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="mask-favicon">
+                            <label for="mask-favicon">Mask Page Favicon</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="hide-from-history">
+                            <label for="hide-from-history">Hide from Browser History</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="disable-context-menu">
+                            <label for="disable-context-menu">Disable Context Menu</label>
+                        </div>
+                    </div>
+                    
+                    <div class="option-group">
+                        <label for="custom-title">Custom Page Title:</label>
+                        <input type="text" id="custom-title" placeholder="Enter a custom title for the page">
+                    </div>
+                    
+                    <div class="option-group">
+                        <label for="custom-favicon">Custom Favicon URL:</label>
+                        <input type="text" id="custom-favicon" placeholder="Enter URL for custom favicon">
+                    </div>
+                </div>
+                
+                <div class="method-description">
+                    Cloaking methods help hide page navigation by using browser features to mask actual site access. Some methods may be blocked by browser security settings.
+                </div>
+            </div>
+        </div>
+        
+        <div id="specialized-tab" class="tab-content" style="display: none;">
+            <div class="proxy-options">
+                <label for="specialized-proxy-select">Select Specialized Proxy:</label>
+                <select id="specialized-proxy-select">
+                    <option value="https://www.printfriendly.com/print?url=">PrintFriendly (Text Only)</option>
+                    <option value="https://outline.com/">Outline Reader</option>
+                    <option value="https://reader.miniflux.app/pdf?url=">PDF Converter</option>
+                    <option value="https://textance.herokuapp.com/text/">Textance (Text Only)</option>
+                    <option value="https://www.textise.net/showText.aspx?strURL=">Textise</option>
+                    <option value="https://archive.org/download/archiveteam_urls?url=">Single-File Save</option>
+                    <option value="https://12ft.io/">12ft.io Paywall Bypass</option>
+                    <option value="https://www.reader-view.com/?url=">Reader View</option>
+                    <option value="https://proxy.toolforge.org/en.wikipedia.org/wiki/Special:Search?search=">Wikipedia Proxy</option>
+                    <option value="https://nitter.net/">Nitter (Twitter Alternative)</option>
+                    <option value="https://invidious.io/">Invidious (YouTube Alternative)</option>
+                    <option value="https://bibliogram.art/">Bibliogram (Instagram Alternative)</option>
+                    <option value="https://teddit.net/">Teddit (Reddit Alternative)</option>
+                    <option value="https://farside.link/">Farside Link (All Alternatives)</option>
+                    <option value="https://archive.org/details/webwidecrawl?url=">Wayback All Versions</option>
+                </select>
+                
+                <div class="method-description">
+                    Specialized proxies provide specific services like text-only views, paywall bypassing, or privacy-focused frontend alternatives to social media.
+                </div>
+            </div>
+        </div>
+        
+        <div id="url-tools-tab" class="tab-content" style="display: none;">
+            <div class="url-encoder">
+                <h3>URL Encoding/Decoding</h3>
+                <div class="input-group">
+                    <input type="text" id="url-to-encode" placeholder="Enter URL to encode or decode">
+                    <button id="encode-url-btn">Encode</button>
+                    <button id="decode-url-btn">Decode</button>
+                </div>
+                <div class="encoder-output" id="encoded-result">
+                    Results will appear here...
+                </div>
+                <button class="copy-btn" id="copy-encoded">Copy to Clipboard</button>
+                
+                <h3 style="margin-top: 20px;">Base64 Encoding/Decoding</h3>
+                <div class="input-group">
+                    <input type="text" id="base64-input" placeholder="Enter text for Base64 encoding/decoding">
+                    <button id="encode-base64-btn">Encode</button>
+                    <button id="decode-base64-btn">Decode</button>
+                </div>
+                <div class="encoder-output" id="base64-result">
+                    Results will appear here...
+                </div>
+                <button class="copy-btn" id="copy-base64">Copy to Clipboard</button>
+                
+                <h3 style="margin-top: 20px;">URL QR Code Generator</h3>
+                <div class="input-group">
+                    <input type="text" id="qr-url" placeholder="Enter URL for QR code generation">
+                    <button id="generate-qr-btn">Generate QR</button>
+                </div>
+                <div class="qr-container" id="qr-container">
+                    <div id="qr-code"></div>
+                    <button class="copy-btn" id="download-qr">Download QR Code</button>
+                </div>
+                
+                <h3 style="margin-top: 20px;">URL Shortener</h3>
+                <div class="input-group">
+                    <input type="text" id="url-to-shorten" placeholder="Enter URL to shorten">
+                    <button id="shorten-url-btn">Shorten URL</button>
+                </div>
+                <div class="encoder-output" id="shortened-result">
+                    Shortened URL will appear here...
+                </div>
+                <button class="copy-btn" id="copy-shortened">Copy to Clipboard</button>
+                
+                <h3 style="margin-top: 20px;">Domain Information</h3>
+                <div class="input-group">
+                    <input type="text" id="domain-info-input" placeholder="Enter domain name">
+                    <button id="get-domain-info-btn">Get Info</button>
+                </div>
+                <div class="encoder-output" id="domain-info-result">
+                    Domain information will appear here...
+                </div>
+            </div>
+        </div>
+        
+        <div id="batch-proxies-tab" class="tab-content" style="display: none;">
+            <div class="batch-controls">
+                <h3>Batch URL Processing</h3>
+                <p>Enter multiple URLs (one per line) to process them all at once:</p>
+                <textarea class="batch-input" id="batch-urls" placeholder="https://example.com
+https://example.org
+https://example.net"></textarea>
+                
+                <label for="batch-proxy-select">Select Proxy Method:</label>
+                <select id="batch-proxy-select">
+                    <option value="web">Web Proxy</option>
+                    <option value="archive">Archive Service</option>
+                    <option value="translate">Translation Proxy</option>
+                    <option value="specialized">Specialized Proxy</option>
+                </select>
+                
+                <div id="batch-specific-options" style="margin-top: 10px;">
+                    <!-- Dynamic options based on selected batch proxy type -->
+                </div>
+                
+                <button id="process-batch-btn" style="width: 100%; margin-top: 15px; padding: 10px;">Process All URLs</button>
+                
+                <div class="encoder-output" id="batch-results" style="margin-top: 15px; max-height: 300px; overflow-y: auto;">
+                    Results will appear here...
+                </div>
+                <button class="copy-btn" id="copy-batch-results">Copy All Results</button>
+                <button class="copy-btn" id="export-batch-results">Export as CSV</button>
+            </div>
+        </div>
+        
+        <div id="presets-tab" class="tab-content" style="display: none;">
+            <h3>Saved Proxy Presets</h3>
+            <p>Create and save your favorite proxy configurations for quick access.</p>
+            
+            <div class="presets-container" id="preset-list">
+                <!-- Preset tags will be dynamically inserted here -->
+                <div class="preset-tag">Wayback Machine<span class="preset-delete">×</span></div>
+                <div class="preset-tag">Google Translate (EN)<span class="preset-delete">×</span></div>
+                <div class="preset-tag">Text Only View<span class="preset-delete">×</span></div>
+                <div class="preset-tag">US Proxy + No Scripts<span class="preset-delete">×</span></div>
+                <div class="preset-tag">Archive.today<span class="preset-delete">×</span></div>
+            </div>
+            
+            <div class="save-preset-container">
+                <input type="text" id="preset-name" placeholder="Enter preset name">
+                <button id="save-preset-btn">Save Current Settings as Preset</button>
+            </div>
+            
+            <div class="proxy-stats">
+                <h3>Your Proxy Usage Statistics</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">158</div>
+                        <div class="stat-label">Total URLs Proxied</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">27</div>
+                        <div class="stat-label">Web Proxies</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">42</div>
+                        <div class="stat-label">Archive Services</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">31</div>
+                        <div class="stat-label">Translation Proxies</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">15</div>
+                        <div class="stat-label">Specialized Proxies</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">43</div>
+                        <div class="stat-label">Cloaking Methods</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="input-group" style="margin-top: 20px;">
+            <input type="text" id="url-input" placeholder="Enter URL to access through proxy (e.g., https://example.com)">
+            <button id="proxy-btn">Proxy It!</button>
+        </div>
+        
+        <div class="checkbox-group" style="margin-top: 10px;">
+            <input type="checkbox" id="open-new-tab" checked>
+            <label for="open-new-tab">Open in New Tab</label>
+            <input type="checkbox" id="save-to-history" style="margin-left: 20px;" checked>
+            <label for="save-to-history">Save to History</label>
+        </div>
+        
+        <div id="iframe-container" style="display: none;">
+            <h3>Preview (may not work for all proxy methods)</h3>
+            <iframe id="embedded-iframe" sandbox="allow-same-origin allow-scripts allow-forms" title="Proxied Content"></iframe>
+        </div>
+        
+        <div class="history">
+            <h2>Recent Proxy History</h2>
+            <div id="history-list">
+                <!-- History items will be dynamically inserted here -->
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                <button id="clear-history" class="delete-btn">Clear All History</button>
+                <button id="export-history" class="copy-btn">Export History</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Hide all tab content
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.style.display = 'none';
+                    });
+                    
+                    // Show the selected tab content
+                    const tabId = this.getAttribute('data-tab') + '-tab';
+                    document.getElementById(tabId).style.display = 'block';
+                });
+            });
+            
+            // Check if localStorage is available
+            let storageAvailable = false;
+            try {
+                localStorage.setItem('test', 'test');
+                localStorage.removeItem('test');
+                storageAvailable = true;
+            } catch(e) {
+                document.getElementById('storage-warning').style.display = 'block';
+            }
+            
+            // Web proxy custom option
+            const webProxySelect = document.getElementById('web-proxy-select');
+            const customProxyContainer = document.getElementById('custom-proxy-container');
+            
+            webProxySelect.addEventListener('change', function() {
+                if (this.value === 'custom') {
+                    customProxyContainer.style.display = 'block';
+                } else {
+                    customProxyContainer.style.display = 'none';
+                }
+            });
+            
+            // Translation proxy custom option
+            const translateProxySelect = document.getElementById('translate-proxy-select');
+            const customTranslateContainer = document.getElementById('custom-translate-container');
+            
+            translateProxySelect.addEventListener('change', function() {
+                if (this.value === 'custom-translate') {
+                    customTranslateContainer.style.display = 'block';
+                } else {
+                    customTranslateContainer.style.display = 'none';
+                }
+            });
+            
+            // Cloaking custom option
+            const cloakingSelect = document.getElementById('cloaking-select');
+            const customCloakingContainer = document.getElementById('custom-cloaking-container');
+            
+            cloakingSelect.addEventListener('change', function() {
+                if (this.value === 'custom-cloaking') {
+                    customCloakingContainer.style.display = 'block';
+                } else {
+                    customCloakingContainer.style.display = 'none';
+                }
+            });
+            
+            // Proxy button click handler
+            const proxyBtn = document.getElementById('proxy-btn');
+            const urlInput = document.getElementById('url-input');
+            
+            proxyBtn.addEventListener('click', function() {
+                let url = urlInput.value.trim();
+                
+                // Basic URL validation
+                if (!url) {
+                    alert('Please enter a valid URL');
+                    return;
+                }
+                
+                // Add http:// if no protocol specified
+                if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    url = 'https://' + url;
+                    urlInput.value = url;
+                }
+                
+                // Get the active tab
+                const activeTab = document.querySelector('.tab.active').getAttribute('data-tab');
+                let finalUrl = '';
+                
+                // Build URL based on selected proxy method
+                switch (activeTab) {
+                    case 'web-proxies':
+                        const webProxyValue = webProxySelect.value;
+                        if (webProxyValue === 'custom') {
+                            const customProxy = document.getElementById('custom-proxy').value;
+                            finalUrl = customProxy + encodeURIComponent(url);
+                        } else {
+                            finalUrl = webProxyValue + encodeURIComponent(url);
+                        }
+                        break;
+                        
+                    case 'archive-proxies':
+                        const archiveProxyValue = document.getElementById('archive-proxy-select').value;
+                        const timestamp = document.getElementById('archive-timestamp').value;
+                        
+                        if (archiveProxyValue === 'https://web.archive.org/web/' && timestamp) {
+                            finalUrl = `${archiveProxyValue}${timestamp}/${url}`;
+                        } else {
+                            finalUrl = archiveProxyValue + encodeURIComponent(url);
+                        }
+                        break;
+                        
+                    case 'translate-proxies':
+                        const translateValue = translateProxySelect.value;
+                        if (translateValue === 'custom-translate') {
+                            const sourceLang = document.getElementById('source-lang').value;
+                            const targetLang = document.getElementById('target-lang').value;
+                            finalUrl = `https://translate.google.com/translate?sl=${sourceLang}&tl=${targetLang}&u=${encodeURIComponent(url)}`;
+                        } else {
+                            finalUrl = translateValue + encodeURIComponent(url);
+                        }
+                        break;
+                        
+                    case 'cloaking':
+                        const cloakingValue = cloakingSelect.value;
+                        // For cloaking methods we'll use a different approach
+                        if (cloakingValue === 'about:blank') {
+                            // Creating an HTML page that opens the URL in about:blank
+                            const htmlContent = `
+                                <html><head><title>Loading...</title></head>
+                                <body>
+                                    <script>
+                                        window.open('${url}', '_blank', 'noopener,noreferrer');
+                                        window.close();
+                                    </script>
+                                    <p>Opening ${url} in about:blank...</p>
+                                </body></html>
+                            `;
+                            
+                            // Create a blob and generate a URL for it
+                            const blob = new Blob([htmlContent], {type: 'text/html'});
+                            finalUrl = URL.createObjectURL(blob);
+                        } else if (cloakingValue === 'document-write') {
+                            // Use document.write method
+                            const htmlContent = `
+                                <html><head><title>Loading...</title></head>
+                                <body>
+                                    <script>
+                                        document.write('<iframe src="${url}" style="position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"></iframe>');
+                                    </script>
+                                </body></html>
+                            `;
+                            
+                            const blob = new Blob([htmlContent], {type: 'text/html'});
+                            finalUrl = URL.createObjectURL(blob);
+                        } else if (cloakingValue === 'custom-cloaking') {
+                            const customCode = document.getElementById('custom-cloaking-code').value;
+                            const htmlContent = `
+                                <html><head><title>Custom Cloaking</title></head>
+                                <body>
+                                    <script>
+                                        const targetUrl = '${url}';
+                                        ${customCode}
+                                    </script>
+                                </body></html>
+                            `;
+                            
+                            const blob = new Blob([htmlContent], {type: 'text/html'});
+                            finalUrl = URL.createObjectURL(blob);
+                        } else {
+                            // For other cloaking methods, use the URL directly
+                            // This is simplified; in a real implementation each method would have specific code
+                            finalUrl = url;
+                        }
+                        break;
+                        
+                    case 'specialized':
+                        const specializedValue = document.getElementById('specialized-proxy-select').value;
+                        finalUrl = specializedValue + encodeURIComponent(url);
+                        break;
+                        
+                    default:
+                        finalUrl = url;
+                }
+                
+                // Save to history if checked
+                if (document.getElementById('save-to-history').checked && storageAvailable) {
+                    saveToHistory(url, finalUrl, activeTab);
+                }
+                
+                // Open in new tab if checked, otherwise show in iframe
+                if (document.getElementById('open-new-tab').checked) {
+                    window.open(finalUrl, '_blank');
+                } else {
+                    document.getElementById('iframe-container').style.display = 'block';
+                    document.getElementById('embedded-iframe').src = finalUrl;
+                }
+            });
+            
+            // Save URL to history
+            function saveToHistory(originalUrl, proxiedUrl, proxyType) {
+                let history = [];
+                
+                if (storageAvailable) {
+                    const storedHistory = localStorage.getItem('proxyHistory');
+                    if (storedHistory) {
+                        history = JSON.parse(storedHistory);
+                    }
+                }
+                
+                // Add new entry to history
+                history.unshift({
+                    original: originalUrl,
+                    proxied: proxiedUrl,
+                    type: proxyType,
+                    timestamp: new Date().toISOString()
+                });
+                
+                // Limit history to 50 items
+                if (history.length > 50) {
+                    history = history.slice(0, 50);
+                }
+                
+                if (storageAvailable) {
+                    localStorage.setItem('proxyHistory', JSON.stringify(history));
+                }
+                
+                // Update history display
+                displayHistory(history);
+            }
+            
+            // Display history items
+            function displayHistory(history) {
+                const historyList = document.getElementById('history-list');
+                historyList.innerHTML = '';
+                
+                if (history.length === 0) {
+                    historyList.innerHTML = '<p>No history items yet.</p>';
+                    return;
+                }
+                
+                history.forEach((item, index) => {
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'history-item';
+                    
+                    // Format the timestamp
+                    const date = new Date(item.timestamp);
+                    const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+                    
+                    // Create proxy type label
+                    let proxyTypeLabel = '';
+                    switch (item.type) {
+                        case 'web-proxies': proxyTypeLabel = 'Web Proxy'; break;
+                        case 'archive-proxies': proxyTypeLabel = 'Archive'; break;
+                        case 'translate-proxies': proxyTypeLabel = 'Translate'; break;
+                        case 'cloaking': proxyTypeLabel = 'Cloaking'; break;
+                        case 'specialized': proxyTypeLabel = 'Specialized'; break;
+                        default: proxyTypeLabel = 'Other';
+                    }
+                    
+                    historyItem.innerHTML = `
+                        <div>
+                            <span style="color: #666; font-size: 12px;">[${proxyTypeLabel}]</span>
+                            <a href="${item.proxied}" target="_blank" title="Open proxied URL: ${item.original}">${item.original}</a>
+                        </div>
+                        <div class="action-buttons">
+                            <span class="timestamp">${formattedDate}</span>
+                            <span class="delete-btn" data-index="${index}">Delete</span>
+                        </div>
+                    `;
+                    
+                    historyList.appendChild(historyItem);
+                });
+                
+                // Add event listeners to delete buttons
+                document.querySelectorAll('.delete-btn[data-index]').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        deleteHistoryItem(index);
+                    });
+                });
+            }
+            
+            // Delete history item
+            function deleteHistoryItem(index) {
+                if (!storageAvailable) return;
+                
+                const storedHistory = localStorage.getItem('proxyHistory');
+                if (!storedHistory) return;
+                
+                let history = JSON.parse(storedHistory);
+                history.splice(index, 1);
+                
+                localStorage.setItem('proxyHistory', JSON.stringify(history));
+                displayHistory(history);
+            }
+            
+            // Clear all history
+            document.getElementById('clear-history').addEventListener('click', function() {
+                if (!storageAvailable) return;
+                
+                if (confirm('Are you sure you want to clear all proxy history?')) {
+                    localStorage.removeItem('proxyHistory');
+                    displayHistory([]);
+                }
+            });
+            
+            // Load history on page load
+            if (storageAvailable) {
+                const storedHistory = localStorage.getItem('proxyHistory');
+                if (storedHistory) {
+                    displayHistory(JSON.parse(storedHistory));
+                } else {
+                    displayHistory([]);
+                }
+            } else {
+                displayHistory([]);
+            }
+            
+            // URL encoding and decoding
+            document.getElementById('encode-url-btn').addEventListener('click', function() {
+                const urlToEncode = document.getElementById('url-to-encode').value;
+                const encoded = encodeURIComponent(urlToEncode);
+                document.getElementById('encoded-result').textContent = encoded;
+            });
+            
+            document.getElementById('decode-url-btn').addEventListener('click', function() {
+                const urlToDecode = document.getElementById('url-to-encode').value;
+                try {
+                    const decoded = decodeURIComponent(urlToDecode);
+                    document.getElementById('encoded-result').textContent = decoded;
+                } catch (e) {
+                    document.getElementById('encoded-result').textContent = 'Error decoding URL: ' + e.message;
+                }
+            });
+            
+            // Base64 encoding and decoding
+            document.getElementById('encode-base64-btn').addEventListener('click', function() {
+                const textToEncode = document.getElementById('base64-input').value;
+                try {
+                    const encoded = btoa(unescape(encodeURIComponent(textToEncode)));
+                    document.getElementById('base64-result').textContent = encoded;
+                } catch (e) {
+                    document.getElementById('base64-result').textContent = 'Error encoding: ' + e.message;
+                }
+            });
+            
+            document.getElementById('decode-base64-btn').addEventListener('click', function() {
+                const textToDecode = document.getElementById('base64-input').value;
+                try {
+                    const decoded = decodeURIComponent(escape(atob(textToDecode)));
+                    document.getElementById('base64-result').textContent = decoded;
+                } catch (e) {
+                    document.getElementById('base64-result').textContent = 'Error decoding: ' + e.message;
+                }
+            });
+            
+            // Copy buttons
+            document.getElementById('copy-encoded').addEventListener('click', function() {
+                copyToClipboard(document.getElementById('encoded-result').textContent);
+            });
+            
+            document.getElementById('copy-base64').addEventListener('click', function() {
+                copyToClipboard(document.getElementById('base64-result').textContent);
+            });
+            
+            document.getElementById('copy-shortened').addEventListener('click', function() {
+                copyToClipboard(document.getElementById('shortened-result').textContent);
+            });
+            
+            // Copy to clipboard function
+            function copyToClipboard(text) {
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(text)
+                        .then(() => {
+                            alert('Copied to clipboard!');
+                        })
+                        .catch(err => {
+                            console.error('Could not copy text: ', err);
+                            fallbackCopyToClipboard(text);
+                        });
+                } else {
+                    fallbackCopyToClipboard(text);
+                }
+            }
+            
+            // Fallback for browsers that don't support clipboard API
+            function fallbackCopyToClipboard(text) {
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                
+                // Make the textarea out of viewport
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                textArea.style.top = '-999999px';
+                document.body.appendChild(textArea);
+                
+                textArea.focus();
+                textArea.select();
+                
+                try {
+                    const successful = document.execCommand('copy');
+                    if (successful) {
+                        alert('Copied to clipboard!');
+                    } else {
+                        console.error('Failed to copy');
+                    }
+                } catch (err) {
+                    console.error('Error copying text: ', err);
+                }
+                
+                document.body.removeChild(textArea);
+            }
+            
+            // Theme switcher
+            const themeToggle = document.getElementById('theme-toggle');
+            
+            themeToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    document.body.classList.add('dark-theme');
+                    if (storageAvailable) {
+                        localStorage.setItem('darkMode', 'enabled');
+                    }
+                } else {
+                    document.body.classList.remove('dark-theme');
+                    if (storageAvailable) {
+                        localStorage.setItem('darkMode', 'disabled');
+                    }
+                }
+            });
+            
+            // Load theme preference
+            if (storageAvailable) {
+                const darkMode = localStorage.getItem('darkMode');
+                if (darkMode === 'enabled') {
+                    themeToggle.checked = true;
+                    document.body.classList.add('dark-theme');
+                }
+            }
+            
+            // URL Shortener functionality (simplified demo version)
+            document.getElementById('shorten-url-btn').addEventListener('click', function() {
+                const urlToShorten = document.getElementById('url-to-shorten').value;
+                
+                if (!urlToShorten) {
+                    alert('Please enter a URL to shorten');
+                    return;
+                }
+                
+                // This is a mock function since we don't have a real API
+                // In a real application, you'd call an API service
+                mockShortenUrl(urlToShorten);
+            });
+            
+            function mockShortenUrl(url) {
+                // Simulate API delay
+                document.getElementById('shortened-result').textContent = 'Shortening URL...';
+                
+                setTimeout(() => {
+                    // Generate a mock shortened URL
+                    const shortId = Math.random().toString(36).substring(2, 8);
+                    const shortenedUrl = `https://short.url/${shortId}`;
