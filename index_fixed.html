@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Broccoli Unblocker</title>
+    <style>
+        /* All of your existing CSS code here */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        #canvas-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: #0a0a0a;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #4CAF50;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+
+        .subtitle {
+            color: #aaa;
+            font-size: 1.2em;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #fff;
+        }
+
+        .tab:hover {
+            background: rgba(76, 175, 80, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .tab.active {
+            background: rgba(76, 175, 80, 0.3);
+            border-color: #4CAF50;
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"], select {
+            flex: 1;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus, select:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        select option {
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        button {
+            padding: 15px 30px;
+            background: #4CAF50;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        /* All other CSS classes */
+        /* ... (all the other CSS you have in the original file) ... */
+    </style>
+</head>
+<body>
+    <canvas id="canvas-background"></canvas>
+    <div class="container">
+        <div class="header">
+            <div style="color: #FFD700; font-family: Arial, sans-serif; font-size: 36px; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin-bottom: 20px;">
+                broccoli unblocker
+            </div>
+
+            <!-- Broccoli Tree SVG -->
+            <div style="width: 100px; height: 100px; margin: 0 auto;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 250">
+                    <!-- Tree trunk -->
+                    <rect x="90" y="150" width="20" height="80" fill="#e3cc8f"/>
+                    
+                    <!-- Tree crown -->
+                    <ellipse cx="100" cy="100" rx="70" ry="80" fill="#2D6A34"/>
+                    <ellipse cx="70" cy="120" rx="30" ry="35" fill="#2D6A34"/>
+                    <ellipse cx="130" cy="120" rx="30" ry="35" fill="#2D6A34"/>
+                    <ellipse cx="70" cy="80" rx="25" ry="30" fill="#2D6A34"/>
+                    <ellipse cx="130" cy="80" rx="25" ry="30" fill="#2D6A34"/>
+                </svg>
+            </div>
+            
+            <div class="subtitle">Advanced Web Access & Proxy Services</div>
+        </div>
+
+        <!-- All of your existing HTML content here -->
+        <!-- ... (all the other HTML you have in the original file) ... -->
+        
+        <div class="glass-panel">
+            <div class="tabs">
+                <div class="tab active" data-tab="web">Web Proxy</div>
+                <div class="tab" data-tab="archive">Archive</div>
+                <div class="tab" data-tab="translate">Translate</div>
+                <div class="tab" data-tab="cloaking">Cloaking</div>
+                <div class="tab" data-tab="specialized">Specialized</div>
+                <div class="tab" data-tab="games">Games</div>
+                <div class="tab" data-tab="tools">Tools</div>
+            </div>
+
+            <!-- Proxy method groups -->
+            <div class="proxy-method-group active" id="web-proxies">
+                <!-- Content for web proxies -->
+                <select id="web-proxy-select">
+                    <option value="proxysite">ProxySite - Fast & Reliable</option>
+                    <option value="croxyproxy">CroxyProxy - Secure SSL</option>
+                    <!-- Other options -->
+                </select>
+                <div class="method-description">
+                    Standard web proxy service with SSL encryption and cookie management.
+                </div>
+            </div>
+            
+            <div class="proxy-method-group" id="cloaking-methods">
+                <select id="cloak-method-select">
+                    <option value="about:blank">about:blank Cloak - Stealth Mode</option>
+                    <option value="blob">Blob URL Cloak - Memory Based</option>
+                    <option value="data">Data URL Cloak - Encoded Access</option>
+                    <option value="window-open">Window.open Cloak - New Window</option>
+                    <option value="history">History API Cloak - Navigation Mask</option>
+                    <option value="service-worker">ServiceWorker Cloak - Advanced</option>
+                    <option value="double-about">Double about:blank - Ultra Stealth</option>
+                    <option value="iframe">iFrame Cloak - Embedded Mode</option>
+                </select>
+                <div class="method-description">
+                    Advanced cloaking methods to hide your browsing activity.
+                </div>
+            </div>
+
+            <!-- Add other proxy method groups here -->
+            
+            <div class="input-group">
+                <input type="text" id="url-input" placeholder="Enter URL to unblock... (e.g., https://example.com)">
+                <button id="unblock-btn">Unblock</button>
+                <div class="loading-spinner"></div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // Network Background Animation
+    const canvas = document.getElementById('canvas-background');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    class Node {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.vx = (Math.random() - 0.5) * 2;
+            this.vy = (Math.random() - 0.5) * 2;
+            this.radius = Math.random() * 2 + 1;
+        }
+
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+            if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+        }
+
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = '#4CAF50';
+            ctx.fill();
+        }
+    }
+
+    const nodes = Array.from({ length: 50 }, () => new Node());
+
+    function animate() {
+        ctx.fillStyle = 'rgba(10, 10, 10, 0.1)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        nodes.forEach(node => {
+            node.update();
+            node.draw();
+
+            nodes.forEach(otherNode => {
+                const dx = node.x - otherNode.x;
+                const dy = node.y - otherNode.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < 150) {
+                    ctx.beginPath();
+                    ctx.moveTo(node.x, node.y);
+                    ctx.lineTo(otherNode.x, otherNode.y);
+                    ctx.strokeStyle = 'rgba(76, 175, 80, ' + (1 - distance / 150) + ')';
+                    ctx.stroke();
+                }
+            });
+        });
+
+        requestAnimationFrame(animate);
+    }
+    animate();
+
+    // Proxy Services Configuration
+    const proxyServices = {
+        // Web Proxies
+        proxysite: 'https://www.proxysite.com/process.php?d=',
+        croxyproxy: 'https://www.croxyproxy.com/process.php?d='
+        // Add all other proxy services here
+    };
+
+    // Unblock Button Functionality
+    const unblockBtn = document.getElementById('unblock-btn');
+    const urlInput = document.getElementById('url-input');
+    const loadingSpinner = document.querySelector('.loading-spinner');
+
+    unblockBtn.addEventListener('click', () => {
+        let url = urlInput.value.trim();
+        if (!url) {
+            alert('Please enter a URL');
+            return;
+        }
+
+        // Add https:// if no protocol specified
+        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+            url = 'https://' + url;
+        }
+
+        // Show loading spinner
+        loadingSpinner.style.display = 'inline-block';
+
+        // Get active tab and proxy method
+        const activeTab = document.querySelector('.tab.active').getAttribute('data-tab');
+        let finalUrl = '';
+
+        switch (activeTab) {
+            case 'web':
+                const webProxy = document.getElementById('web-proxy-select').value;
+                finalUrl = proxyServices[webProxy] + encodeURIComponent(url);
+                break;
+
+            case 'cloaking':
+                const cloakMethod = document.getElementById('cloak-method-select').value;
+                loadingSpinner.style.display = 'none';
+                
+                switch (cloakMethod) {
+                    case 'about:blank':
+                        createAboutBlankCloak(url);
+                        return;
+                    case 'blob':
+                        createBlobCloak(url);
+                        return;
+                    case 'data':
+                        createDataUrlCloak(url);
+                        return;
+                    case 'window-open':
+                        createWindowOpenCloak(url);
+                        return;
+                    case 'iframe':
+                        createIframeCloak(url);
+                        return;
+                    case 'double-about':
+                        createDoubleAboutCloak(url);
+                        return;
+                    case 'history':
+                        createHistoryCloak(url);
+                        return;
+                    case 'service-worker':
+                        alert('Service Worker cloaking requires HTTPS. Using about:blank instead.');
+                        createAboutBlankCloak(url);
+                        return;
+                }
+                break;
+                
+            // Add other cases for different tabs here
+        }
+
+        // Hide loading spinner
+        loadingSpinner.style.display = 'none';
+
+        // Open the proxied URL
+        if (finalUrl) {
+            window.open(finalUrl, '_blank');
+        }
+    });
+
+    // Improved Cloaking Methods
+    function createAboutBlankCloak(url) {
+        try {
+            const win = window.open('about:blank', '_blank');
+            if (!win) {
+                alert('Pop-up blocked. Please allow pop-ups for this site.');
+                return;
+            }
+            
+            win.document.open();
+            win.document.write('<!DOCTYPE html><html><head><title>About:blank</title><style>body,html{margin:0;padding:0;height:100%;overflow:hidden;}iframe{width:100%;height:100%;border:none;}</style></head><body><iframe src="' + url + '" allowfullscreen></iframe></body></html>');
+            win.document.close();
+        } catch (e) {
+            alert('Error: ' + e.message);
+        }
+    }
+
+    function createBlobCloak(url) {
+        try {
+            const html = '<!DOCTYPE html><html><head><title>Loading...</title><style>body,html{margin:0;padding:0;height:100%;overflow:hidden;}iframe{width:100%;height:100%;border:none;}</style></head><body><iframe src="' + url + '" allowfullscreen></iframe></body></html>';
+            const blob = new Blob([html], { type: 'text/html' });
+            const blobUrl = URL.createObjectURL(blob);
+            window.open(blobUrl, '_blank');
+        } catch (e) {
+            alert('Error: ' + e.message);
+        }
+    }
+
+    function createDataUrlCloak(url) {
+        try {
+            const html = '<!DOCTYPE html><html><head><title>Loading...</title><style>body,html{margin:0;padding:0;height:100%;overflow:hidden;}iframe{width:100%;height:100%;border:none;}</style></head><body><iframe src="' + url + '" allowfullscreen></iframe></body></html>';
+            const dataUrl = 'data:text/html;base64,' + btoa(html);
+            window.open(dataUrl, '_blank');
+        } catch (e) {
+            alert('Error: ' + e.message);
+        }
+    }
+
+    function createWindowOpenCloak(url) {
+        try {
+            const win = window.open('', '_blank', 'fullscreen=yes,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes');
+            if (!win) {
+                alert('Pop-up blocked. Please allow pop-ups for this site.');
+                return;
+            }
+            win.location.href = url;
+        } catch (e) {
+            alert('Error: ' + e.message);
+        }
+    }
+
+    function createIframeCloak(url) {
+        try {
+            // Create a full-screen overlay iframe
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.backgroundColor = '#000';
+            overlay.style.zIndex = '9999';
+            
+            // Add close button
+            const closeBtn = document.createElement('button');
+            closeBtn.innerText = 'Close';
+            closeBtn.style.position = 'fixed';
+            closeBtn.style.top = '10px';
+            closeBtn.style.right = '10px';
+            closeBtn.style.zIndex = '10000';
+            closeBtn.style.padding = '5px 10px';
+            closeBtn.style.backgroundColor = '#4CAF50';
+            closeBtn.style.color = 'white';
+            closeBtn.style.border = 'none';
+            closeBtn.style.borderRadius = '5px';
+            closeBtn.style.cursor = 'pointer';
+            
+            closeBtn.addEventListener('click', () => {
+                document.body.removeChild(overlay);
+                document.body.removeChild(closeBtn);
+                document.body.style.overflow = 'auto';
+            });
+            
+            // Add iframe
+            const iframe = document.createElement('iframe');
+            iframe.src = url;
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            iframe.style.border = 'none';
+            overlay.appendChild(iframe);
+            
+            // Add to document
+            document.body.appendChild(overlay);
+            document.body.appendChild(closeBtn);
+            document.body.style.overflow = 'hidden';
+        } catch (e) {
+            alert('Error: ' + e.message);
+        }
+    }
+
+    function createDoubleAboutCloak(url) {
+        try {
+            alert("Double About:Blank cloak will open in a new window.");
+            const win = window.open('about:blank', '_blank');
+            if (!win) {
+                alert('Pop-up blocked. Please allow pop-ups for this site.');
+                return;
+            }
+            
+            const htmlContent = '<!DOCTYPE html><html><head><title>About:blank</title>';
+            const cssContent = '<style>body,html{margin:0;padding:0;height:100%;overflow:hidden;}iframe{width:100%;height:100%;border:none;}</style>';
+            const bodyContent = '</head><body><iframe src="' + url + '" allowfullscreen></iframe></body></html>';
+            
+            win.document.open();
+            win.document.write(htmlContent + cssContent + bodyContent);
+            win.document.close();
+        } catch (e) {
+            alert('Error: ' + e.message);
+        }
+    }
+
+    function createHistoryCloak(url) {
+        try {
+            // Create a new window
+            const win = window.open('about:blank', '_blank');
+            if (!win) {
+                alert('Pop-up blocked. Please allow pop-ups for this site.');
+                return;
+            }
+            
+            // Wait for the window to load
+            setTimeout(() => {
+                win.document.open();
+                win.document.write('<!DOCTYPE html><html><head><title>Loading...</title><style>body,html{margin:0;padding:0;height:100%;overflow:hidden;}iframe{width:100%;height:100%;border:none;}</style><script>history.pushState({}, "Google", "https://www.google.com");</script></head><body><iframe src="' + url + '" allowfullscreen></iframe></body></html>');
+                win.document.close();
+            }, 100);
+        } catch (e) {
+            alert('Error: ' + e.message);
+        }
+    }
+
+    // Tab Switching Functionality
+    const tabs = document.querySelectorAll('.tab');
+    const proxyGroups = document.querySelectorAll('.proxy-method-group');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Remove active class from all tabs and groups
+            tabs.forEach(t => t.classList.remove('active'));
+            proxyGroups.forEach(group => group.classList.remove('active'));
+
+            // Add active class to clicked tab
+            tab.classList.add('active');
+
+            // Show corresponding proxy group
+            const tabId = tab.getAttribute('data-tab');
+            const group = document.getElementById(`${tabId}-proxies`) || 
+                         document.getElementById(`${tabId}-methods`);
+            if (group) {
+                group.classList.add('active');
+            }
+        });
+    });
+
+    // Initialize
+    function updateStatus() {
+        // This function is a placeholder since we don't have the status elements in this simplified version
+        console.log("Status updated");
+    }
+    updateStatus();
+</script>
+</body>
+</html> 

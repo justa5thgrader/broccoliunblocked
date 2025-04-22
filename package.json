@@ -1,0 +1,29 @@
+{
+  "name": "broccoli-direct-proxy",
+  "version": "1.0.0",
+  "description": "A web proxy service with multiple proxy support",
+  "main": "proxy-server.js",
+  "scripts": {
+    "start": "node proxy-server.js",
+    "dev": "nodemon proxy-server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "http-proxy-agent": "^7.0.0",
+    "http-proxy-middleware": "^2.0.6",
+    "https-proxy-agent": "^7.0.2",
+    "socks-proxy-agent": "^8.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "keywords": [
+    "proxy",
+    "web-proxy",
+    "http-proxy",
+    "socks-proxy"
+  ],
+  "author": "",
+  "license": "MIT"
+} 

@@ -3,1758 +3,1861 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Link Proxier</title>
+    <title>TCI home</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            max-width: 900px;
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #0f0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Blinking cursor effect */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Matrix-like rain effect for background */
+        @keyframes matrixRain {
+            0% { top: -10%; }
+            100% { top: 100%; }
+        }
+
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .subtitle {
-            color: #666;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 1rem;
-        }
-        .input-group {
-            display: flex;
-            margin-bottom: 20px;
-        }
-        input[type="text"], input[type="number"] {
-            flex: 1;
-            padding: 12px;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            border-radius: 4px 0 0 4px;
-            outline: none;
-        }
-        button {
-            padding: 12px 20px;
-            background-color: #4285f4;
-            color: white;
-            border: none;
-            border-radius: 0 4px 4px 0;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #3367d6;
-        }
-        .proxy-options {
-            margin-bottom: 20px;
-        }
-        select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
-        .history {
-            margin-top: 30px;
-        }
-        .history h2 {
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-        }
-        .history-item {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .history-item:hover {
-            background-color: #f9f9f9;
-        }
-        .history-item a {
-            color: #4285f4;
-            text-decoration: none;
-            max-width: 80%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        .history-item a:hover {
-            text-decoration: underline;
-        }
-        .timestamp {
-            color: #999;
-            font-size: 12px;
-        }
-        .info-box {
-            background-color: #e8f4fc;
-            border-left: 4px solid #4285f4;
-            padding: 12px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-        }
-        .warning-box {
-            background-color: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 12px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-        }
-        .tabs {
-            display: flex;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #ddd;
-            flex-wrap: wrap;
-        }
-        .tab {
-            padding: 10px 20px;
-            cursor: pointer;
-            background-color: #f5f5f5;
-            border: 1px solid #ddd;
-            border-bottom: none;
-            border-radius: 4px 4px 0 0;
-            margin-right: 5px;
-            margin-bottom: 5px;
-        }
-        .tab.active {
-            background-color: white;
-            border-bottom: 1px solid white;
-            margin-bottom: -1px;
-        }
-        #iframe-container {
-            margin-top: 20px;
-            border: 1px solid #ddd;
-            padding: 10px;
-            border-radius: 4px;
-        }
-        #embedded-iframe {
-            width: 100%;
-            height: 500px;
-            border: 1px solid #ddd;
-        }
-        .storage-warning {
-            background-color: #ffefef;
-            border-left: 4px solid #ff4444;
-            padding: 12px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-            display: none;
-        }
-        .options-container {
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
-        .option-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            margin-bottom: 5px;
-        }
-        .checkbox-group input {
-            margin-right: 5px;
-        }
-        .advanced-toggle {
-            color: #4285f4;
-            text-decoration: underline;
-            cursor: pointer;
-            margin: 10px 0;
-            display: inline-block;
-        }
-        .method-description {
-            font-size: 0.9rem;
-            color: #666;
-            margin-top: 5px;
-            margin-bottom: 10px;
-        }
-        .proxy-category {
-            margin-bottom: 20px;
-        }
-        .proxy-category h3 {
-            border-bottom: 1px solid #eee;
-            padding-bottom: 5px;
-        }
-        .url-encoder {
-            margin-top: 15px;
-            padding: 10px;
-            background-color: #f9f9f9;
-            border-radius: 4px;
-        }
-        .encoder-output {
-            padding: 10px;
-            border: 1px solid #ddd;
-            background-color: white;
-            border-radius: 4px;
-            word-break: break-all;
-            margin-top: 10px;
-        }
-        .copy-btn {
-            padding: 5px 10px;
-            background-color: #4285f4;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-        .copy-btn:hover {
-            background-color: #3367d6;
-        }
-        .country-select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .delete-btn {
-            background-color: #ff4444;
-            padding: 3px 8px;
-            border-radius: 4px;
-            color: white;
-            cursor: pointer;
-            font-size: 12px;
-        }
-        .delete-btn:hover {
-            background-color: #cc0000;
-        }
-        .batch-controls {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #f0f8ff;
-            border-radius: 4px;
-            border: 1px solid #cce5ff;
-        }
-        .batch-input {
-            width: 100%;
-            height: 100px;
-            margin-bottom: 10px;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .theme-switch {
-            position: absolute;
-            right: 20px;
-            top: 20px;
-            display: flex;
-            align-items: center;
-        }
-        .theme-switch label {
-            margin-right: 10px;
-            margin-bottom: 0;
-        }
-        .switch {
             position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
+            z-index: 1;
         }
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
+
+        .main-content {
+            background: rgba(0, 10, 0, 0.7);
+            border: 1px solid #0f0;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            margin-top: 50px;
         }
-        .slider {
+
+        .main-content::before {
+            content: "";
             position: absolute;
-            cursor: pointer;
             top: 0;
             left: 0;
             right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #0f0, transparent);
+            animation: scanline 2s linear infinite;
         }
-        .slider:before {
-            position: absolute;
+
+        @keyframes scanline {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+        
+        h1, h2, h3, h4 {
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            max-width: 150px;
+            filter: drop-shadow(0 0 5px #0f0);
+        }
+
+        .header {
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .main-tabs {
+            display: flex;
+            border-bottom: 2px solid #0f0;
+            margin-bottom: 25px;
+        }
+
+        .main-tab {
+            padding: 10px 20px;
+            background: rgba(0, 20, 0, 0.5);
+            color: #0f0;
+            border: 1px solid #0f0;
+            border-bottom: none;
+            margin-right: 5px;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .main-tab::before {
             content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 255, 0, 0.1);
+            transform: translateX(-100%);
+            transition: transform 0.3s;
+        }
+
+        .main-tab:hover::before {
+            transform: translateX(0);
+        }
+
+        .main-tab.active {
+            background: rgba(0, 40, 0, 0.8);
+            color: #fff;
+            text-shadow: 0 0 5px #0f0;
+            border-color: #0f0;
+        }
+
+        .main-tab.active::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #0f0;
+            box-shadow: 0 0 10px #0f0;
+        }
+
+        .main-tab-content {
+            display: none;
+        }
+
+        .main-tab-content.active {
+            display: block;
+            animation: glitchIn 0.3s ease-out;
+        }
+
+        @keyframes glitchIn {
+            0% {
+                opacity: 0;
+                transform: translateX(10px);
+            }
+            20% {
+                opacity: 0.3;
+                transform: translateX(-5px);
+            }
+            40% {
+                opacity: 0.5;
+                transform: translateX(5px);
+            }
+            60% {
+                opacity: 0.7;
+                transform: translateX(-3px);
+            }
+            80% {
+                opacity: 0.9;
+                transform: translateX(2px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Interactive Background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .glass-panel {
+            background: rgba(0, 20, 0, 0.7);
+            border: 1px solid #0f0;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glass-panel::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 10px;
+            height: 10px;
+            background: #0f0;
+            border-radius: 0 0 0 10px;
+            box-shadow: 0 0 8px #0f0;
+        }
+        
+        .subtitle {
+            color: #0f0;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.2em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .title {
+            color: #0f0;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
+            position: relative;
+        }
+
+        .title::after {
+            content: "_";
+            animation: blink 1s infinite;
+        }
+
+        .proxy-selector {
+            background: rgba(0, 15, 0, 0.6);
+            border: 1px solid #0f0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+        }
+
+        .proxy-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin: 15px 0;
+            padding: 5px;
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            border-radius: 4px;
+            background: rgba(0, 10, 0, 0.5);
+        }
+
+        .proxy-item {
+            background: rgba(0, 30, 0, 0.5);
+            border: 1px solid rgba(0, 255, 0, 0.2);
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .proxy-item:hover {
+            background: rgba(0, 40, 0, 0.7);
+            border-color: #0f0;
+            box-shadow: 0 0 8px rgba(0, 255, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .proxy-item.active {
+            background: rgba(0, 50, 0, 0.8);
+            border: 1px solid #0f0;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+        }
+
+        .proxy-ip {
+            display: flex;
+            align-items: center;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+
+        .proxy-type {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            background: rgba(0, 255, 0, 0.15);
+            color: #0f0;
+            margin-left: 5px;
+        }
+
+        .method-description {
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+            padding: 15px;
+            margin-bottom: 20px;
+            background: rgba(0, 20, 0, 0.5);
+            border-left: 3px solid #0f0;
+            color: #0f0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .input-group {
+            display: flex;
+            margin-bottom: 25px;
+            background: rgba(0, 15, 0, 0.7);
+            border: 1px solid #0f0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 15px;
+            background: transparent;
+            border: none;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .input-group input::placeholder {
+            color: rgba(0, 255, 0, 0.5);
+        }
+
+        .input-group button {
+            padding: 15px 25px;
+            background: rgba(0, 50, 0, 0.8);
+            border: none;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .input-group button:hover {
+            background: rgba(0, 100, 0, 0.9);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+        }
+
+        .settings-panel {
+            background: rgba(0, 20, 0, 0.5);
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .settings-title {
+            color: #0f0;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(0, 255, 0, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #0f0;
+            border-radius: 4px;
+            margin-right: 10px;
+            position: relative;
+            cursor: pointer;
+            background: rgba(0, 20, 0, 0.5);
+        }
+
+        .checkbox-item input[type="checkbox"]:checked {
+            background: #0f0;
+        }
+
+        .checkbox-item input[type="checkbox"]:checked::after {
+            content: "✓";
+            position: absolute;
+            color: #000;
+            font-size: 14px;
+            top: -2px;
+            left: 3px;
+        }
+
+        .checkbox-item label {
+            cursor: pointer;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+        }
+
+        button {
+            background: rgba(0, 40, 0, 0.8);
+            color: #0f0;
+            border: 1px solid #0f0;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button:hover {
+            background: rgba(0, 60, 0, 0.9);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+            transform: translateY(-2px);
+        }
+
+        button::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: rgba(0, 255, 0, 0.1);
+            transform: scale(0);
+            border-radius: 50%;
+            transition: transform 0.5s;
+        }
+
+        button:active::before {
+            transform: scale(1);
+        }
+
+        .cloak-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .cloak-item {
+            background: rgba(0, 20, 0, 0.6);
+            border: 1px solid rgba(0, 255, 0, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cloak-item::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #0f0, transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .cloak-item:hover {
+            background: rgba(0, 40, 0, 0.8);
+            border-color: #0f0;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.2);
+        }
+
+        .cloak-item:hover::after {
+            opacity: 1;
+        }
+
+        .cloak-item h4 {
+            color: #0f0;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .cloak-item p {
+            color: rgba(0, 255, 0, 0.7);
+            font-size: 0.9em;
+        }
+
+        /* Browser UI */
+        .browser-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1a1a1a;
+            z-index: 999;
+            flex-direction: column;
+        }
+
+        .browser-header {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: linear-gradient(to right, #2c2c2c, #3a3a3a);
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: rgba(100, 255, 100, 0.3);
             border-radius: 50%;
         }
-        input:checked + .slider {
-            background-color: #2196F3;
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+            }
+            25% {
+                transform: translateY(-30px) translateX(15px);
+            }
+            50% {
+                transform: translateY(-15px) translateX(30px);
+            }
+            75% {
+                transform: translateY(10px) translateX(15px);
+            }
+            100% {
+                transform: translateY(0) translateX(0);
+            }
         }
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-        .dark-theme {
-            background-color: #222;
-            color: #eee;
-        }
-        .dark-theme .container {
-            background-color: #333;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
-        .dark-theme h1, .dark-theme h2, .dark-theme h3, .dark-theme h4 {
-            color: #fff;
-        }
-        .dark-theme .tab {
-            background-color: #444;
-            border-color: #555;
-            color: #eee;
-        }
-        .dark-theme .tab.active {
-            background-color: #333;
-            border-bottom-color: #333;
-        }
-        .dark-theme input[type="text"], .dark-theme input[type="number"], .dark-theme select, .dark-theme textarea {
-            background-color: #444;
-            border-color: #555;
-            color: #eee;
-        }
-        .dark-theme .history-item {
-            border-color: #555;
-        }
-        .dark-theme .history-item:hover {
-            background-color: #444;
-        }
-        .dark-theme .options-container, .dark-theme .url-encoder, .dark-theme .encoder-output {
-            background-color: #444;
-            border-color: #555;
-        }
-        .qr-container {
+
+        /* Add these styles after the .particles-container styles */
+        /* Browser Container Styles */
+        .browser-container {
             display: none;
-            margin-top: 20px;
-            text-align: center;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            z-index: 1000;
+            color: #333;
         }
-        #qr-code {
-            margin: 0 auto;
+
+        .browser-header {
+            background: linear-gradient(to bottom, #333, #222);
             padding: 10px;
-            background-color: white;
-            border-radius: 4px;
-        }
-        .proxy-stats {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #f5f5f5;
-            border-radius: 4px;
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .stat-card {
-            padding: 10px;
-            background-color: white;
-            border-radius: 4px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        .stat-number {
-            font-size: 24px;
-            font-weight: bold;
-            color: #4285f4;
-        }
-        .stat-label {
-            font-size: 12px;
-            color: #666;
-        }
-        .save-preset-container {
-            margin-top: 10px;
             display: flex;
             align-items: center;
             gap: 10px;
+            border-bottom: 2px solid #0f0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
-        .save-preset-container input {
+
+        .browser-viewport {
             flex: 1;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .presets-container {
-            margin-top: 10px;
             display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-        }
-        .preset-tag {
-            padding: 5px 10px;
-            background-color: #e8f0fe;
-            border: 1px solid #4285f4;
-            border-radius: 15px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        .preset-tag:hover {
-            background-color: #d2e3fc;
-        }
-        .preset-delete {
-            margin-left: 5px;
-            color: #666;
-            cursor: pointer;
-        }
-        .preset-delete:hover {
-            color: #ff4444;
-        }
-        .anonymity-meter {
-            margin-top: 10px;
-            width: 100%;
-            height: 10px;
-            background-color: #ddd;
-            border-radius: 5px;
+            flex-direction: column;
+            position: relative;
             overflow: hidden;
         }
-        .anonymity-level {
+
+        .browser-content {
+            width: 100%;
             height: 100%;
-            background: linear-gradient(to right, #ff4444, #ffbb33, #00C851);
-            transition: width 0.3s ease;
+            overflow: auto;
+            background: #fff;
         }
-        .anonymity-label {
-            margin-top: 5px;
-            font-size: 12px;
-            text-align: right;
-            color: #666;
+
+        .loading-indicator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 10, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(0, 255, 0, 0.1);
+            border-radius: 50%;
+            border-top: 5px solid #0f0;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Browser controls */
+        .browser-controls {
+            display: flex;
+            gap: 5px;
+        }
+
+        .browser-controls button {
+            background: rgba(0, 40, 0, 0.7);
+            border: 1px solid #0f0;
+            color: #0f0;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            transition: all 0.2s;
+        }
+
+        .browser-controls button:hover {
+            background: rgba(0, 70, 0, 0.8);
+            box-shadow: 0 0 8px rgba(0, 255, 0, 0.4);
+        }
+
+        .browser-controls button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .browser-address-bar {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            background: rgba(0, 20, 0, 0.8);
+            border: 1px solid #0f0;
+            border-radius: 4px;
+            margin: 0 10px;
+            padding: 0 10px;
+        }
+
+        .secure-indicator {
+            color: #0f0;
+            margin-right: 5px;
+        }
+
+        #browser-address-bar {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #0f0;
+            padding: 8px;
+            font-family: 'Courier New', monospace;
+            outline: none;
+        }
+
+        .browser-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .browser-actions button {
+            background: rgba(0, 40, 0, 0.7);
+            border: 1px solid #0f0;
+            color: #0f0;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+        }
+
+        #close-browser-btn {
+            background: rgba(100, 0, 0, 0.7);
+            border-color: #f33;
+            color: #f33;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        #browser-container button:hover {
+            background: rgba(0,90,0,0.8) !important;
+            box-shadow: 0 0 10px rgba(0,255,0,0.3) !important;
+        }
+        
+        #close-browser-btn:hover {
+            background: rgba(150,0,0,0.7) !important;
+            box-shadow: 0 0 10px rgba(255,0,0,0.3) !important;
         }
     </style>
+
+    <!-- Game frame for playing games -->
+    <div class="game-frame" id="game-frame">
+        <button class="close-game" id="close-game">Close Game</button>
+        <iframe id="game-iframe" src=""></iframe>
+    </div>
+
+    <!-- Game mode window -->
+    <div class="game-mode" id="game-mode">
+        <div class="game-header">
+            <div class="game-title" id="game-title">Game Title</div>
+            <button class="close-button" id="close-game">Close Game</button>
+        </div>
+        <div class="game-container">
+            <div class="game-loading" id="game-loading">
+                <div class="game-spinner"></div>
+                <div>Loading game through secure proxy...</div>
+            </div>
+            <div id="game-render-area" class="game-app"></div>
+        </div>
+    </div>
 </head>
 <body>
-    <div class="theme-switch">
-        <label for="theme-toggle">Dark Mode</label>
-        <label class="switch">
-            <input type="checkbox" id="theme-toggle">
-            <span class="slider"></span>
-        </label>
-    </div>
-
+    <!-- Particles background -->
+    <div id="particles-js" class="particles-container"></div>
+    
     <div class="container">
-        <h1>Advanced Link Proxier</h1>
-        <div class="subtitle">Access websites through various proxy services and cloaking methods</div>
-        
-        <div class="info-box">
-            This tool allows you to visit websites through multiple proxy services, cloaking methods, and interstitial services. Enter a URL below and choose your preferred method.
-        </div>
-        
-        <div class="warning-box">
-            <strong>Note:</strong> Some proxy services may have usage limitations or require accounts. This tool is for educational purposes only.
-        </div>
-        
-        <div class="storage-warning" id="storage-warning">
-            LocalStorage is not available in this environment. History will not be saved between sessions.
-        </div>
-        
-        <div class="tabs">
-            <div class="tab active" data-tab="web-proxies">Web Proxies</div>
-            <div class="tab" data-tab="archive-proxies">Archive Services</div>
-            <div class="tab" data-tab="translate-proxies">Translation Proxies</div>
-            <div class="tab" data-tab="cloaking">Cloaking Methods</div>
-            <div class="tab" data-tab="specialized">Specialized Proxies</div>
-            <div class="tab" data-tab="url-tools">URL Tools</div>
-            <div class="tab" data-tab="batch-proxies">Batch Mode</div>
-            <div class="tab" data-tab="presets">Presets</div>
-        </div>
-        
-        <div id="web-proxies-tab" class="tab-content">
-            <div class="proxy-category">
-                <h3>General Web Proxies</h3>
-                <div class="proxy-options">
-                    <label for="web-proxy-select">Select Web Proxy Service:</label>
-                    <select id="web-proxy-select">
-                        <option value="https://www.proxysite.com/process.php?d=">ProxySite</option>
-                        <option value="https://www.croxyproxy.com/process.php?d=">CroxyProxy</option>
-                        <option value="https://www.hidester.com/proxy/proxy.php?u=">Hidester</option>
-                        <option value="https://www.hidemyass-freeproxy.com/proxy/en-us/">HideMyAss</option>
-                        <option value="https://www.filterbypass.me/?url=">FilterBypass</option>
-                        <option value="https://proxy-us.hideproxy.me/includes/process.php?action=update&q=">HideProxy</option>
-                        <option value="https://www.blockaway.net/index.php?q=">BlockAway</option>
-                        <option value="https://www.proxysite.app/">ProxySite App</option>
-                        <option value="https://proxybrowser.org/browse.php?u=">ProxyBrowser</option>
-                        <option value="https://proxy-us.hideproxy.me/index.php?q=">US Proxy</option>
-                        <option value="https://www.vpnbook.com/webproxy?url=">VPNBook Proxy</option>
-                        <option value="https://www.megaproxy.com/freesurf/">MegaProxy</option>
-                        <option value="https://kproxy.com/">KProxy</option>
-                        <option value="https://www.4everproxy.com/proxy?u=">4Ever Proxy</option>
-                        <option value="https://whoer.net/webproxy?url=">Whoer.net Proxy</option>
-                        <option value="https://www.anonymouse.org/cgi-bin/anon-www.cgi/">AnonyMouse</option>
-                        <option value="https://webproxy.to/">WebProxy.to</option>
-                        <option value="https://www.surf-proxy.com/">Surf Proxy</option>
-                        <option value="https://ninjaweb.xyz/">Ninja Web</option>
-                        <option value="https://www.zalmos.com/">Zalmos Web Proxy</option>
-                        <option value="custom">Custom Proxy (Enter Below)</option>
-                    </select>
+        <header>
+            <div class="logo">
+                <svg class="broccoli-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="48" height="48">
+                    <path d="M50,5 C40,5 30,15 30,25 C30,35 40,45 50,45 C60,45 70,35 70,25 C70,15 60,5 50,5 Z" fill="#4CAF50"/>
+                    <path d="M50,45 C40,45 30,55 30,65 C30,75 40,85 50,85 C60,85 70,75 70,65 C70,55 60,45 50,45 Z" fill="#388E3C"/>
+                    <path d="M30,25 C20,25 10,35 10,45 C10,55 20,65 30,65 C40,65 50,55 50,45 C50,35 40,25 30,25 Z" fill="#4CAF50"/>
+                    <path d="M70,25 C60,25 50,35 50,45 C50,55 60,65 70,65 C80,65 90,55 90,45 C90,35 80,25 70,25 Z" fill="#4CAF50"/>
+                    <rect x="45" y="85" width="10" height="15" fill="#8D6E63"/>
+                </svg>
+                <h1>Broccoli Direct</h1>
+            </div>
+            <nav>
+        <div class="header">
+            <div style="color: #FFD700; font-family: Arial, sans-serif; font-size: 36px; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin-bottom: 20px;">
+                broccoli direct
+            </div>
+
+            <!-- Broccoli Tree SVG -->
+            <div style="width: 100px; height: 100px; margin: 0 auto;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 250">
+                    <!-- Tree trunk -->
+                    <rect x="90" y="150" width="20" height="80" fill="#e3cc8f"/>
                     
-                    <div id="custom-proxy-container" style="display: none;">
-                        <input type="text" id="custom-proxy" placeholder="Enter custom proxy URL" value="">
-                    </div>
-                </div>
+                    <!-- Tree crown -->
+                    <ellipse cx="100" cy="100" rx="70" ry="80" fill="#2D6A34"/>
+                    <ellipse cx="70" cy="120" rx="30" ry="35" fill="#2D6A34"/>
+                    <ellipse cx="130" cy="120" rx="30" ry="35" fill="#2D6A34"/>
+                    <ellipse cx="70" cy="80" rx="25" ry="30" fill="#2D6A34"/>
+                    <ellipse cx="130" cy="80" rx="25" ry="30" fill="#2D6A34"/>
+                </svg>
             </div>
             
-            <div class="proxy-category">
-                <h3>Country-Specific Proxies</h3>
-                <div class="proxy-options">
-                    <label for="country-proxy-select">Select Country:</label>
-                    <select id="country-proxy-select" class="country-select">
-                        <option value="us">United States</option>
-                        <option value="uk">United Kingdom</option>
-                        <option value="ca">Canada</option>
-                        <option value="de">Germany</option>
-                        <option value="fr">France</option>
-                        <option value="jp">Japan</option>
-                        <option value="kr">South Korea</option>
-                        <option value="nl">Netherlands</option>
-                        <option value="sg">Singapore</option>
-                        <option value="au">Australia</option>
-                        <option value="it">Italy</option>
-                        <option value="es">Spain</option>
-                        <option value="ru">Russia</option>
-                        <option value="br">Brazil</option>
-                        <option value="in">India</option>
-                    </select>
-                    
-                    <div class="method-description">
-                        This will route your connection through servers in the selected country using Hide.me's country-specific proxies.
+            <div class="subtitle">Secure & Direct Web Navigation</div>
+        </div>
+
+        <!-- Main Navigation Tabs -->
+        <div class="main-tabs">
+            <div class="main-tab active" data-tab="browser">Browser</div>
+            <div class="main-tab" data-tab="settings">Settings</div>
+            <div class="main-tab" data-tab="cloaking">Cloaking</div>
+            <div class="main-tab" data-tab="advanced-cloaking">Advanced Cloak</div>
+            <div class="main-tab" data-tab="about">About</div>
+        </div>
+
+        <!-- Browser Tab Content -->
+        <div class="main-tab-content active" id="browser-tab">
+            <!-- No sub-tabs needed here, just the browser interface -->
+            <div class="glass-panel">
+                <div style="margin-bottom: 20px; padding: 15px; background: rgba(255, 200, 0, 0.1); border-left: 3px solid #FFD700; border-radius: 0 8px 8px 0;">
+                    <h3 style="color: #FFD700; margin-bottom: 10px;">How This Works</h3>
+                    <p>This proxy portal uses direct proxy servers. When you click navigate:</p>
+                    <ol style="margin-left: 20px; margin-top: 10px;">
+                        <li>Your request will be routed through the selected proxy server</li>
+                        <li>The proxy will fetch content on your behalf, maintaining privacy</li>
+                        <li>Different proxy types (HTTP, SOCKS4) may work better for different sites</li>
+                    </ol>
+                    <p style="margin-top: 10px;"><strong>Note:</strong> Proxy servers may go offline periodically. If one doesn't work, try another from the list.</p>
+                </div>
+
+                <div class="proxy-selector">
+                    <h3 style="color: #4CAF50; margin-bottom: 10px;">Available Proxy Servers</h3>
+                    <div class="proxy-list" id="proxy-list">
+                        <!-- Proxy servers will be listed here dynamically -->
                     </div>
                 </div>
-            </div>
-            
-            <div class="options-container" id="web-proxy-options">
-                <h4>Advanced Options</h4>
-                <div class="option-group">
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="remove-cookies" checked>
-                        <label for="remove-cookies">Remove Cookies</label>
-                    </div>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="remove-scripts" checked>
-                        <label for="remove-scripts">Remove Scripts</label>
-                    </div>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="encrypt-url" checked>
-                        <label for="encrypt-url">Encrypt URL</label>
-                    </div>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="allow-redirects">
-                        <label for="allow-redirects">Allow Redirects</label>
-                    </div>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="use-https" checked>
-                        <label for="use-https">Force HTTPS</label>
-                    </div>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="hide-referer" checked>
-                        <label for="hide-referer">Hide Referer</label>
-                    </div>
+
+                <div class="method-description" id="proxy-description">
+                    Select a proxy server to use for browsing
                 </div>
-                
-                <div class="anonymity-meter-container">
-                    <label>Estimated Anonymity Level:</label>
-                    <div class="anonymity-meter">
-                        <div class="anonymity-level" style="width: 70%;"></div>
+
+                <div class="input-group">
+                    <input type="text" id="url-input" placeholder="Enter URL to browse securely... (e.g., https://example.com)">
+                    <button id="navigate-btn" onclick="navigateDirectly()">Navigate</button>
+                </div>
+
+                <script>
+                    function navigateDirectly() {
+                        console.log("Navigate button clicked");
+                        const urlInput = document.getElementById('url-input');
+                        if (urlInput && urlInput.value.trim()) {
+                            console.log("Navigating to: " + urlInput.value.trim());
+                            navigateToUrl(urlInput.value.trim());
+                        } else {
+                            console.error("URL input is empty or not found");
+                            alert("Please enter a URL to navigate");
+                        }
+                    }
+                </script>
+
+                <div class="settings-panel">
+                    <h3 class="settings-title">Security Features</h3>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="disable-javascript" checked>
+                            <label for="disable-javascript">Block Tracking Scripts</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="encrypt-url" checked>
+                            <label for="encrypt-url">URL Encryption</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="mask-site" checked>
+                            <label for="mask-site">Tab Masking</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="remove-fp" checked>
+                            <label for="remove-fp">Prevent Fingerprinting</label>
+                        </div>
                     </div>
-                    <div class="anonymity-label">Medium</div>
                 </div>
             </div>
         </div>
-        
-        <div id="archive-proxies-tab" class="tab-content" style="display: none;">
-            <div class="proxy-options">
-                <label for="archive-proxy-select">Select Archive Service:</label>
-                <select id="archive-proxy-select">
-                    <option value="https://web.archive.org/web/">Wayback Machine</option>
-                    <option value="https://archive.ph/">Archive.today</option>
-                    <option value="https://archive.is/">Archive.is</option>
-                    <option value="https://webcache.googleusercontent.com/search?q=cache:">Google Cache</option>
-                    <option value="https://cc.bingj.com/cache.aspx?q=">Bing Cache</option>
-                    <option value="https://cachedview.nl/?q=">CachedView</option>
-                    <option value="https://archive.wikiwix.com/cache/index2.php?url=">Wikiwix Cache</option>
-                    <option value="https://timetravel.mementoweb.org/memento/">Memento Time Travel</option>
-                    <option value="https://archive.md/">Archive.md</option>
-                    <option value="https://en.wikipedia.org/w/index.php?search=">Wikipedia Search Cache</option>
-                    <option value="https://perma.cc/create/?url=">Perma.cc</option>
-                    <option value="https://ghostarchive.org/search?term=">GhostArchive</option>
-                    <option value="https://web.archive.org/cdx/search/cdx?url=">Wayback CDX Server</option>
-                    <option value="https://conifer.rhizome.org/">Conifer Web Archive</option>
-                    <option value="https://arquivo.pt/wayback/">Arquivo.pt (Portuguese Web Archive)</option>
-                </select>
+
+        <!-- Settings Tab Content -->
+        <div class="main-tab-content" id="settings-tab">
+            <div class="glass-panel">
+                <h2 style="color: #4CAF50; margin-bottom: 20px;">Global Settings</h2>
                 
-                <div class="options-container">
-                    <h4>Archive Options</h4>
-                    <div class="option-group">
-                        <label for="archive-timestamp">Wayback Machine Timestamp (YYYYMMDD):</label>
-                        <input type="text" id="archive-timestamp" placeholder="e.g., 20210101 or leave empty for latest" value="">
-                    </div>
-                    
-                    <div class="option-group">
-                        <label for="archive-range">Date Range:</label>
-                        <div style="display: flex; gap: 10px;">
-                            <input type="date" id="archive-start-date">
-                            <span>to</span>
-                            <input type="date" id="archive-end-date">
+                <div class="settings-panel">
+                    <h3 class="settings-title">Proxy Configuration</h3>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="auto-retry" checked>
+                            <label for="auto-retry">Auto-retry failed connections</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="rotate-proxies">
+                            <label for="rotate-proxies">Rotate proxies automatically</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="allow-cookies" checked>
+                            <label for="allow-cookies">Allow cookies through proxy</label>
                         </div>
                     </div>
                     
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="archive-screenshot">
-                        <label for="archive-screenshot">Use Screenshot (if available)</label>
+                    <h3 class="settings-title" style="margin-top: 20px;">Performance</h3>
+                    <div style="margin-bottom: 15px;">
+                        <label for="connection-timeout" style="display: block; margin-bottom: 5px;">Connection Timeout (seconds):</label>
+                        <input type="range" id="connection-timeout" min="5" max="60" value="30" style="width: 100%;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>5s</span>
+                            <span id="timeout-value">30s</span>
+                            <span>60s</span>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="method-description">
-                    Archive services provide cached versions of websites, allowing you to view content that may have been changed or removed.
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label for="max-retries" style="display: block; margin-bottom: 5px;">Maximum Retries:</label>
+                        <input type="range" id="max-retries" min="0" max="5" value="3" style="width: 100%;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>0</span>
+                            <span id="retries-value">3</span>
+                            <span>5</span>
+                        </div>
+                    </div>
+                    
+                    <h3 class="settings-title" style="margin-top: 20px;">Security</h3>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="block-ads" checked>
+                            <label for="block-ads">Block advertisements</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="disable-webrtc" checked>
+                            <label for="disable-webrtc">Disable WebRTC (prevents IP leaks)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="force-https" checked>
+                            <label for="force-https">Force HTTPS connections</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="clear-on-exit" checked>
+                            <label for="clear-on-exit">Clear all data on exit</label>
+                        </div>
+                    </div>
+                    
+                    <h3 class="settings-title" style="margin-top: 20px;">User Interface</h3>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="dark-mode" checked>
+                            <label for="dark-mode">Dark Mode</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="animation-effects" checked>
+                            <label for="animation-effects">Enable Animations</label>
+                        </div>
+                    </div>
+                    
+                    <button id="save-settings" style="margin-top: 20px; width: 100%;">Save Settings</button>
+                    <button id="reset-settings" style="margin-top: 10px; width: 100%; background-color: #f44336;">Reset to Defaults</button>
                 </div>
             </div>
         </div>
-        
-        <div id="translate-proxies-tab" class="tab-content" style="display: none;">
-            <div class="proxy-options">
-                <label for="translate-proxy-select">Select Translation Service:</label>
-                <select id="translate-proxy-select">
-                    <option value="https://translate.google.com/translate?sl=auto&tl=en&u=">Google Translate (to English)</option>
-                    <option value="https://translate.google.com/translate?sl=auto&tl=es&u=">Google Translate (to Spanish)</option>
-                    <option value="https://translate.google.com/translate?sl=auto&tl=fr&u=">Google Translate (to French)</option>
-                    <option value="https://translate.google.com/translate?sl=auto&tl=de&u=">Google Translate (to German)</option>
-                    <option value="https://translate.google.com/translate?sl=auto&tl=ja&u=">Google Translate (to Japanese)</option>
-                    <option value="https://translate.google.com/translate?sl=auto&tl=zh-CN&u=">Google Translate (to Chinese)</option>
-                    <option value="https://translate.google.com/translate?sl=auto&tl=ru&u=">Google Translate (to Russian)</option>
-                    <option value="https://translate.google.com/translate?sl=auto&tl=ar&u=">Google Translate (to Arabic)</option>
-                    <option value="https://translate.google.com/translate?sl=auto&tl=hi&u=">Google Translate (to Hindi)</option>
-                    <option value="https://www.microsofttranslator.com/bv.aspx?from=auto&to=en&a=">Bing Translator (to English)</option>
-                    <option value="https://www.deepl.com/translator#auto/en/">DeepL Translator</option>
-                    <option value="https://translate.yandex.com/translate?lang=en-auto&url=">Yandex Translator</option>
-                    <option value="https://www.translatetheweb.com/?from=&to=en&a=">Microsoft Translator</option>
-                    <option value="https://translate.systran.net/translationTools/text?source=auto&target=en&url=">SYSTRAN Translator</option>
-                    <option value="custom-translate">Custom Translation (Select Languages Below)</option>
-                </select>
+
+        <!-- Cloaking Tab Content -->
+        <div class="main-tab-content" id="cloaking-tab">
+            <div class="glass-panel">
+                <h2 style="color: #4CAF50; margin-bottom: 20px;">Tab Cloaking Center</h2>
                 
-                <div id="custom-translate-container" style="display: none;">
-                    <div class="option-group">
-                        <label for="source-lang">Source Language:</label>
-                        <select id="source-lang">
-                            <option value="auto">Auto-detect</option>
-                            <option value="en">English</option>
-                            <option value="es">Spanish</option>
-                            <option value="fr">French</option>
-                            <option value="de">German</option>
-                            <option value="it">Italian</option>
-                            <option value="pt">Portuguese</option>
-                            <option value="ru">Russian</option>
-                            <option value="ja">Japanese</option>
-                            <option value="ko">Korean</option>
-                            <option value="zh-CN">Chinese (Simplified)</option>
-                            <option value="ar">Arabic</option>
-                            <option value="hi">Hindi</option>
-                            <option value="tr">Turkish</option>
-                            <option value="nl">Dutch</option>
-                            <option value="vi">Vietnamese</option>
-                            <option value="pl">Polish</option>
-                            <option value="sv">Swedish</option>
-                            <option value="fi">Finnish</option>
-                            <option value="no">Norwegian</option>
-                            <option value="da">Danish</option>
-                            <option value="cs">Czech</option>
-                            <option value="el">Greek</option>
-                            <option value="he">Hebrew</option>
-                            <option value="id">Indonesian</option>
-                            <option value="th">Thai</option>
+                <p style="margin-bottom: 20px;">Tab cloaking changes how this site appears in your browser history, tab title, and favicon.</p>
+                
+                <div class="settings-panel">
+                    <h3 class="settings-title">Master Cloaking Control</h3>
+                    <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                        <label class="switch" style="margin-right: 15px;">
+                            <input type="checkbox" id="master-cloak-toggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <span>Enable Cloaking Features</span>
+                    </div>
+                    
+                    <h3 class="settings-title">Preset Cloaks</h3>
+                    <div class="cloak-grid">
+                        <div class="cloak-item" data-title="Google" data-favicon="https://www.google.com/favicon.ico" data-url="https://www.google.com">
+                            <h4><img src="https://www.google.com/favicon.ico" class="favicon-preview">Google</h4>
+                            <p>Make this tab appear as Google Search</p>
+                        </div>
+                        
+                        <div class="cloak-item" data-title="Google Docs" data-favicon="https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico" data-url="https://docs.google.com">
+                            <h4><img src="https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico" class="favicon-preview">Google Docs</h4>
+                            <p>Make this tab appear as Google Docs</p>
+                        </div>
+                        
+                        <div class="cloak-item" data-title="Google Drive" data-favicon="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png" data-url="https://drive.google.com">
+                            <h4><img src="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png" class="favicon-preview">Google Drive</h4>
+                            <p>Make this tab appear as Google Drive</p>
+                        </div>
+                        
+                        <div class="cloak-item" data-title="Classroom" data-favicon="https://ssl.gstatic.com/classroom/favicon.png" data-url="https://classroom.google.com">
+                            <h4><img src="https://ssl.gstatic.com/classroom/favicon.png" class="favicon-preview">Google Classroom</h4>
+                            <p>Make this tab appear as Google Classroom</p>
+                        </div>
+                        
+                        <div class="cloak-item" data-title="Canvas" data-favicon="https://instructure-uploads.s3.amazonaws.com/account_167550000000000001/attachments/589668/canvas_logomark.ico" data-url="https://canvas.instructure.com">
+                            <h4><img src="https://instructure-uploads.s3.amazonaws.com/account_167550000000000001/attachments/589668/canvas_logomark.ico" class="favicon-preview">Canvas LMS</h4>
+                            <p>Make this tab appear as Canvas learning system</p>
+                        </div>
+                        
+                        <div class="cloak-item" data-title="Desmos | Graphing Calculator" data-favicon="https://www.desmos.com/assets/img/apps/graphing/favicon.ico" data-url="https://www.desmos.com/calculator">
+                            <h4><img src="https://www.desmos.com/assets/img/apps/graphing/favicon.ico" class="favicon-preview">Desmos Calculator</h4>
+                            <p>Make this tab appear as Desmos Calculator</p>
+                        </div>
+                    </div>
+                    
+                    <h3 class="settings-title" style="margin-top: 30px;">Custom Cloak</h3>
+                    <div style="margin-top: 15px;">
+                        <div style="margin-bottom: 15px;">
+                            <label for="custom-title" style="display: block; margin-bottom: 5px;">Tab Title:</label>
+                            <input type="text" id="custom-title" placeholder="Enter custom page title" style="width: 100%;">
+                        </div>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <label for="custom-favicon" style="display: block; margin-bottom: 5px;">Favicon URL:</label>
+                            <input type="text" id="custom-favicon" placeholder="Enter URL to icon (e.g., https://example.com/favicon.ico)" style="width: 100%;">
+                        </div>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <label for="custom-url" style="display: block; margin-bottom: 5px;">URL Bar Display:</label>
+                            <input type="text" id="custom-url" placeholder="Enter URL to show in history (e.g., https://google.com)" style="width: 100%;">
+                        </div>
+                        
+                        <button id="apply-custom-cloak" style="width: 100%;">Apply Custom Cloak</button>
+                    </div>
+                    
+                    <h3 class="settings-title" style="margin-top: 30px;">Advanced Cloaking Options</h3>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="spoof-referrer" checked>
+                            <label for="spoof-referrer">Spoof HTTP Referrer</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="clear-history" checked>
+                            <label for="clear-history">Auto-clear from history</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="panic-button" checked>
+                            <label for="panic-button">Enable panic button (ESC key)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="fake-activity" checked>
+                            <label for="fake-activity">Simulate normal browsing activity</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Cloaking Tab Content -->
+        <div class="main-tab-content" id="advanced-cloaking-tab">
+            <div class="glass-panel">
+                <h2 style="color: #0f0; margin-bottom: 20px; text-align: center; text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);">ADVANCED CLOAKING SUITE</h2>
+                
+                <div class="settings-panel" style="margin-bottom: 30px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 class="settings-title" style="margin-bottom: 0;">Master Control</h3>
+                        <label class="switch" style="margin-left: 15px;">
+                            <input type="checkbox" id="advanced-cloak-toggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div style="background: rgba(0, 20, 0, 0.3); border: 1px solid rgba(0, 255, 0, 0.2); padding: 15px; border-radius: 5px;">
+                        <p style="margin-bottom: 10px; color: rgba(0, 255, 0, 0.8); font-family: 'Courier New', monospace;">STATUS: <span id="cloak-status" style="color: #0f0; font-weight: bold;">ACTIVE</span></p>
+                        <div style="height: 20px; background: rgba(0, 20, 0, 0.5); border-radius: 10px; position: relative; overflow: hidden; margin-bottom: 10px;">
+                            <div id="cloak-power-level" style="height: 100%; width: 85%; background: linear-gradient(90deg, #073700, #0f0); position: relative; border-radius: 10px;">
+                                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.3), transparent); background-size: 200% 100%; animation: moveLight 2s infinite linear;"></div>
+                            </div>
+                        </div>
+                        <p style="font-size: 0.9em; color: rgba(0, 255, 0, 0.7);">Cloaking Power: <span id="cloak-power-text">85%</span></p>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+                    <!-- URL Input Section -->
+                    <div class="settings-panel">
+                        <h3 class="settings-title">Target URL</h3>
+                        <div style="margin-bottom: 15px;">
+                            <input type="text" id="cloak-target-url" placeholder="Enter URL you want to visit..." style="width: 100%; padding: 10px; background: rgba(0, 20, 0, 0.7); border: 1px solid #0f0; border-radius: 4px; color: #0f0; font-family: 'Courier New', monospace;">
+                        </div>
+                        <button id="navigate-cloaked-btn" style="width: 100%; margin-bottom: 10px;">NAVIGATE CLOAKED</button>
+                        <div style="font-size: 0.9em; color: rgba(0, 255, 0, 0.7); margin-top: 5px;">
+                            Your visit will be masked using all selected methods below
+                        </div>
+                    </div>
+                    
+                    <!-- Appearance Cloaking -->
+                    <div class="settings-panel">
+                        <h3 class="settings-title">Disguise As</h3>
+                        <select id="cloak-preset" style="width: 100%; padding: 10px; background: rgba(0, 20, 0, 0.7); border: 1px solid #0f0; border-radius: 4px; color: #0f0; font-family: 'Courier New', monospace; margin-bottom: 15px;">
+                            <option value="google_classroom">Google Classroom</option>
+                            <option value="google_docs">Google Docs</option>
+                            <option value="google_drive">Google Drive</option>
+                            <option value="google_search">Google Search</option>
+                            <option value="canvas">Canvas LMS</option>
+                            <option value="desmos">Desmos Calculator</option>
+                            <option value="schoology">Schoology</option>
+                            <option value="khan_academy">Khan Academy</option>
+                            <option value="office365">Microsoft Office 365</option>
+                            <option value="quizlet">Quizlet</option>
+                            <option value="custom">Custom...</option>
                         </select>
-                    </div>
-                    <div class="option-group">
-                        <label for="target-lang">Target Language:</label>
-                        <select id="target-lang">
-                            <option value="en">English</option>
-                            <option value="es">Spanish</option>
-                            <option value="fr">French</option>
-                            <option value="de">German</option>
-                            <option value="it">Italian</option>
-                            <option value="pt">Portuguese</option>
-                            <option value="ru">Russian</option>
-                            <option value="ja">Japanese</option>
-                            <option value="ko">Korean</option>
-                            <option value="zh-CN">Chinese (Simplified)</option>
-                            <option value="ar">Arabic</option>
-                            <option value="hi">Hindi</option>
-                            <option value="tr">Turkish</option>
-                            <option value="nl">Dutch</option>
-                            <option value="vi">Vietnamese</option>
-                            <option value="pl">Polish</option>
-                            <option value="sv">Swedish</option>
-                            <option value="fi">Finnish</option>
-                            <option value="no">Norwegian</option>
-                            <option value="da">Danish</option>
-                            <option value="cs">Czech</option>
-                            <option value="el">Greek</option>
-                            <option value="he">Hebrew</option>
-                            <option value="id">Indonesian</option>
-                            <option value="th">Thai</option>
-                        </select>
+                        <button id="apply-disguise-btn" style="width: 100%;">APPLY DISGUISE</button>
+                        <div style="font-size: 0.9em; color: rgba(0, 255, 0, 0.7); margin-top: 5px; display: flex; align-items: center;">
+                            <span style="display: inline-block; width: 8px; height: 8px; background: #0f0; border-radius: 50%; margin-right: 5px;"></span>
+                            Tab will appear as selected platform
+                        </div>
                     </div>
                 </div>
                 
-                <div class="method-description">
-                    Translation proxies can bypass some content restrictions by loading the page through a translation service.
-                </div>
-            </div>
-        </div>
-        
-        <div id="cloaking-tab" class="tab-content" style="display: none;">
-            <div class="proxy-options">
-                <label for="cloaking-select">Select Cloaking Method:</label>
-                <select id="cloaking-select">
-                    <option value="about:blank">about:blank Direct Navigation</option>
-                    <option value="document-write">Document.write Method</option>
-                    <option value="location-replace">Location.replace Method</option>
-                    <option value="iframe-embed">Simple iFrame Embed</option>
-                    <option value="data-url">Data URL Method</option>
-                    <option value="blob-url">Blob URL Method</option>
-                    <option value="window-open">Window.open with Parameters</option>
-                    <option value="double-about">Double about:blank<option value="double-about">Double about:blank</option>
-                    <option value="parent-spoof">Parent Window Spoofing</option>
-                    <option value="history-api">History API Cloaking</option>
-                    <option value="worker-proxy">Web Worker Proxy</option>
-                    <option value="service-worker">Service Worker Method</option>
-                    <option value="sandboxed-iframe">Sandboxed iFrame</option>
-                    <option value="custom-cloaking">Custom Cloaking (Advanced)</option>
-                </select>
-                
-                <div id="custom-cloaking-container" style="display: none;">
-                    <textarea id="custom-cloaking-code" placeholder="Enter custom JavaScript cloaking code here..." rows="5" style="width: 100%; margin-top: 10px;"></textarea>
-                </div>
-                
-                <div class="options-container">
-                    <h4>Cloaking Options</h4>
-                    <div class="option-group">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+                    <!-- Visual Cloaking Methods -->
+                    <div class="settings-panel">
+                        <h3 class="settings-title">Visual Cloaking</h3>
                         <div class="checkbox-group">
-                            <input type="checkbox" id="mask-title">
-                            <label for="mask-title">Mask Page Title</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="mask-favicon">
-                            <label for="mask-favicon">Mask Page Favicon</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="hide-from-history">
-                            <label for="hide-from-history">Hide from Browser History</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="disable-context-menu">
-                            <label for="disable-context-menu">Disable Context Menu</label>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="cloak-title" checked>
+                                <label for="cloak-title">Change Tab Title</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="cloak-favicon" checked>
+                                <label for="cloak-favicon">Replace Favicon</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="cloak-url-bar" checked>
+                                <label for="cloak-url-bar">Mask URL in Address Bar</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="cloak-screenshot" checked>
+                                <label for="cloak-screenshot">Screenshot Cloaking</label>
+                                <div style="margin-left: 28px; margin-top: 5px; font-size: 0.8em; color: rgba(0, 255, 0, 0.6);">
+                                    Creates decoy on <span style="color: #0f0;">PrintScreen</span>
+                                </div>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="cloak-tab-icon" checked>
+                                <label for="cloak-tab-icon">Tab Icon Animation Override</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="cloak-titlebar-color" checked>
+                                <label for="cloak-titlebar-color">Modify Titlebar Color</label>
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="option-group">
-                        <label for="custom-title">Custom Page Title:</label>
-                        <input type="text" id="custom-title" placeholder="Enter a custom title for the page">
+                    <!-- Technical Cloaking Methods -->
+                    <div class="settings-panel">
+                        <h3 class="settings-title">Technical Cloaking</h3>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="cloak-history" checked>
+                                <label for="cloak-history">Modify Browser History</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="cloak-referrer" checked>
+                                <label for="cloak-referrer">Spoof HTTP Referrer</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="cloak-useragent" checked>
+                                <label for="cloak-useragent">User-Agent Modification</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="cloak-localStorage" checked>
+                                <label for="cloak-localStorage">Isolate LocalStorage</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="cloak-windowName" checked>
+                                <label for="cloak-windowName">Hide window.name</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="cloak-serviceWorker" checked>
+                                <label for="cloak-serviceWorker">Service Worker Override</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+                    <!-- Defense Systems -->
+                    <div class="settings-panel">
+                        <h3 class="settings-title">Defense Systems</h3>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="defense-killswitch" checked>
+                                <label for="defense-killswitch">Emergency Killswitch (ESC)</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="defense-decoy" checked>
+                                <label for="defense-decoy">Decoy Window on Detection</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="defense-teacher" checked>
+                                <label for="defense-teacher">Teacher Approach Detection</label>
+                                <div style="margin-left: 28px; margin-top: 5px; font-size: 0.8em; color: rgba(0, 255, 0, 0.6);">
+                                    Uses webcam motion detection
+                                </div>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="defense-detection" checked>
+                                <label for="defense-detection">Extension Detection Evasion</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="defense-crash-prevention" checked>
+                                <label for="defense-crash-prevention">Auto-recovery System</label>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="option-group">
-                        <label for="custom-favicon">Custom Favicon URL:</label>
-                        <input type="text" id="custom-favicon" placeholder="Enter URL for custom favicon">
+                    <!-- Custom Control -->
+                    <div class="settings-panel">
+                        <h3 class="settings-title">Custom Control</h3>
+                        <div style="margin-bottom: 15px;">
+                            <label for="custom-title" style="display: block; margin-bottom: 5px; color: rgba(0, 255, 0, 0.8);">Custom Title:</label>
+                            <input type="text" id="custom-title" placeholder="Enter custom page title..." style="width: 100%; padding: 8px; background: rgba(0, 20, 0, 0.7); border: 1px solid rgba(0, 255, 0, 0.5); border-radius: 4px; color: #0f0; font-family: 'Courier New', monospace;">
+                        </div>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <label for="custom-favicon" style="display: block; margin-bottom: 5px; color: rgba(0, 255, 0, 0.8);">Custom Favicon URL:</label>
+                            <input type="text" id="custom-favicon" placeholder="Enter URL to icon..." style="width: 100%; padding: 8px; background: rgba(0, 20, 0, 0.7); border: 1px solid rgba(0, 255, 0, 0.5); border-radius: 4px; color: #0f0; font-family: 'Courier New', monospace;">
+                        </div>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <label for="custom-url" style="display: block; margin-bottom: 5px; color: rgba(0, 255, 0, 0.8);">Custom URL to display:</label>
+                            <input type="text" id="custom-url" placeholder="e.g., https://classroom.google.com" style="width: 100%; padding: 8px; background: rgba(0, 20, 0, 0.7); border: 1px solid rgba(0, 255, 0, 0.5); border-radius: 4px; color: #0f0; font-family: 'Courier New', monospace;">
+                        </div>
+                        
+                        <button id="apply-custom-advanced" style="width: 100%;">APPLY CUSTOM SETTINGS</button>
                     </div>
                 </div>
                 
-                <div class="method-description">
-                    Cloaking methods help hide page navigation by using browser features to mask actual site access. Some methods may be blocked by browser security settings.
-                </div>
-            </div>
-        </div>
-        
-        <div id="specialized-tab" class="tab-content" style="display: none;">
-            <div class="proxy-options">
-                <label for="specialized-proxy-select">Select Specialized Proxy:</label>
-                <select id="specialized-proxy-select">
-                    <option value="https://www.printfriendly.com/print?url=">PrintFriendly (Text Only)</option>
-                    <option value="https://outline.com/">Outline Reader</option>
-                    <option value="https://reader.miniflux.app/pdf?url=">PDF Converter</option>
-                    <option value="https://textance.herokuapp.com/text/">Textance (Text Only)</option>
-                    <option value="https://www.textise.net/showText.aspx?strURL=">Textise</option>
-                    <option value="https://archive.org/download/archiveteam_urls?url=">Single-File Save</option>
-                    <option value="https://12ft.io/">12ft.io Paywall Bypass</option>
-                    <option value="https://www.reader-view.com/?url=">Reader View</option>
-                    <option value="https://proxy.toolforge.org/en.wikipedia.org/wiki/Special:Search?search=">Wikipedia Proxy</option>
-                    <option value="https://nitter.net/">Nitter (Twitter Alternative)</option>
-                    <option value="https://invidious.io/">Invidious (YouTube Alternative)</option>
-                    <option value="https://bibliogram.art/">Bibliogram (Instagram Alternative)</option>
-                    <option value="https://teddit.net/">Teddit (Reddit Alternative)</option>
-                    <option value="https://farside.link/">Farside Link (All Alternatives)</option>
-                    <option value="https://archive.org/details/webwidecrawl?url=">Wayback All Versions</option>
-                </select>
-                
-                <div class="method-description">
-                    Specialized proxies provide specific services like text-only views, paywall bypassing, or privacy-focused frontend alternatives to social media.
-                </div>
-            </div>
-        </div>
-        
-        <div id="url-tools-tab" class="tab-content" style="display: none;">
-            <div class="url-encoder">
-                <h3>URL Encoding/Decoding</h3>
-                <div class="input-group">
-                    <input type="text" id="url-to-encode" placeholder="Enter URL to encode or decode">
-                    <button id="encode-url-btn">Encode</button>
-                    <button id="decode-url-btn">Decode</button>
-                </div>
-                <div class="encoder-output" id="encoded-result">
-                    Results will appear here...
-                </div>
-                <button class="copy-btn" id="copy-encoded">Copy to Clipboard</button>
-                
-                <h3 style="margin-top: 20px;">Base64 Encoding/Decoding</h3>
-                <div class="input-group">
-                    <input type="text" id="base64-input" placeholder="Enter text for Base64 encoding/decoding">
-                    <button id="encode-base64-btn">Encode</button>
-                    <button id="decode-base64-btn">Decode</button>
-                </div>
-                <div class="encoder-output" id="base64-result">
-                    Results will appear here...
-                </div>
-                <button class="copy-btn" id="copy-base64">Copy to Clipboard</button>
-                
-                <h3 style="margin-top: 20px;">URL QR Code Generator</h3>
-                <div class="input-group">
-                    <input type="text" id="qr-url" placeholder="Enter URL for QR code generation">
-                    <button id="generate-qr-btn">Generate QR</button>
-                </div>
-                <div class="qr-container" id="qr-container">
-                    <div id="qr-code"></div>
-                    <button class="copy-btn" id="download-qr">Download QR Code</button>
-                </div>
-                
-                <h3 style="margin-top: 20px;">URL Shortener</h3>
-                <div class="input-group">
-                    <input type="text" id="url-to-shorten" placeholder="Enter URL to shorten">
-                    <button id="shorten-url-btn">Shorten URL</button>
-                </div>
-                <div class="encoder-output" id="shortened-result">
-                    Shortened URL will appear here...
-                </div>
-                <button class="copy-btn" id="copy-shortened">Copy to Clipboard</button>
-                
-                <h3 style="margin-top: 20px;">Domain Information</h3>
-                <div class="input-group">
-                    <input type="text" id="domain-info-input" placeholder="Enter domain name">
-                    <button id="get-domain-info-btn">Get Info</button>
-                </div>
-                <div class="encoder-output" id="domain-info-result">
-                    Domain information will appear here...
-                </div>
-            </div>
-        </div>
-        
-        <div id="batch-proxies-tab" class="tab-content" style="display: none;">
-            <div class="batch-controls">
-                <h3>Batch URL Processing</h3>
-                <p>Enter multiple URLs (one per line) to process them all at once:</p>
-                <textarea class="batch-input" id="batch-urls" placeholder="https://example.com
-https://example.org
-https://example.net"></textarea>
-                
-                <label for="batch-proxy-select">Select Proxy Method:</label>
-                <select id="batch-proxy-select">
-                    <option value="web">Web Proxy</option>
-                    <option value="archive">Archive Service</option>
-                    <option value="translate">Translation Proxy</option>
-                    <option value="specialized">Specialized Proxy</option>
-                </select>
-                
-                <div id="batch-specific-options" style="margin-top: 10px;">
-                    <!-- Dynamic options based on selected batch proxy type -->
-                </div>
-                
-                <button id="process-batch-btn" style="width: 100%; margin-top: 15px; padding: 10px;">Process All URLs</button>
-                
-                <div class="encoder-output" id="batch-results" style="margin-top: 15px; max-height: 300px; overflow-y: auto;">
-                    Results will appear here...
-                </div>
-                <button class="copy-btn" id="copy-batch-results">Copy All Results</button>
-                <button class="copy-btn" id="export-batch-results">Export as CSV</button>
-            </div>
-        </div>
-        
-        <div id="presets-tab" class="tab-content" style="display: none;">
-            <h3>Saved Proxy Presets</h3>
-            <p>Create and save your favorite proxy configurations for quick access.</p>
-            
-            <div class="presets-container" id="preset-list">
-                <!-- Preset tags will be dynamically inserted here -->
-                <div class="preset-tag">Wayback Machine<span class="preset-delete">×</span></div>
-                <div class="preset-tag">Google Translate (EN)<span class="preset-delete">×</span></div>
-                <div class="preset-tag">Text Only View<span class="preset-delete">×</span></div>
-                <div class="preset-tag">US Proxy + No Scripts<span class="preset-delete">×</span></div>
-                <div class="preset-tag">Archive.today<span class="preset-delete">×</span></div>
-            </div>
-            
-            <div class="save-preset-container">
-                <input type="text" id="preset-name" placeholder="Enter preset name">
-                <button id="save-preset-btn">Save Current Settings as Preset</button>
-            </div>
-            
-            <div class="proxy-stats">
-                <h3>Your Proxy Usage Statistics</h3>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-number">158</div>
-                        <div class="stat-label">Total URLs Proxied</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">27</div>
-                        <div class="stat-label">Web Proxies</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">42</div>
-                        <div class="stat-label">Archive Services</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">31</div>
-                        <div class="stat-label">Translation Proxies</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">15</div>
-                        <div class="stat-label">Specialized Proxies</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">43</div>
-                        <div class="stat-label">Cloaking Methods</div>
+                <div class="settings-panel">
+                    <h3 class="settings-title">Emergency Shortcuts</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; margin-top: 15px;">
+                        <div style="background: rgba(0, 30, 0, 0.5); border: 1px solid rgba(0, 255, 0, 0.3); padding: 10px; border-radius: 5px;">
+                            <div style="font-weight: bold; color: #0f0; margin-bottom: 5px;">ESC Key</div>
+                            <div style="font-size: 0.9em; color: rgba(0, 255, 0, 0.7);">Instant redirect to safe site</div>
+                        </div>
+                        
+                        <div style="background: rgba(0, 30, 0, 0.5); border: 1px solid rgba(0, 255, 0, 0.3); padding: 10px; border-radius: 5px;">
+                            <div style="font-weight: bold; color: #0f0; margin-bottom: 5px;">ALT + Q</div>
+                            <div style="font-size: 0.9em; color: rgba(0, 255, 0, 0.7);">Quick switch to Google Classroom</div>
+                        </div>
+                        
+                        <div style="background: rgba(0, 30, 0, 0.5); border: 1px solid rgba(0, 255, 0, 0.3); padding: 10px; border-radius: 5px;">
+                            <div style="font-weight: bold; color: #0f0; margin-bottom: 5px;">ALT + D</div>
+                            <div style="font-size: 0.9em; color: rgba(0, 255, 0, 0.7);">Launch decoy overlay</div>
+                        </div>
+                        
+                        <div style="background: rgba(0, 30, 0, 0.5); border: 1px solid rgba(0, 255, 0, 0.3); padding: 10px; border-radius: 5px;">
+                            <div style="font-weight: bold; color: #0f0; margin-bottom: 5px;">ALT + S</div>
+                            <div style="font-size: 0.9em; color: rgba(0, 255, 0, 0.7);">Mute tab & freeze content</div>
+                        </div>
                     </div>
                 </div>
+                
+                <div style="text-align: center; margin-top: 30px;">
+                    <button id="activate-all-cloaking" style="background: rgba(0, 60, 0, 0.9); padding: 15px 30px; font-size: 1.2em; box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);">ACTIVATE FULL STEALTH MODE</button>
+                </div>
             </div>
         </div>
-        
-        <div class="input-group" style="margin-top: 20px;">
-            <input type="text" id="url-input" placeholder="Enter URL to access through proxy (e.g., https://example.com)">
-            <button id="proxy-btn">Proxy It!</button>
-        </div>
-        
-        <div class="checkbox-group" style="margin-top: 10px;">
-            <input type="checkbox" id="open-new-tab" checked>
-            <label for="open-new-tab">Open in New Tab</label>
-            <input type="checkbox" id="save-to-history" style="margin-left: 20px;" checked>
-            <label for="save-to-history">Save to History</label>
-        </div>
-        
-        <div id="iframe-container" style="display: none;">
-            <h3>Preview (may not work for all proxy methods)</h3>
-            <iframe id="embedded-iframe" sandbox="allow-same-origin allow-scripts allow-forms" title="Proxied Content"></iframe>
-        </div>
-        
-        <div class="history">
-            <h2>Recent Proxy History</h2>
-            <div id="history-list">
-                <!-- History items will be dynamically inserted here -->
-            </div>
-            <div style="display: flex; justify-content: space-between; margin-top: 10px;">
-                <button id="clear-history" class="delete-btn">Clear All History</button>
-                <button id="export-history" class="copy-btn">Export History</button>
+
+        <!-- About Tab Content -->
+        <div class="main-tab-content" id="about-tab">
+            <div class="glass-panel">
+                <h2 style="color: #4CAF50; margin-bottom: 20px;">About Broccoli Direct</h2>
+                
+                <p>Broccoli Direct is a web proxy service designed to help you bypass content restrictions and browse the internet privately. Our service routes your web requests through proxy servers, allowing you to access websites that might be blocked in your location.</p>
+                
+                <h3 style="color: #4CAF50; margin-top: 20px; margin-bottom: 10px;">Features</h3>
+                <ul style="list-style-type: none; padding-left: 10px;">
+                    <li style="margin-bottom: 10px;">✅ Multiple proxy servers worldwide</li>
+                    <li style="margin-bottom: 10px;">✅ Advanced tab cloaking</li>
+                    <li style="margin-bottom: 10px;">✅ Script blocking for faster browsing</li>
+                    <li style="margin-bottom: 10px;">✅ Browser fingerprint protection</li>
+                    <li style="margin-bottom: 10px;">✅ URL encryption</li>
+                </ul>
+                
+                <div style="margin-top: 30px; padding: 15px; background: rgba(255, 200, 0, 0.1); border-left: 3px solid #FFD700; border-radius: 0 8px 8px 0;">
+                    <h4 style="color: #FFD700; margin-bottom: 10px;">Disclaimer</h4>
+                    <p>This service is provided for educational purposes only. Always comply with your organization's acceptable use policies and local laws when using internet services.</p>
+                </div>
+                
+                <h3 style="color: #4CAF50; margin-top: 30px; margin-bottom: 10px;">How To Use</h3>
+                <ol style="padding-left: 25px;">
+                    <li style="margin-bottom: 10px;">Select a proxy server from the available list</li>
+                    <li style="margin-bottom: 10px;">Enter the URL you want to visit in the input field</li>
+                    <li style="margin-bottom: 10px;">Click "Navigate" to browse through our proxy</li>
+                    <li style="margin-bottom: 10px;">Optional: Configure cloaking options to disguise your browsing</li>
+                </ol>
             </div>
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Tab switching
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    // Remove active class from all tabs
-                    tabs.forEach(t => t.classList.remove('active'));
-                    // Add active class to clicked tab
-                    this.classList.add('active');
-                    
-                    // Hide all tab content
-                    document.querySelectorAll('.tab-content').forEach(content => {
-                        content.style.display = 'none';
-                    });
-                    
-                    // Show the selected tab content
-                    const tabId = this.getAttribute('data-tab') + '-tab';
-                    document.getElementById(tabId).style.display = 'block';
-                });
-            });
-            
-            // Check if localStorage is available
-            let storageAvailable = false;
-            try {
-                localStorage.setItem('test', 'test');
-                localStorage.removeItem('test');
-                storageAvailable = true;
-            } catch(e) {
-                document.getElementById('storage-warning').style.display = 'block';
-            }
-            
-            // Web proxy custom option
-            const webProxySelect = document.getElementById('web-proxy-select');
-            const customProxyContainer = document.getElementById('custom-proxy-container');
-            
-            webProxySelect.addEventListener('change', function() {
-                if (this.value === 'custom') {
-                    customProxyContainer.style.display = 'block';
-                } else {
-                    customProxyContainer.style.display = 'none';
-                }
-            });
-            
-            // Translation proxy custom option
-            const translateProxySelect = document.getElementById('translate-proxy-select');
-            const customTranslateContainer = document.getElementById('custom-translate-container');
-            
-            translateProxySelect.addEventListener('change', function() {
-                if (this.value === 'custom-translate') {
-                    customTranslateContainer.style.display = 'block';
-                } else {
-                    customTranslateContainer.style.display = 'none';
-                }
-            });
-            
-            // Cloaking custom option
-            const cloakingSelect = document.getElementById('cloaking-select');
-            const customCloakingContainer = document.getElementById('custom-cloaking-container');
-            
-            cloakingSelect.addEventListener('change', function() {
-                if (this.value === 'custom-cloaking') {
-                    customCloakingContainer.style.display = 'block';
-                } else {
-                    customCloakingContainer.style.display = 'none';
-                }
-            });
-            
-            // Proxy button click handler
-            const proxyBtn = document.getElementById('proxy-btn');
-            const urlInput = document.getElementById('url-input');
-            
-            proxyBtn.addEventListener('click', function() {
-                let url = urlInput.value.trim();
-                
-                // Basic URL validation
-                if (!url) {
-                    alert('Please enter a valid URL');
-                    return;
-                }
-                
-                // Add http:// if no protocol specified
-                if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                    url = 'https://' + url;
-                    urlInput.value = url;
-                }
-                
-                // Get the active tab
-                const activeTab = document.querySelector('.tab.active').getAttribute('data-tab');
-                let finalUrl = '';
-                
-                // Build URL based on selected proxy method
-                switch (activeTab) {
-                    case 'web-proxies':
-                        const webProxyValue = webProxySelect.value;
-                        if (webProxyValue === 'custom') {
-                            const customProxy = document.getElementById('custom-proxy').value;
-                            finalUrl = customProxy + encodeURIComponent(url);
-                        } else {
-                            finalUrl = webProxyValue + encodeURIComponent(url);
-                        }
-                        break;
-                        
-                    case 'archive-proxies':
-                        const archiveProxyValue = document.getElementById('archive-proxy-select').value;
-                        const timestamp = document.getElementById('archive-timestamp').value;
-                        
-                        if (archiveProxyValue === 'https://web.archive.org/web/' && timestamp) {
-                            finalUrl = `${archiveProxyValue}${timestamp}/${url}`;
-                        } else {
-                            finalUrl = archiveProxyValue + encodeURIComponent(url);
-                        }
-                        break;
-                        
-                    case 'translate-proxies':
-                        const translateValue = translateProxySelect.value;
-                        if (translateValue === 'custom-translate') {
-                            const sourceLang = document.getElementById('source-lang').value;
-                            const targetLang = document.getElementById('target-lang').value;
-                            finalUrl = `https://translate.google.com/translate?sl=${sourceLang}&tl=${targetLang}&u=${encodeURIComponent(url)}`;
-                        } else {
-                            finalUrl = translateValue + encodeURIComponent(url);
-                        }
-                        break;
-                        
-                    case 'cloaking':
-                        const cloakingValue = cloakingSelect.value;
-                        // For cloaking methods we'll use a different approach
-                        if (cloakingValue === 'about:blank') {
-                            // Creating an HTML page that opens the URL in about:blank
-                            const htmlContent = `
-                                <html><head><title>Loading...</title></head>
-                                <body>
-                                    <script>
-                                        window.open('${url}', '_blank', 'noopener,noreferrer');
-                                        window.close();
-                                    </script>
-                                    <p>Opening ${url} in about:blank...</p>
-                                </body></html>
-                            `;
-                            
-                            // Create a blob and generate a URL for it
-                            const blob = new Blob([htmlContent], {type: 'text/html'});
-                            finalUrl = URL.createObjectURL(blob);
-                        } else if (cloakingValue === 'document-write') {
-                            // Use document.write method
-                            const htmlContent = `
-                                <html><head><title>Loading...</title></head>
-                                <body>
-                                    <script>
-                                        document.write('<iframe src="${url}" style="position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"></iframe>');
-                                    </script>
-                                </body></html>
-                            `;
-                            
-                            const blob = new Blob([htmlContent], {type: 'text/html'});
-                            finalUrl = URL.createObjectURL(blob);
-                        } else if (cloakingValue === 'custom-cloaking') {
-                            const customCode = document.getElementById('custom-cloaking-code').value;
-                            const htmlContent = `
-                                <html><head><title>Custom Cloaking</title></head>
-                                <body>
-                                    <script>
-                                        const targetUrl = '${url}';
-                                        ${customCode}
-                                    </script>
-                                </body></html>
-                            `;
-                            
-                            const blob = new Blob([htmlContent], {type: 'text/html'});
-                            finalUrl = URL.createObjectURL(blob);
-                        } else {
-                            // For other cloaking methods, use the URL directly
-                            // This is simplified; in a real implementation each method would have specific code
-                            finalUrl = url;
-                        }
-                        break;
-                        
-                    case 'specialized':
-                        const specializedValue = document.getElementById('specialized-proxy-select').value;
-                        finalUrl = specializedValue + encodeURIComponent(url);
-                        break;
-                        
-                    default:
-                        finalUrl = url;
-                }
-                
-                // Save to history if checked
-                if (document.getElementById('save-to-history').checked && storageAvailable) {
-                    saveToHistory(url, finalUrl, activeTab);
-                }
-                
-                // Open in new tab if checked, otherwise show in iframe
-                if (document.getElementById('open-new-tab').checked) {
-                    window.open(finalUrl, '_blank');
-                } else {
-                    document.getElementById('iframe-container').style.display = 'block';
-                    document.getElementById('embedded-iframe').src = finalUrl;
-                }
-            });
-            
-            // Save URL to history
-            function saveToHistory(originalUrl, proxiedUrl, proxyType) {
-                let history = [];
-                
-                if (storageAvailable) {
-                    const storedHistory = localStorage.getItem('proxyHistory');
-                    if (storedHistory) {
-                        history = JSON.parse(storedHistory);
-                    }
-                }
-                
-                // Add new entry to history
-                history.unshift({
-                    original: originalUrl,
-                    proxied: proxiedUrl,
-                    type: proxyType,
-                    timestamp: new Date().toISOString()
-                });
-                
-                // Limit history to 50 items
-                if (history.length > 50) {
-                    history = history.slice(0, 50);
-                }
-                
-                if (storageAvailable) {
-                    localStorage.setItem('proxyHistory', JSON.stringify(history));
-                }
-                
-                // Update history display
-                displayHistory(history);
-            }
-            
-            // Display history items
-            function displayHistory(history) {
-                const historyList = document.getElementById('history-list');
-                historyList.innerHTML = '';
-                
-                if (history.length === 0) {
-                    historyList.innerHTML = '<p>No history items yet.</p>';
-                    return;
-                }
-                
-                history.forEach((item, index) => {
-                    const historyItem = document.createElement('div');
-                    historyItem.className = 'history-item';
-                    
-                    // Format the timestamp
-                    const date = new Date(item.timestamp);
-                    const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
-                    
-                    // Create proxy type label
-                    let proxyTypeLabel = '';
-                    switch (item.type) {
-                        case 'web-proxies': proxyTypeLabel = 'Web Proxy'; break;
-                        case 'archive-proxies': proxyTypeLabel = 'Archive'; break;
-                        case 'translate-proxies': proxyTypeLabel = 'Translate'; break;
-                        case 'cloaking': proxyTypeLabel = 'Cloaking'; break;
-                        case 'specialized': proxyTypeLabel = 'Specialized'; break;
-                        default: proxyTypeLabel = 'Other';
-                    }
-                    
-                    historyItem.innerHTML = `
-                        <div>
-                            <span style="color: #666; font-size: 12px;">[${proxyTypeLabel}]</span>
-                            <a href="${item.proxied}" target="_blank" title="Open proxied URL: ${item.original}">${item.original}</a>
-                        </div>
-                        <div class="action-buttons">
-                            <span class="timestamp">${formattedDate}</span>
-                            <span class="delete-btn" data-index="${index}">Delete</span>
-                        </div>
-                    `;
-                    
-                    historyList.appendChild(historyItem);
-                });
-                
-                // Add event listeners to delete buttons
-                document.querySelectorAll('.delete-btn[data-index]').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const index = parseInt(this.getAttribute('data-index'));
-                        deleteHistoryItem(index);
-                    });
-                });
-            }
-            
-            // Delete history item
-            function deleteHistoryItem(index) {
-                if (!storageAvailable) return;
-                
-                const storedHistory = localStorage.getItem('proxyHistory');
-                if (!storedHistory) return;
-                
-                let history = JSON.parse(storedHistory);
-                history.splice(index, 1);
-                
-                localStorage.setItem('proxyHistory', JSON.stringify(history));
-                displayHistory(history);
-            }
-            
-            // Clear all history
-            document.getElementById('clear-history').addEventListener('click', function() {
-                if (!storageAvailable) return;
-                
-                if (confirm('Are you sure you want to clear all proxy history?')) {
-                    localStorage.removeItem('proxyHistory');
-                    displayHistory([]);
-                }
-            });
-            
-            // Load history on page load
-            if (storageAvailable) {
-                const storedHistory = localStorage.getItem('proxyHistory');
-                if (storedHistory) {
-                    displayHistory(JSON.parse(storedHistory));
-                } else {
-                    displayHistory([]);
-                }
-            } else {
-                displayHistory([]);
-            }
-            
-            // URL encoding and decoding
-            document.getElementById('encode-url-btn').addEventListener('click', function() {
-                const urlToEncode = document.getElementById('url-to-encode').value;
-                const encoded = encodeURIComponent(urlToEncode);
-                document.getElementById('encoded-result').textContent = encoded;
-            });
-            
-            document.getElementById('decode-url-btn').addEventListener('click', function() {
-                const urlToDecode = document.getElementById('url-to-encode').value;
-                try {
-                    const decoded = decodeURIComponent(urlToDecode);
-                    document.getElementById('encoded-result').textContent = decoded;
-                } catch (e) {
-                    document.getElementById('encoded-result').textContent = 'Error decoding URL: ' + e.message;
-                }
-            });
-            
-            // Base64 encoding and decoding
-            document.getElementById('encode-base64-btn').addEventListener('click', function() {
-                const textToEncode = document.getElementById('base64-input').value;
-                try {
-                    const encoded = btoa(unescape(encodeURIComponent(textToEncode)));
-                    document.getElementById('base64-result').textContent = encoded;
-                } catch (e) {
-                    document.getElementById('base64-result').textContent = 'Error encoding: ' + e.message;
-                }
-            });
-            
-            document.getElementById('decode-base64-btn').addEventListener('click', function() {
-                const textToDecode = document.getElementById('base64-input').value;
-                try {
-                    const decoded = decodeURIComponent(escape(atob(textToDecode)));
-                    document.getElementById('base64-result').textContent = decoded;
-                } catch (e) {
-                    document.getElementById('base64-result').textContent = 'Error decoding: ' + e.message;
-                }
-            });
-            
-            // Copy buttons
-            document.getElementById('copy-encoded').addEventListener('click', function() {
-                copyToClipboard(document.getElementById('encoded-result').textContent);
-            });
-            
-            document.getElementById('copy-base64').addEventListener('click', function() {
-                copyToClipboard(document.getElementById('base64-result').textContent);
-            });
-            
-            document.getElementById('copy-shortened').addEventListener('click', function() {
-                copyToClipboard(document.getElementById('shortened-result').textContent);
-            });
-            
-            // Copy to clipboard function
-            function copyToClipboard(text) {
-                if (navigator.clipboard) {
-                    navigator.clipboard.writeText(text)
-                        .then(() => {
-                            alert('Copied to clipboard!');
-                        })
-                        .catch(err => {
-                            console.error('Could not copy text: ', err);
-                            fallbackCopyToClipboard(text);
-                        });
-                } else {
-                    fallbackCopyToClipboard(text);
-                }
-            }
-            
-            // Fallback for browsers that don't support clipboard API
-            function fallbackCopyToClipboard(text) {
-                const textArea = document.createElement('textarea');
-                textArea.value = text;
-                
-                // Make the textarea out of viewport
-                textArea.style.position = 'fixed';
-                textArea.style.left = '-999999px';
-                textArea.style.top = '-999999px';
-                document.body.appendChild(textArea);
-                
-                textArea.focus();
-                textArea.select();
-                
-                try {
-                    const successful = document.execCommand('copy');
-                    if (successful) {
-                        alert('Copied to clipboard!');
-                    } else {
-                        console.error('Failed to copy');
-                    }
-                } catch (err) {
-                    console.error('Error copying text: ', err);
-                }
-                
-                document.body.removeChild(textArea);
-            }
-            
-            // Theme switcher
-            const themeToggle = document.getElementById('theme-toggle');
-            
-            themeToggle.addEventListener('change', function() {
-                if (this.checked) {
-                    document.body.classList.add('dark-theme');
-                    if (storageAvailable) {
-                        localStorage.setItem('darkMode', 'enabled');
-                    }
-                } else {
-                    document.body.classList.remove('dark-theme');
-                    if (storageAvailable) {
-                        localStorage.setItem('darkMode', 'disabled');
-                    }
-                }
-            });
-            
-            // Load theme preference
-            if (storageAvailable) {
-                const darkMode = localStorage.getItem('darkMode');
-                if (darkMode === 'enabled') {
-                    themeToggle.checked = true;
-                    document.body.classList.add('dark-theme');
-                }
-            }
-            
-            // URL Shortener functionality (simplified demo version)
-            document.getElementById('shorten-url-btn').addEventListener('click', function() {
-                const urlToShorten = document.getElementById('url-to-shorten').value;
-                
-                if (!urlToShorten) {
-                    alert('Please enter a URL to shorten');
-                    return;
-                }
-                
-                // This is a mock function since we don't have a real API
-                // In a real application, you'd call an API service
-                mockShortenUrl(urlToShorten);
-            });
-            
-            function mockShortenUrl(url) {
-                // Simulate API delay
-                document.getElementById('shortened-result').textContent = 'Shortening URL...';
-                
-                setTimeout(() => {
-                    // Generate a mock shortened URL
-                    const shortId = Math.random().toString(36).substring(2, 8);
-                    const shortenedUrl = `https://short.url/${shortId}`;
-function mockShortenUrl(url) {
-    // Simulate API delay
-    document.getElementById('shortened-result').textContent = 'Shortening URL...';
-    
-    setTimeout(() => {
-        // Generate a mock shortened URL
-        const shortId = Math.random().toString(36).substring(2, 8);
-        const shortenedUrl = `https://short.url/${shortId}`;
-        document.getElementById('shortened-result').textContent = shortenedUrl;
-    }, 1000);
-}
-
-// Domain info functionality
-document.getElementById('get-domain-info-btn').addEventListener('click', function() {
-    const domain = document.getElementById('domain-info-input').value.trim();
-    if (!domain) {
-        alert('Please enter a domain name');
-        return;
-    }
-    
-    // Mock domain info retrieval
-    document.getElementById('domain-info-result').textContent = 'Fetching domain information...';
-    setTimeout(() => {
-        const mockInfo = {
-            domain: domain,
-            registrar: 'Example Registrar, Inc.',
-            created: '2010-05-15',
-            expires: '2025-05-15',
-            status: 'Active'
-        };
-        
-        document.getElementById('domain-info-result').innerHTML = `
-            <strong>Domain:</strong> ${mockInfo.domain}<br>
-            <strong>Registrar:</strong> ${mockInfo.registrar}<br>
-            <strong>Created:</strong> ${mockInfo.created}<br>
-            <strong>Expires:</strong> ${mockInfo.expires}<br>
-            <strong>Status:</strong> ${mockInfo.status}
-        `;
-    }, 1000);
-});
-
-// QR Code generator (mock functionality)
-document.getElementById('generate-qr-btn').addEventListener('click', function() {
-    const qrUrl = document.getElementById('qr-url').value.trim();
-    if (!qrUrl) {
-        alert('Please enter a URL for QR code generation');
-        return;
-    }
-    
-    // For a real implementation, you would use a library like qrcode.js
-    document.getElementById('qr-container').style.display = 'block';
-    document.getElementById('qr-code').innerHTML = `
-        <div style="padding: 20px; border: 1px solid #ddd;">
-            <p style="text-align: center;">Mock QR Code for:<br>${qrUrl}</p>
-            <div style="width: 150px; height: 150px; margin: 0 auto; background-color: #f5f5f5; display: flex; align-items: center; justify-content: center;">
-                <div style="font-size: 12px; text-align: center; padding: 10px;">QR Code would be generated here with an actual QR library</div>
+    <!-- Browser Container -->
+    <div class="browser-container" id="browser-container" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #000; color: #0f0; z-index: 9999; font-family: 'Courier New', monospace; flex-direction: column;">
+        <div class="browser-header" style="padding: 12px; background: linear-gradient(to bottom, #222, #111); border-bottom: 2px solid #0f0; display: flex; align-items: center; box-shadow: 0 3px 10px rgba(0,255,0,0.1);">
+            <div class="browser-controls" style="display: flex; gap: 8px;">
+                <button id="back-btn" style="background: rgba(0,40,0,0.7); color: #0f0; border: 1px solid #0f0; padding: 8px 15px; border-radius: 3px; cursor: pointer; transition: all 0.2s;">Back</button>
+                <button id="forward-btn" style="background: rgba(0,40,0,0.7); color: #0f0; border: 1px solid #0f0; padding: 8px 15px; border-radius: 3px; cursor: pointer; transition: all 0.2s;">Forward</button>
+                <button id="refresh-btn" style="background: rgba(0,40,0,0.7); color: #0f0; border: 1px solid #0f0; padding: 8px 15px; border-radius: 3px; cursor: pointer; transition: all 0.2s;">Refresh</button>
+                <button id="home-btn" style="background: rgba(0,40,0,0.7); color: #0f0; border: 1px solid #0f0; padding: 8px 15px; border-radius: 3px; cursor: pointer; transition: all 0.2s;">Home</button>
+            </div>
+            <div style="flex: 1; margin: 0 15px; display: flex; align-items: center; background: rgba(0,20,0,0.8); border: 1px solid #0f0; border-radius: 4px; padding: 8px 12px;">
+                <span style="color: #0f0; margin-right: 8px; font-size: 16px;">🔒</span>
+                <input type="text" id="browser-address-bar" placeholder="Enter URL" style="flex: 1; background: transparent; border: none; color: #0f0; outline: none; font-size: 14px; font-family: 'Courier New', monospace;">
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button id="browser-navigate-btn" style="background: rgba(0,70,0,0.8); color: #0f0; border: 1px solid #0f0; padding: 8px 15px; border-radius: 3px; cursor: pointer; transition: all 0.2s; font-weight: bold;" onclick="navigateFromAddressBar()">Go</button>
+                <button id="settings-btn" style="background: rgba(0,40,0,0.7); color: #0f0; border: 1px solid #0f0; padding: 8px 15px; border-radius: 3px; cursor: pointer; transition: all 0.2s;">⚙️</button>
+                <button id="close-browser-btn" style="background: rgba(100,0,0,0.7); color: #f33; border: 1px solid #f33; padding: 8px 15px; border-radius: 3px; cursor: pointer; transition: all 0.2s;" onclick="document.getElementById('browser-container').style.display='none'; document.querySelector('.container').style.display='block';">Close</button>
             </div>
         </div>
-    `;
-});
+        <div style="position: relative; height: calc(100% - 60px); overflow: hidden;">
+            <div id="browser-content" style="width: 100%; height: 100%; overflow: auto; background: #fff; color: #000; font-family: Arial, sans-serif;"></div>
+            <div id="loading-indicator" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,10,0,0.9); justify-content: center; align-items: center; z-index: 10;">
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <div style="width: 80px; height: 80px; border: 6px solid rgba(0,255,0,0.1); border-top: 6px solid #0f0; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;"></div>
+                    <div style="color: #0f0; font-size: 18px; text-align: center; font-family: 'Courier New', monospace;">
+                        Loading secure content...<br>
+                        <span style="font-size: 14px; opacity: 0.8;">Routing through proxy</span>
+                    </div>
+                </div>
+            </div>
+            <div class="security-badge" style="position: absolute; bottom: 15px; right: 15px; background: rgba(0,40,0,0.7); color: #0f0; padding: 10px 15px; border-radius: 5px; border: 1px solid #0f0; font-size: 12px; display: flex; align-items: center; z-index: 5; cursor: pointer; box-shadow: 0 0 10px rgba(0,255,0,0.3);">
+                <span style="margin-right: 8px;">🔒</span>
+                <span>Secure | Encrypted | Anonymous</span>
+            </div>
+        </div>
+        <div class="browser-footer" style="background: #111; border-top: 1px solid #0f0; padding: 8px 15px; display: flex; justify-content: space-between; font-size: 12px; color: rgba(0,255,0,0.7);">
+            <div>Proxy: <span id="active-proxy-display" style="color: #0f0;">Selected</span></div>
+            <div>Status: <span style="color: #0f0;">Connected</span></div>
+            <div>Security: <span style="color: #0f0;">High</span></div>
+        </div>
+    </div>
 
-// Batch processing functionality
-document.getElementById('process-batch-btn').addEventListener('click', function() {
-    const batchUrls = document.getElementById('batch-urls').value.trim().split('\n').filter(url => url.trim() !== '');
-    
-    if (batchUrls.length === 0) {
-        alert('Please enter at least one URL for batch processing');
-        return;
-    }
-    
-    const batchType = document.getElementById('batch-proxy-select').value;
-    const batchResults = document.getElementById('batch-results');
-    batchResults.innerHTML = '<p>Processing URLs...</p>';
-    
-    setTimeout(() => {
-        let resultsHtml = '<ul style="list-style-type: none; padding: 0;">';
-        
-        batchUrls.forEach(url => {
-            // Add http:// if no protocol specified
-            if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                url = 'https://' + url;
-            }
-            
-            let proxiedUrl = '';
-            switch (batchType) {
-                case 'web':
-                    proxiedUrl = 'https://www.proxysite.com/process.php?d=' + encodeURIComponent(url);
-                    break;
-                case 'archive':
-                    proxiedUrl = 'https://web.archive.org/web/' + encodeURIComponent(url);
-                    break;
-                case 'translate':
-                    proxiedUrl = 'https://translate.google.com/translate?sl=auto&tl=en&u=' + encodeURIComponent(url);
-                    break;
-                case 'specialized':
-                    proxiedUrl = 'https://www.printfriendly.com/print?url=' + encodeURIComponent(url);
-                    break;
-            }
-            
-            resultsHtml += `<li style="margin-bottom: 10px;"><a href="${proxiedUrl}" target="_blank">${url}</a> → <a href="${proxiedUrl}" target="_blank">Proxied Link</a></li>`;
-        });
-        
-        resultsHtml += '</ul>';
-        batchResults.innerHTML = resultsHtml;
-    }, 1500);
-});
-
-// Export batch results
-document.getElementById('export-batch-results').addEventListener('click', function() {
-    const content = document.getElementById('batch-results').innerText;
-    const blob = new Blob([content], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'batch-proxy-results.csv';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-});
-
-// Save preset functionality
-document.getElementById('save-preset-btn').addEventListener('click', function() {
-    const presetName = document.getElementById('preset-name').value.trim();
-    
-    if (!presetName) {
-        alert('Please enter a name for your preset');
-        return;
-    }
-    
-    // Get current settings
-    const activeTab = document.querySelector('.tab.active').getAttribute('data-tab');
-    let presetData = {
-        name: presetName,
-        type: activeTab,
-        settings: {}
-    };
-    
-    // Different settings based on active tab
-    switch (activeTab) {
-        case 'web-proxies':
-            presetData.settings.proxyUrl = document.getElementById('web-proxy-select').value;
-            presetData.settings.removeCookies = document.getElementById('remove-cookies').checked;
-            presetData.settings.removeScripts = document.getElementById('remove-scripts').checked;
-            // Add other settings as needed
-            break;
-        case 'archive-proxies':
-            presetData.settings.archiveService = document.getElementById('archive-proxy-select').value;
-            presetData.settings.timestamp = document.getElementById('archive-timestamp').value;
-            break;
-        // Handle other tabs similarly
-    }
-    
-    // Save preset to localStorage
-    if (storageAvailable) {
-        let presets = [];
-        const storedPresets = localStorage.getItem('proxyPresets');
-        if (storedPresets) {
-            presets = JSON.parse(storedPresets);
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
-        presets.push(presetData);
-        localStorage.setItem('proxyPresets', JSON.stringify(presets));
+        #browser-container button:hover {
+            background: rgba(0,90,0,0.8) !important;
+            box-shadow: 0 0 10px rgba(0,255,0,0.3) !important;
+        }
         
-        // Update presets display
-        updatePresetsList(presets);
-        
-        alert('Preset saved successfully!');
-        document.getElementById('preset-name').value = '';
-    }
-});
+        #close-browser-btn:hover {
+            background: rgba(150,0,0,0.7) !important;
+            box-shadow: 0 0 10px rgba(255,0,0,0.3) !important;
+        }
+    </style>
 
-// Update presets list in UI
-function updatePresetsList(presets) {
-    const presetList = document.getElementById('preset-list');
-    presetList.innerHTML = '';
+<script>
+    // Global variables for browser navigation
+    let history = [];
+    let currentHistoryIndex = -1;
+    let updateBrowserControls;
     
-    if (!presets || presets.length === 0) {
-        presetList.innerHTML = '<p>No presets saved yet.</p>';
-        return;
-    }
-    
-    presets.forEach((preset, index) => {
-        const presetTag = document.createElement('div');
-        presetTag.className = 'preset-tag';
-        presetTag.innerHTML = `${preset.name}<span class="preset-delete" data-index="${index}">×</span>`;
+    // Initialize tabs - Add this function to handle tab switching
+    function initializeTabs() {
+        const mainTabs = document.querySelectorAll('.main-tab');
+        const tabContents = document.querySelectorAll('.main-tab-content');
         
-        presetTag.addEventListener('click', function(e) {
-            if (!e.target.classList.contains('preset-delete')) {
-                loadPreset(preset);
+        if (mainTabs.length === 0 || tabContents.length === 0) {
+            console.error('Tab elements not found in the document');
+            return;
+        }
+        
+        console.log(`Found ${mainTabs.length} tabs and ${tabContents.length} content sections`);
+        
+        // Add click event listeners to each tab
+        mainTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Get the target content ID using the data-tab attribute
+                const tabType = this.getAttribute('data-tab');
+                const targetId = tabType + '-tab';
+                
+                console.log(`Tab clicked: ${this.textContent.trim()}, targeting: #${targetId}`);
+                
+                // Remove active class from all tabs and add to the clicked one
+                mainTabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Hide all tab contents and show the target one
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                const targetContent = document.getElementById(targetId);
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                    console.log(`Activated content: ${targetId}`);
+                } else {
+                    console.error(`Target content #${targetId} not found`);
+                }
+            });
+        });
+        
+        // Activate the first tab by default (browser tab)
+        if (mainTabs.length > 0 && tabContents.length > 0) {
+            // Find browser tab if it exists, otherwise use first tab
+            const browserTab = Array.from(mainTabs).find(tab => tab.getAttribute('data-tab') === 'browser');
+            const tabToActivate = browserTab || mainTabs[0];
+            
+            // Trigger a click on the tab to activate it
+            if (tabToActivate) {
+                tabToActivate.click();
+                console.log('Activated default tab');
+            } else {
+                // Fallback: manually set the first tab and content as active
+                mainTabs[0].classList.add('active');
+                tabContents[0].classList.add('active');
+                console.log('Activated first tab as fallback');
             }
+        }
+    }
+    
+    // Initialize everything when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM content loaded, initializing components');
+        
+        // Initialize tabs
+        initializeTabs();
+        
+        // Initialize other components (existing code)
+        initializeProxyList();
+        initializeBrowser();
+        // Other initializations...
+    });
+    
+    // Network Background Animation
+    function initializeNetworkAnimation() {
+        // This is replaced by particle animation
+        console.log("Using particles animation instead of canvas");
+    }
+
+    // Proxy Server Configuration - Real proxy servers
+    const proxyServers = [
+        // User-provided proxies
+        { ip: '47.88.59.79', port: '82', type: 'http', country: 'US', speed: '303ms', protocol: 'HTTP (Elite)', location: 'United States', reliability: '100%', lastChecked: 'Just now' },
+        { ip: '43.135.186.62', port: '13001', type: 'http', country: 'US', speed: '5.1s', protocol: 'HTTP (Elite)', location: 'United States', reliability: '92%', lastChecked: 'Just now' },
+        { ip: '68.188.93.171', port: '8080', type: 'http', country: 'US', speed: '242ms', protocol: 'HTTP (Transparent)', location: 'United States', reliability: '100%', lastChecked: 'Just now' },
+        { ip: '198.8.94.170', port: '4145', type: 'socks4', country: 'US', speed: '1ms', protocol: 'SOCKS4 (Elite)', location: 'United States', reliability: '97%', lastChecked: 'Just now' },
+        { ip: '192.73.244.36', port: '80', type: 'http', country: 'US', speed: '5.0s', protocol: 'HTTP (Elite)', location: 'United States', reliability: '100%', lastChecked: 'Just now' },
+        { ip: '49.51.207.125', port: '13001', type: 'http', country: 'US', speed: '5.0s', protocol: 'HTTP (Elite)', location: 'United States', reliability: '100%', lastChecked: 'Just now' },
+        { ip: '43.159.132.166', port: '13001', type: 'http', country: 'US', speed: '5.0s', protocol: 'HTTP (Elite)', location: 'United States', reliability: '100%', lastChecked: 'Just now' },
+        { ip: '71.234.197.16', port: '4600', type: 'socks4', country: 'US', speed: '1ms', protocol: 'SOCKS4 (Elite)', location: 'United States', reliability: '94%', lastChecked: 'Just now' },
+        { ip: '135.148.9.18', port: '25076', type: 'socks4', country: 'US', speed: '1ms', protocol: 'SOCKS4 (Elite)', location: 'United States', reliability: '80%', lastChecked: 'Just now' },
+        { ip: '199.195.250.214', port: '53667', type: 'socks4', country: 'US', speed: '1ms', protocol: 'SOCKS4 (Elite)', location: 'United States', reliability: '52%', lastChecked: 'Just now' },
+        { ip: '137.66.19.247', port: '3128', type: 'socks5', country: 'US', speed: '1ms', protocol: 'SOCKS5 (Elite)', location: 'United States', reliability: '100%', lastChecked: 'Just now' },
+        { ip: '34.43.181.55', port: '3128', type: 'socks5', country: 'US', speed: '1ms', protocol: 'SOCKS5 (Elite)', location: 'United States', reliability: '100%', lastChecked: 'Just now' },
+        // New proxies (added April 2025)
+        { ip: '40.66.47.250', port: '3128', type: 'https', country: 'FR', speed: '12.5ms', protocol: 'HTTPS (Squid)', location: 'France (Paris)', reliability: '12%', lastChecked: '2h ago' },
+        { ip: '201.244.16.139', port: '999', type: 'https', country: 'CO', speed: '1.2ms', protocol: 'HTTPS (Mikrotik)', location: 'Colombia (Bogotá)', reliability: 'new', lastChecked: '3h ago' },
+        { ip: '138.204.12.16', port: '999', type: 'https', country: 'PE', speed: '24.6ms', protocol: 'HTTPS (Mikrotik)', location: 'Peru (Lima)', reliability: '8%', lastChecked: '3h ago' },
+        { ip: '43.251.84.242', port: '8080', type: 'https', country: 'BD', speed: '18.2ms', protocol: 'HTTPS (Mikrotik)', location: 'Bangladesh', reliability: '7%', lastChecked: '3h ago' },
+        { ip: '85.234.122.67', port: '8080', type: 'https', country: 'RU', speed: '4.1ms', protocol: 'HTTPS (Mikrotik)', location: 'Russia', reliability: '21%', lastChecked: '3h ago' },
+        { ip: '47.236.163.74', port: '8080', type: 'https', country: 'SG', speed: '1.1ms', protocol: 'HTTPS', location: 'Singapore', reliability: '29%', lastChecked: '3h ago' },
+        { ip: '79.127.118.57', port: '8080', type: 'https', country: 'IR', speed: '17.3ms', protocol: 'HTTPS (Mikrotik)', location: 'Iran', reliability: '9%', lastChecked: '4h ago' },
+        { ip: '146.190.72.171', port: '8888', type: 'https', country: 'US', speed: '1.9ms', protocol: 'HTTPS', location: 'United States (North Bergen)', reliability: '54%', lastChecked: '5h ago' },
+        { ip: '146.190.143.248', port: '8888', type: 'https', country: 'US', speed: '3.3ms', protocol: 'HTTPS', location: 'United States (Santa Clara)', reliability: '100%', lastChecked: '5h ago' },
+        { ip: '24.144.115.60', port: '8888', type: 'https', country: 'US', speed: '1.7ms', protocol: 'HTTPS', location: 'United States (North Bergen)', reliability: 'new', lastChecked: '5h ago' },
+        { ip: '143.198.231.248', port: '8888', type: 'https', country: 'US', speed: '1.9ms', protocol: 'HTTPS', location: 'United States (Santa Clara)', reliability: '100%', lastChecked: '5h ago' },
+        { ip: '24.199.120.137', port: '8888', type: 'https', country: 'US', speed: '4.1ms', protocol: 'HTTPS', location: 'United States (Santa Clara)', reliability: '100%', lastChecked: '5h ago' },
+        { ip: '78.108.41.124', port: '9110', type: 'https', country: 'GR', speed: '0.6ms', protocol: 'HTTPS', location: 'Greece', reliability: '71%', lastChecked: '5h ago' },
+        { ip: '103.24.212.250', port: '8082', type: 'https', country: 'ID', speed: '22.3ms', protocol: 'HTTPS (Mikrotik)', location: 'Indonesia (Kendal)', reliability: '12%', lastChecked: '6h ago' },
+        { ip: '24.199.113.48', port: '8888', type: 'https', country: 'US', speed: '4.3ms', protocol: 'HTTPS', location: 'United States (Santa Clara)', reliability: '50%', lastChecked: '8h ago' },
+        { ip: '137.184.196.255', port: '8888', type: 'https', country: 'US', speed: '3.2ms', protocol: 'HTTPS', location: 'United States (North Bergen)', reliability: '100%', lastChecked: '8h ago' },
+        // Original proxies
+        { ip: '47.56.110.204', port: '8990', type: 'http', country: 'HK', speed: '68ms', protocol: 'HTTP', location: 'Hong Kong', reliability: '35%', lastChecked: '12h ago' },
+        { ip: '216.229.112.25', port: '8080', type: 'http', country: 'US', speed: '132ms', protocol: 'HTTP', location: 'United States', reliability: '42%', lastChecked: '10h ago' },
+        { ip: '222.67.12.185', port: '1080', type: 'http', country: 'CN', speed: '62ms', protocol: 'HTTP', location: 'China', reliability: '64%', lastChecked: '8h ago' },
+        { ip: '195.140.226.32', port: '5678', type: 'socks4', country: 'UA', speed: '111ms', protocol: 'SOCKS4', location: 'Ukraine', reliability: '45%', lastChecked: '9h ago' },
+        { ip: '154.64.246.250', port: '1080', type: 'http', country: 'HK', speed: '64ms', protocol: 'HTTP', location: 'Hong Kong', reliability: '58%', lastChecked: '11h ago' }
+    ];
+
+    // Initialize proxy list
+    function initializeProxyList() {
+        const proxyList = document.getElementById('proxy-list');
+        proxyList.innerHTML = '';
+        
+        proxyServers.forEach((proxy, index) => {
+            const proxyItem = document.createElement('div');
+            proxyItem.className = 'proxy-item';
+            proxyItem.dataset.index = index;
+            
+            // Add country flag
+            const flagUrl = `https://flagcdn.com/16x12/${proxy.country.toLowerCase()}.png`;
+            
+            proxyItem.innerHTML = `
+                <div class="proxy-ip"><img src="${flagUrl}" alt="${proxy.country}" class="flag-icon"> ${proxy.ip}:${proxy.port}</div>
+                <div class="proxy-details">
+                    <span>${proxy.location}</span>
+                    <span>${proxy.speed}</span>
+                    <span class="proxy-type">${proxy.protocol}</span>
+                </div>
+                <div class="proxy-stats">
+                    <span class="reliability ${getReliabilityClass(proxy.reliability)}">${proxy.reliability}</span>
+                    <span class="last-checked">${proxy.lastChecked}</span>
+                </div>
+            `;
+            
+            proxyItem.addEventListener('click', function() {
+                document.querySelectorAll('.proxy-item').forEach(item => item.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById('proxy-description').innerHTML = `
+                    Using <strong>${proxy.protocol}</strong> proxy from <strong>${proxy.location}</strong> 
+                    <br>IP: ${proxy.ip}:${proxy.port} 
+                    <br>Reliability: <span class="${getReliabilityClass(proxy.reliability)}">${proxy.reliability}</span>
+                    <br>Last checked: ${proxy.lastChecked}
+                `;
+            });
+            
+            proxyList.appendChild(proxyItem);
         });
         
-        presetList.appendChild(presetTag);
-    });
-    
-    // Add event listeners for delete buttons
-    document.querySelectorAll('.preset-delete[data-index]').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const index = parseInt(this.getAttribute('data-index'));
-            deletePreset(index);
-        });
-    });
-}
-
-// Load preset
-function loadPreset(preset) {
-    // Switch to correct tab
-    document.querySelector(`.tab[data-tab="${preset.type}"]`).click();
-    
-    // Apply settings based on preset type
-    switch (preset.type) {
-        case 'web-proxies':
-            document.getElementById('web-proxy-select').value = preset.settings.proxyUrl;
-            document.getElementById('remove-cookies').checked = preset.settings.removeCookies;
-            document.getElementById('remove-scripts').checked = preset.settings.removeScripts;
-            // Apply other settings
-            break;
-        case 'archive-proxies':
-            document.getElementById('archive-proxy-select').value = preset.settings.archiveService;
-            document.getElementById('archive-timestamp').value = preset.settings.timestamp;
-            break;
-        // Handle other tabs similarly
+        // Select first proxy by default
+        if (proxyServers.length > 0) {
+            const firstItem = document.querySelector('.proxy-item');
+            if (firstItem) {
+                firstItem.classList.add('active');
+                const firstProxy = proxyServers[0];
+                document.getElementById('proxy-description').innerHTML = `
+                    Using <strong>${firstProxy.protocol}</strong> proxy from <strong>${firstProxy.location}</strong>
+                    <br>IP: ${firstProxy.ip}:${firstProxy.port} 
+                    <br>Reliability: <span class="${getReliabilityClass(firstProxy.reliability)}">${firstProxy.reliability}</span>
+                    <br>Last checked: ${firstProxy.lastChecked}
+                `;
+            }
+        }
     }
     
-    alert(`Preset "${preset.name}" has been loaded.`);
-}
+    // Helper function to get reliability class
+    function getReliabilityClass(reliability) {
+        if (reliability === 'new') return 'reliability-new';
+        if (reliability.includes('100%')) return 'reliability-perfect';
+        if (reliability.includes('%')) {
+            const percent = parseInt(reliability);
+            if (percent >= 70) return 'reliability-good';
+            if (percent >= 40) return 'reliability-medium';
+            return 'reliability-poor';
+        }
+        return '';
+    }
 
-// Delete preset
-function deletePreset(index) {
-    if (!storageAvailable) return;
-    
-    if (confirm('Are you sure you want to delete this preset?')) {
-        const storedPresets = localStorage.getItem('proxyPresets');
-        if (!storedPresets) return;
+    // Find the initializeBrowser function and make these updates
+    function initializeBrowser() {
+        console.log("Initializing browser functionality");
         
-        let presets = JSON.parse(storedPresets);
-        presets.splice(index, 1);
+        // Main tab navigate button
+        const navigateBtn = document.getElementById('navigate-btn');
+        // Browser header navigate button
+        const browserNavigateBtn = document.getElementById('browser-navigate-btn');
         
-        localStorage.setItem('proxyPresets', JSON.stringify(presets));
-        updatePresetsList(presets);
+        const urlInput = document.getElementById('url-input');
+        const browserContainer = document.getElementById('browser-container');
+        const browserAddressBar = document.getElementById('browser-address-bar');
+        const closeBrowserBtn = document.getElementById('close-browser-btn');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const backBtn = document.getElementById('back-btn');
+        const forwardBtn = document.getElementById('forward-btn');
+        const refreshBtn = document.getElementById('refresh-btn');
+        const homeBtn = document.getElementById('home-btn');
+        const settingsBtn = document.getElementById('settings-btn');
+        const browserContent = document.getElementById('browser-content');
+        
+        // Check if elements exist
+        if (!browserContainer) console.error("Browser container not found!");
+        if (!browserContent) console.error("Browser content area not found!");
+        if (!loadingIndicator) console.error("Loading indicator not found!");
+        
+        // Reset global history variables
+        history = [];
+        currentHistoryIndex = -1;
+        
+        // Define global updateBrowserControls function
+        updateBrowserControls = function() {
+            if (backBtn) backBtn.disabled = currentHistoryIndex <= 0;
+            if (forwardBtn) forwardBtn.disabled = currentHistoryIndex >= history.length - 1;
+        };
+        
+        // Set up main tab navigation button
+        if (navigateBtn) {
+            navigateBtn.addEventListener('click', function() {
+                const url = urlInput.value.trim();
+                if (url) {
+                    console.log("Main navigate button clicked for URL:", url);
+                    navigateToUrl(url);
+                } else {
+                    alert('Please enter a URL to navigate');
+                }
+            });
+        } else {
+            console.error("Main navigate button not found!");
+        }
+        
+        // Set up browser header navigation button
+        if (browserNavigateBtn) {
+            browserNavigateBtn.addEventListener('click', function() {
+                const url = browserAddressBar.value.trim();
+                if (url) {
+                    console.log("Browser header navigate button clicked for URL:", url);
+                    navigateToUrl(url);
+                }
+            });
+        } else {
+            console.error("Browser navigate button not found!");
+        }
+        
+        // Handle URL input form submission (press Enter)
+        if (urlInput) {
+            urlInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const url = this.value.trim();
+                    if (url) {
+                        console.log("Enter pressed in URL input for URL:", url);
+                        navigateToUrl(url);
+                    }
+                }
+            });
+        } else {
+            console.error("URL input field not found!");
+        }
+        
+        // Set up browser address bar
+        if (browserAddressBar) {
+            browserAddressBar.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const url = this.value.trim();
+                    if (url) {
+                        console.log("Enter pressed in browser address bar for URL:", url);
+                        navigateToUrl(url);
+                    }
+                }
+            });
+        } else {
+            console.error("Browser address bar not found!");
+        }
+        
+        // Browser control buttons
+        if (backBtn) {
+            backBtn.addEventListener('click', function() {
+                if (currentHistoryIndex > 0) {
+                    console.log("Back button clicked");
+                    currentHistoryIndex--;
+                    navigateToUrl(history[currentHistoryIndex]);
+                }
+            });
+        }
+        
+        if (forwardBtn) {
+            forwardBtn.addEventListener('click', function() {
+                if (currentHistoryIndex < history.length - 1) {
+                    console.log("Forward button clicked");
+                    currentHistoryIndex++;
+                    navigateToUrl(history[currentHistoryIndex]);
+                }
+            });
+        }
+        
+        if (refreshBtn) {
+            refreshBtn.addEventListener('click', function() {
+                if (currentHistoryIndex >= 0) {
+                    console.log("Refresh button clicked");
+                    navigateToUrl(history[currentHistoryIndex]);
+                }
+            });
+        }
+        
+        if (homeBtn) {
+            homeBtn.addEventListener('click', function() {
+                console.log("Home button clicked");
+                hideBrowser();
+            });
+        }
+        
+        if (closeBrowserBtn) {
+            closeBrowserBtn.addEventListener('click', function() {
+                console.log("Close browser button clicked");
+                hideBrowser();
+            });
+        }
+        
+        if (settingsBtn) {
+            settingsBtn.addEventListener('click', function() {
+                console.log("Settings button clicked");
+                alert('Proxy settings would open here in a real implementation');
+            });
+        }
+        
+        // Fix browser container styling
+        if (browserContainer) {
+            browserContainer.style.display = 'none';
+            browserContainer.style.flexDirection = 'column';
+            browserContainer.style.position = 'fixed';
+            browserContainer.style.top = '0';
+            browserContainer.style.left = '0';
+            browserContainer.style.width = '100%';
+            browserContainer.style.height = '100%';
+            browserContainer.style.zIndex = '1000';
+            browserContainer.style.background = '#fff';
+            
+            // Ensure the browser viewport takes up available space
+            const browserViewport = browserContainer.querySelector('.browser-viewport');
+            if (browserViewport) {
+                browserViewport.style.flex = '1';
+                browserViewport.style.overflow = 'hidden';
+                browserViewport.style.position = 'relative';
+                browserViewport.style.display = 'flex';
+                browserViewport.style.flexDirection = 'column';
+            }
+            
+            // Make sure browser content area is visible and has a background
+            if (browserContent) {
+                browserContent.style.width = '100%';
+                browserContent.style.height = '100%';
+                browserContent.style.overflow = 'auto';
+                browserContent.style.background = '#fff';
+            }
+        }
+        
+        console.log("Browser initialization complete");
     }
-}
 
-// Load presets on page load
-if (storageAvailable) {
-    const storedPresets = localStorage.getItem('proxyPresets');
-    if (storedPresets) {
-        updatePresetsList(JSON.parse(storedPresets));
+    // Function to navigate to a URL
+    function navigateToUrl(url) {
+        if (!url) return;
+        
+        console.log("Navigating to URL:", url);
+        
+        // Format URL if needed
+        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+            url = 'https://' + url;
+        }
+        
+        // Get active proxy
+        const activeProxy = getActiveProxy();
+        if (!activeProxy) {
+            alert('Please select a proxy server first');
+            return;
+        }
+        
+        // Show browser container
+        const browserContainer = document.getElementById('browser-container');
+        if (browserContainer) {
+            browserContainer.style.display = 'flex';
+            browserContainer.style.zIndex = '9999';
+            
+            // Update UI elements
+            document.querySelector('.container').style.display = 'none';
+            
+            const browserAddressBar = document.getElementById('browser-address-bar');
+            if (browserAddressBar) browserAddressBar.value = url;
+            
+            const activeProxyDisplay = document.getElementById('active-proxy-display');
+            if (activeProxyDisplay) activeProxyDisplay.textContent = `${activeProxy.protocol} (${activeProxy.location})`;
+            
+            // Handle history
+            if (currentHistoryIndex < 0 || history[currentHistoryIndex] !== url) {
+                history.push(url);
+                currentHistoryIndex = history.length - 1;
+                if (typeof updateBrowserControls === 'function') updateBrowserControls();
+            }
+            
+            // Show loading indicator
+            const loadingIndicator = document.getElementById('loading-indicator');
+            if (loadingIndicator) loadingIndicator.style.display = 'flex';
+            
+            // Get the browser content element
+            const browserContent = document.getElementById('browser-content');
+            if (browserContent) {
+                // REAL IMPLEMENTATION: Use an iframe to load content through proxy server
+                // 1. Create an iframe
+                browserContent.innerHTML = '';
+                const iframe = document.createElement('iframe');
+                iframe.style.width = '100%';
+                iframe.style.height = '100%';
+                iframe.style.border = 'none';
+                
+                // 2. Set the proxy URL (update with your actual server URL)
+                const serverUrl = 'http://localhost:3000'; // Change in production
+                const proxyUrl = `${serverUrl}/proxy?url=${encodeURIComponent(url)}&proxyIp=${activeProxy.ip}&proxyPort=${activeProxy.port}&proxyType=${activeProxy.type}`;
+                
+                // 3. Load content and handle events
+                iframe.onload = () => loadingIndicator.style.display = 'none';
+                iframe.onerror = () => {
+                    loadingIndicator.style.display = 'none';
+                    browserContent.innerHTML = `
+                        <div style="padding: 20px; font-family: Arial, sans-serif; color: #333;">
+                            <h2>Connection Error</h2>
+                            <p>Could not load ${url} through the selected proxy.</p>
+                            <p>Make sure the proxy server is running:</p>
+                            <pre>node proxy-server.js</pre>
+                        </div>
+                    `;
+                };
+                
+                // 4. Set the iframe source and add to page
+                iframe.src = proxyUrl;
+                browserContent.appendChild(iframe);
+                
+                // Handle timeout
+                setTimeout(() => {
+                    if (loadingIndicator.style.display === 'flex') {
+                        loadingIndicator.style.display = 'none';
+                        browserContent.innerHTML = `
+                            <div style="padding: 20px; font-family: Arial, sans-serif; color: #333;">
+                                <h2>Connection Timeout</h2>
+                                <p>Start the proxy server with:</p>
+                                <pre>node proxy-server.js</pre>
+                            </div>
+                        `;
+                    }
+                }, 5000);
+            }
+        } else {
+            console.error("Browser container not found");
+        }
     }
-}
-
-// Update anonymity meter when options change
-const anonymityOptions = document.querySelectorAll('#web-proxy-options input[type="checkbox"]');
-anonymityOptions.forEach(option => {
-    option.addEventListener('change', updateAnonymityMeter);
-});
-
-function updateAnonymityMeter() {
-    // Calculate "anonymity score" based on selected options
-    let score = 0;
-    if (document.getElementById('remove-cookies').checked) score += 20;
-    if (document.getElementById('remove-scripts').checked) score += 25;
-    if (document.getElementById('encrypt-url').checked) score += 15;
-    if (document.getElementById('use-https').checked) score += 15;
-    if (document.getElementById('hide-referer').checked) score += 25;
     
-    // Update the visual meter
-    const anonymityLevel = document.querySelector('.anonymity-level');
-    anonymityLevel.style.width = `${score}%`;
-    
-    // Update the label
-    const anonymityLabel = document.querySelector('.anonymity-label');
-    if (score < 40) {
-        anonymityLabel.textContent = 'Low';
-    } else if (score < 70) {
-        anonymityLabel.textContent = 'Medium';
-    } else {
-        anonymityLabel.textContent = 'High';
+    // Helper function to show server setup instructions
+    function showServerSetupInstructions(container) {
+        container.innerHTML = `
+            <div style="padding: 20px; font-family: Arial, sans-serif; color: #333;">
+                <h2>Server Setup Required</h2>
+                <p>To make this proxy work with real websites, you need to run the included server-side proxy implementation:</p>
+                
+                <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; margin: 15px 0; font-family: monospace;">
+                    <p style="margin: 0 0 10px 0;"><strong>1. Install dependencies:</strong></p>
+                    <div style="background: #333; color: #fff; padding: 10px; border-radius: 5px;">
+                        npm install
+                    </div>
+                    
+                    <p style="margin: 15px 0 10px 0;"><strong>2. Start the proxy server:</strong></p>
+                    <div style="background: #333; color: #fff; padding: 10px; border-radius: 5px;">
+                        node proxy-server.js
+                    </div>
+                    
+                    <p style="margin: 15px 0 10px 0;"><strong>3. Verify it's running:</strong></p>
+                    <div style="background: #333; color: #fff; padding: 10px; border-radius: 5px;">
+                        # The server should be available at:
+                        http://localhost:3000
+                    </div>
+                </div>
+                
+                <h3>How the Real Proxy Implementation Works:</h3>
+                <ol>
+                    <li>The <strong>proxy-server.js</strong> file creates a Node.js server using Express</li>
+                    <li>When you navigate to a URL, the browser sends the request to the proxy server</li>
+                    <li>The proxy server forwards your request to the target website using the selected proxy</li>
+                    <li>The response from the website is sent back through the proxy server to your browser</li>
+                </ol>
+                
+                <h3>Implemented Proxy Features:</h3>
+                <ul>
+                    <li>✅ Support for HTTP, HTTPS, SOCKS4, and SOCKS5 proxies</li>
+                    <li>✅ Secure forwarding of website content</li>
+                    <li>✅ Header management to improve compatibility</li>
+                    <li>✅ CORS support for cross-origin requests</li>
+                </ul>
+                
+                <div style="margin-top: 20px; padding: 15px; background: #e8f4ff; border-left: 4px solid #2196F3; border-radius: 0 8px 8px 0;">
+                    <p><strong>Note:</strong> For a full-featured proxy browser with all the capabilities shown in the UI, 
+                    you would need additional implementations like:</p>
+                    <ul>
+                        <li>Ultraviolet or Womginx for more advanced web proxy features</li>
+                        <li>A more sophisticated server architecture for handling various content types</li>
+                        <li>Advanced cloaking and browser fingerprinting protection</li>
+                    </ul>
+                </div>
+                
+                <div style="margin-top: 20px; padding: 15px; background: #ffe8e8; border-left: 4px solid #f44336; border-radius: 0 8px 8px 0;">
+                    <p><strong>Important Security Note:</strong></p>
+                    <p>Running a public proxy server can expose you to security and legal risks. Make sure you understand the implications and implement appropriate security measures.</p>
+                </div>
+            </div>
+        `;
     }
-}
-
-// Initialize the anonymity meter
-updateAnonymityMeter();
-
-// Export history functionality
-document.getElementById('export-history').addEventListener('click', function() {
-    if (!storageAvailable) return;
-    
-    const storedHistory = localStorage.getItem('proxyHistory');
-    if (!storedHistory) {
-        alert('No history to export.');
-        return;
-    }
-    
-    const history = JSON.parse(storedHistory);
-    let csvContent = "Original URL,Proxied URL,Type,Timestamp\n";
-    
-    history.forEach(item => {
-        csvContent += `"${item.original}","${item.proxied}","${item.type}","${item.timestamp}"\n`;
-    });
-    
-    const blob = new Blob([csvContent], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'proxy-history.csv';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-});
-
-// Download QR code 
-document.getElementById('download-qr').addEventListener('click', function() {
-    alert('In a real implementation, this would download the QR code as an image file.');
-});
-
-});
 </script>
 </body>
 </html>
